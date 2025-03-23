@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,21 +47,31 @@
 </head>
 <body>
     <div class="controls">
-        <input type="text" id="emailSuffix" class="suffix-input"
-                value="0321" placeholder="输入后缀" maxlength="4">
+        <input type="text" id="emailSuffix" class="suffix-input" 
+               placeholder="输入后缀" maxlength="30">
         <button onclick="generateData()">生成100组数据</button>
         <button onclick="copyAll()">复制全部</button>
         <button onclick="exportTXT()">导出TXT</button>
     </div>
-    
+
     <div id="result"></div>
 
     <script>
+        // 获取今天的日期并格式化为MMDD
+        function getTodaySuffix() {
+            const date = new Date();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return month + day;
+        }
+
+        // 初始化输入框的值为今天的日期
+        document.getElementById('emailSuffix').value = getTodaySuffix();
+
         function generateData() {
-            const suffix = document.getElementById('emailSuffix').value || '0321';
+            const suffix = document.getElementById('emailSuffix').value || getTodaySuffix();
             const letters = 'abcdefghijkmnpqrstuvwxyz';
             const digits = ['1','2','5','6','8','9'];
-
             const emailPrefixes = [];
             for(let i = 0; i < letters.length; i++) {
                 for(let j = 0; j < letters.length; j++) {
