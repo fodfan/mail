@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>元元DIY邮箱生成器</title>
     <style>
         body {
@@ -131,19 +132,15 @@
             'cx','cy','cz','da','db','dc','dd','de','df','dg'
         ];
 
-        // 密码中间三位数列表（100个）
-        const password_mid = [
-            '961','282','853','194','625','518','882','298','188','658',
-            '259','995','815','592','226','681','915','265','582','829',
-            '695','562','219','985','895','165','526','618','669','925',
-            '552','288','859','291','185','258','882','192','685','516',
-            '152','188','159','591','685','658','182','692','285','216',
-            '268','815','659','225','996','629','969','895','562','219',
-            '985','915','526','582','661','958','162','829','288','853',
-            '291','185','258','882','192','685','516','268','815','659',
-            '225','996','629','969','895','562','219','985','915','526',
-            '582','661','958','162','829','288','853','291','185','258'
-        ];
+        // 新密码生成函数（排除0/3/4/7）
+        function generatePassword() {
+            const allowedDigits = ['1', '2', '5', '6', '8', '9'];
+            let mid = '';
+            for(let i = 0; i < 3; i++) {
+                mid += allowedDigits[Math.floor(Math.random() * allowedDigits.length)];
+            }
+            return `g${mid}88`;
+        }
 
         function generateData() {
             const dateSuffix = document.getElementById('dateSuffix').value || '0101';
@@ -152,8 +149,7 @@
             
             for(let i = 0; i < 100; i++) {
                 const prefix = email_prefixes[i];
-                const mid = password_mid[Math.floor(Math.random() * password_mid.length)];
-                const password = `g${mid}88`;
+                const password = generatePassword();
                 results.push(`${prefix}${dateSuffix}${emailDomain} ${password}`);
             }
 
