@@ -68,6 +68,11 @@
             padding: 10px 0;
             border-bottom: 1px solid #eee;
             font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .data-item.selected {
+            background-color: #e3f2fd;
         }
 
         .copy-btn {
@@ -108,6 +113,10 @@
             background-color: #4CAF50;
             padding: 10px 18px;
             font-size: 0.95rem;
+        }
+
+        .checkbox {
+            margin-right: 10px;
         }
 
         @media (max-width: 480px) {
@@ -160,6 +169,10 @@
             <button onclick="generateData()">生成100组数据</button>
             <button onclick="copyAll()">复制全部</button>
             <button onclick="exportTXT()">导出TXT</button>
+            <button onclick="selectAll()">全选</button>
+            <button onclick="invertSelection()">反选</button>
+            <button onclick="copySelected()">复制选中</button>
+            <button onclick="copyRange()">复制范围</button>
         </div>
         <div id="output-container"></div>
     </div>
@@ -222,11 +235,71 @@
                 const item = document.createElement('div');
                 item.className = 'data-item';
                 item.innerHTML = `
-                    <span>${(i+1).toString().padStart(3, '0')}. ${email} ${password}</span>
+                    <div>
+                        <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
+                        <span>${(i+1).toString().padStart(3, '0')}. ${email} ${password}</span>
+                    </div>
                     <button class="copy-btn" onclick="copySingle('${email} ${password}')">复制</button>
                 `;
                 outputContainer.appendChild(item);
             }
+        }
+
+        function toggleSelection(checkbox) {
+            const item = checkbox.closest('.data-item');
+            item.classList.toggle('selected', checkbox.checked);
+        }
+
+        function selectAll() {
+            document.querySelectorAll('.checkbox').forEach(checkbox => {
+                checkbox.checked = true;
+                checkbox.dispatchEvent(new Event('change'));
+            });
+        }
+
+        function invertSelection() {
+            document.querySelectorAll('.checkbox').forEach(checkbox => {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change'));
+            });
+        }
+
+        function copySelected() {
+            const selectedItems = Array.from(document.querySelectorAll('.checkbox:checked'))
+                .map(checkbox => {
+                    return checkbox.nextElementSibling.textContent
+                        .replace(/^\d+\. /, '');
+                });
+
+            if (selectedItems.length === 0) {
+                alert('请先选择要复制的条目！');
+                return;
+            }
+
+            navigator.clipboard.writeText(selectedItems.join('\n'))
+                .then(() => alert(`已复制 ${selectedItems.length} 条选中内容`))
+                .catch(err => console.error('复制失败:', err));
+        }
+
+        function copyRange() {
+            const start = parseInt(prompt('请输入起始序号（1-100）:'));
+            const end = parseInt(prompt('请输入结束序号（1-100）:'));
+            
+            if (isNaN(start) || isNaN(end) || start < 1 || end > 100 || start > end) {
+                alert('无效的输入范围！');
+                return;
+            }
+
+            const items = Array.from(document.querySelectorAll('.data-item'))
+                .slice(start - 1, end)
+                .map(item => {
+                    return item.querySelector('span').textContent
+                        .replace(/^\d+\. /, '');
+                });
+
+            navigator.clipboard.writeText(items.join('\n'))
+                .then(() => alert(`已复制 ${items.length} 条内容（${start}-${end}）`))
+                .catch(err => console.error('复制失败:', err));
         }
 
         function copySingle(text) {
