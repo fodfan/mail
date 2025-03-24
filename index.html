@@ -33,15 +33,30 @@
         button:hover {
             background-color: #1976D2;
         }
-        textarea {
-            width: 100%; 
+        #output-container {
+            width: 100%;
             height: 300px;
             margin: 10px 0;
             padding: 10px;
             box-sizing: border-box;
             border: 2px solid #ddd;
             border-radius: 4px;
-            font-family: Consolas, monospace;
+            overflow-y: auto;
+        }
+        .data-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .copy-btn {
+            background-color: #4CAF50;
+            padding: 5px 12px;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
         }
         .input-group {
             display: flex;
@@ -88,22 +103,19 @@
             <button onclick="copyAll()">复制全部</button>
             <button onclick="exportTXT()">导出TXT</button>
         </div>
-        <textarea id="output" readonly></textarea>
+        <div id="output-container"></div>
     </div>
+
     <script>
         // 初始化默认值
         function initializeDefaults() {
-            // 设置日期
             const today = new Date();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             document.getElementById('dateSuffix').value = month + day;
-            
-            // 设置邮箱域名
             document.getElementById('emailDomain').value = '@e.edu.kg';
         }
 
-        // 恢复日期后缀
         function resetDateSuffix() {
             const today = new Date();
             const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -111,14 +123,12 @@
             document.getElementById('dateSuffix').value = month + day;
         }
 
-        // 恢复邮箱域名
         function resetEmailDomain() {
             document.getElementById('emailDomain').value = '@e.edu.kg';
         }
 
         window.onload = initializeDefaults;
 
-        // 邮箱前缀列表（100个）
         const email_prefixes = [
             'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
             'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
@@ -132,7 +142,6 @@
             'cx','cy','cz','da','db','dc','dd','de','df','dg'
         ];
 
-        // 新密码生成函数（排除0/3/4/7）
         function generatePassword() {
             const allowedDigits = ['1', '2', '5', '6', '8', '9'];
             let mid = '';
@@ -145,30 +154,48 @@
         function generateData() {
             const dateSuffix = document.getElementById('dateSuffix').value || '0101';
             const emailDomain = document.getElementById('emailDomain').value || '@e.edu.kg';
-            const results = [];
-            
+            const outputContainer = document.getElementById('output-container');
+            outputContainer.innerHTML = '';
+
             for(let i = 0; i < 100; i++) {
                 const prefix = email_prefixes[i];
                 const password = generatePassword();
-                results.push(`${prefix}${dateSuffix}${emailDomain} ${password}`);
+                const email = `${prefix}${dateSuffix}${emailDomain}`;
+                const item = document.createElement('div');
+                item.className = 'data-item';
+                item.innerHTML = `
+                    <span>${(i+1).toString().padStart(3, '0')}. ${email} ${password}</span>
+                    <button class="copy-btn" onclick="copySingle('${email} ${password}')">复制</button>
+                `;
+                outputContainer.appendChild(item);
             }
+        }
 
-            document.getElementById('output').value = results.join('\n');
+        function copySingle(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => alert('已复制: ' + text))
+                .catch(err => console.error('复制失败:', err));
         }
 
         function copyAll() {
-            const output = document.getElementById('output');
-            output.select();
-            document.execCommand('copy');
-            alert('已复制全部内容到剪贴板');
+            const items = Array.from(document.querySelectorAll('.data-item span'))
+                .map(span => span.textContent.replace(/^\d+\. /, ''));
+            
+            navigator.clipboard.writeText(items.join('\n'))
+                .then(() => alert('已复制全部内容到剪贴板'))
+                .catch(err => console.error('复制失败:', err));
         }
 
         function exportTXT() {
-            const content = document.getElementById('output').value;
-            if(!content) {
+            const items = Array.from(document.querySelectorAll('.data-item span'))
+                .map(span => span.textContent.replace(/^\d+\. /, ''));
+            
+            if(items.length === 0) {
                 alert('请先生成数据！');
                 return;
             }
+            
+            const content = items.join('\n');
             const blob = new Blob([content], {type: 'text/plain'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
