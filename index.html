@@ -2,341 +2,314 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>元元DIY邮箱生成器</title>
     <style>
         :root {
-            font-size: 16px;
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
         }
 
         body {
             font-family: Arial, sans-serif;
-            margin: 15px;
-            background-color: #f0f0f0;
-            font-size: 1rem;
+            margin: 20px;
+            background-color: #f5f5f5;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .button-group {
-            margin-bottom: 15px;
+        .header {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .control-group {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        button {
-            padding: 12px 20px;
-            margin: 3px;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 1rem;
-            flex-grow: 1;
-        }
-
-        button:hover {
-            background-color: #1976D2;
-        }
-
-        #output-container {
-            width: 100%;
-            height: 300px;
-            margin: 10px 0;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            overflow-y: auto;
-            font-size: 0.95rem;
-        }
-
-        .data-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 1rem;
-            transition: background-color 0.2s;
-        }
-
-        .data-item.selected {
-            background-color: #e3f2fd;
-        }
-
-        .copy-btn {
-            background-color: #4CAF50;
-            padding: 8px 15px;
-            margin-left: 10px;
-            font-size: 0.9rem;
-        }
-
-        .copy-btn:hover {
-            background-color: #45a049;
+            gap: 20px;
+            margin-bottom: 25px;
         }
 
         .input-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 15px 0;
-        }
-
-        .input-field {
+            flex: 1;
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-grow: 1;
-            min-width: 280px;
         }
 
-        .input-field input {
-            padding: 10px;
+        .input-group input {
+            padding: 8px 12px;
             border: 1px solid #ddd;
-            border-radius: 6px;
-            width: 100%;
-            font-size: 1rem;
+            border-radius: 5px;
+            width: 120px;
         }
 
-        .reset-button {
-            background-color: #4CAF50;
-            padding: 10px 18px;
-            font-size: 0.95rem;
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-reset {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-main {
+            background-color: var(--secondary-color);
+            color: white;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .selection-tools {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .range-input {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .range-input input {
+            width: 100px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        #output-container {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .email-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 5px 0;
+            background: #f8f8f8;
+            border-radius: 5px;
         }
 
         .checkbox {
             margin-right: 10px;
         }
 
-        @media (max-width: 480px) {
-            :root {
-                font-size: 18px;
-            }
-            
-            .container {
-                padding: 15px;
-            }
-            
-            .input-group {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .input-field {
-                flex-direction: column;
-                align-items: stretch;
-                min-width: auto;
-            }
-            
-            button {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            #output-container {
-                height: 50vh;
-            }
+        .email-info {
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+
+        .copy-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 3px;
+        }
+
+        .selected {
+            background-color: #e3f2fd;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>元元DIY邮箱生成器</h2>
-        <div class="input-group">
-            <div class="input-field">
+        <div class="header">
+            <h1>元元DIY邮箱生成器</h1>
+        </div>
+
+        <div class="control-group">
+            <div class="input-group">
                 <label>日期后缀：</label>
-                <input type="text" id="dateSuffix" placeholder="MMDD" maxlength="4">
-                <button class="reset-button" onclick="resetDateSuffix()">恢复</button>
+                <input type="text" id="dateSuffix" value="0324" maxlength="4">
+                <button class="btn btn-reset" onclick="resetDateSuffix()">恢复</button>
             </div>
-            <div class="input-field">
+            <div class="input-group">
                 <label>邮箱域名：</label>
-                <input type="text" id="emailDomain" placeholder="例: @e.edu.kg">
-                <button class="reset-button" onclick="resetEmailDomain()">恢复</button>
+                <input type="text" id="emailDomain" value="@e.edu.kg">
+                <button class="btn btn-reset" onclick="resetEmailDomain()">恢复</button>
             </div>
         </div>
-        <div class="button-group">
-            <button onclick="generateData()">生成100组数据</button>
-            <button onclick="copyAll()">复制全部</button>
-            <button onclick="exportTXT()">导出TXT</button>
-            <button onclick="selectAll()">全选</button>
-            <button onclick="invertSelection()">反选</button>
-            <button onclick="copySelected()">复制选中</button>
-            <button onclick="copyRange()">复制范围</button>
+
+        <div class="action-buttons">
+            <button class="btn btn-main" onclick="generateData()">生成100组数据</button>
+            <button class="btn btn-main" onclick="copyAll()">复制全部</button>
+            <button class="btn btn-main" onclick="exportTXT()">导出TXT</button>
         </div>
+
+        <div class="selection-tools">
+            <button class="btn btn-main" onclick="selectAll()">全选</button>
+            <button class="btn btn-main" onclick="invertSelection()">反选</button>
+            <button class="btn btn-main" onclick="copySelected()">复制选中</button>
+            <div class="range-input">
+                <input type="text" id="copyRange" placeholder="例: 001-005">
+                <button class="btn btn-main" onclick="copyRange()">复制范围</button>
+            </div>
+        </div>
+
         <div id="output-container"></div>
     </div>
 
-    <script>
-        // 初始化默认值
-        function initializeDefaults() {
-            const today = new Date();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            document.getElementById('dateSuffix').value = month + day;
-            document.getElementById('emailDomain').value = '@e.edu.kg';
-        }
+<script>
+const email_prefixes = [
+    'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
+    'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
+    'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
+    'ah','ai','aj','ak','am','an','ap','aq','ar','as',
+    'at','au','av','aw','ax','ay','az','ba','bc','bd',
+    'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
+    'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
+    'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
+    'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
+    'cx','cy','cz','da','db','dc','dd','de','df','dg'
+];
 
-        function resetDateSuffix() {
-            const today = new Date();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            document.getElementById('dateSuffix').value = month + day;
-        }
+function generatePassword() {
+    const allowedDigits = ['1','2','5','6','8','9'];
+    return 'g' + Array.from({length:3}, 
+        () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
+}
 
-        function resetEmailDomain() {
-            document.getElementById('emailDomain').value = '@e.edu.kg';
-        }
+function generateData() {
+    const dateSuffix = document.getElementById('dateSuffix').value;
+    const domain = document.getElementById('emailDomain').value;
+    const container = document.getElementById('output-container');
+    
+    container.innerHTML = email_prefixes.map((prefix, index) => `
+        <div class="email-item">
+            <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
+            <div class="email-info">
+                ${String(index+1).padStart(3,'0')}. ${prefix}${dateSuffix}${domain} ${generatePassword()}
+            </div>
+            <button class="copy-btn" onclick="copySingle(this)">复制</button>
+        </div>
+    `).join('');
+}
 
-        window.onload = initializeDefaults;
+function toggleSelection(checkbox) {
+    const item = checkbox.closest('.email-item');
+    item.classList.toggle('selected', checkbox.checked);
+}
 
-        const email_prefixes = [
-            'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
-            'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
-            'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
-            'ah','ai','aj','ak','am','an','ap','aq','ar','as',
-            'at','au','av','aw','ax','ay','az','ba','bc','bd',
-            'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
-            'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
-            'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
-            'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
-            'cx','cy','cz','da','db','dc','dd','de','df','dg'
-        ];
+function selectAll() {
+    document.querySelectorAll('.checkbox').forEach(checkbox => {
+        checkbox.checked = true;
+        checkbox.dispatchEvent(new Event('change'));
+    });
+}
 
-        function generatePassword() {
-            const allowedDigits = ['1', '2', '5', '6', '8', '9'];
-            let mid = '';
-            for(let i = 0; i < 3; i++) {
-                mid += allowedDigits[Math.floor(Math.random() * allowedDigits.length)];
-            }
-            return `g${mid}88`;
-        }
+function invertSelection() {
+    document.querySelectorAll('.checkbox').forEach(checkbox => {
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
+    });
+}
 
-        function generateData() {
-            const dateSuffix = document.getElementById('dateSuffix').value || '0101';
-            const emailDomain = document.getElementById('emailDomain').value || '@e.edu.kg';
-            const outputContainer = document.getElementById('output-container');
-            outputContainer.innerHTML = '';
+function copySelected() {
+    const selectedItems = Array.from(document.querySelectorAll('.checkbox:checked'))
+        .map(checkbox => checkbox.nextElementSibling.textContent.split('. ')[1]);
 
-            for(let i = 0; i < 100; i++) {
-                const prefix = email_prefixes[i];
-                const password = generatePassword();
-                const email = `${prefix}${dateSuffix}${emailDomain}`;
-                const item = document.createElement('div');
-                item.className = 'data-item';
-                item.innerHTML = `
-                    <div>
-                        <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
-                        <span>${(i+1).toString().padStart(3, '0')}. ${email} ${password}</span>
-                    </div>
-                    <button class="copy-btn" onclick="copySingle('${email} ${password}')">复制</button>
-                `;
-                outputContainer.appendChild(item);
-            }
-        }
+    if (selectedItems.length === 0) {
+        alert('请先选择要复制的条目！');
+        return;
+    }
 
-        function toggleSelection(checkbox) {
-            const item = checkbox.closest('.data-item');
-            item.classList.toggle('selected', checkbox.checked);
-        }
+    copyToClipboard(selectedItems.join('\n'), `已复制 ${selectedItems.length} 条选中内容`);
+}
 
-        function selectAll() {
-            document.querySelectorAll('.checkbox').forEach(checkbox => {
-                checkbox.checked = true;
-                checkbox.dispatchEvent(new Event('change'));
-            });
-        }
+function copyRange() {
+    const rangeInput = document.getElementById('copyRange').value;
+    if (!/^\d{3}-\d{3}$/.test(rangeInput)) {
+        alert('请输入正确格式（例: 001-005）');
+        return;
+    }
 
-        function invertSelection() {
-            document.querySelectorAll('.checkbox').forEach(checkbox => {
-                checkbox.checked = !checkbox.checked;
-                checkbox.dispatchEvent(new Event('change'));
-            });
-        }
+    const [start, end] = rangeInput.split('-').map(Number);
+    if (start < 1 || end > 100 || start > end) {
+        alert('无效范围（1-100）');
+        return;
+    }
 
-        function copySelected() {
-            const selectedItems = Array.from(document.querySelectorAll('.checkbox:checked'))
-                .map(checkbox => {
-                    return checkbox.nextElementSibling.textContent
-                        .replace(/^\d+\. /, '');
-                });
+    const items = Array.from(document.querySelectorAll('.email-info'))
+        .slice(start-1, end)
+        .map(div => div.textContent.split('. ')[1]);
 
-            if (selectedItems.length === 0) {
-                alert('请先选择要复制的条目！');
-                return;
-            }
+    copyToClipboard(items.join('\n'), `已复制 ${start}-${end} 内容`);
+}
 
-            navigator.clipboard.writeText(selectedItems.join('\n'))
-                .then(() => alert(`已复制 ${selectedItems.length} 条选中内容`))
-                .catch(err => console.error('复制失败:', err));
-        }
+function copySingle(button) {
+    const text = button.previousElementSibling.textContent.split('. ')[1];
+    copyToClipboard(text, '已复制: ' + text);
+}
 
-        function copyRange() {
-            const start = parseInt(prompt('请输入起始序号（1-100）:'));
-            const end = parseInt(prompt('请输入结束序号（1-100）:'));
-            
-            if (isNaN(start) || isNaN(end) || start < 1 || end > 100 || start > end) {
-                alert('无效的输入范围！');
-                return;
-            }
+function copyAll() {
+    const items = Array.from(document.querySelectorAll('.email-info'))
+        .map(div => div.textContent.split('. ')[1]);
+    copyToClipboard(items.join('\n'), '已复制全部内容');
+}
 
-            const items = Array.from(document.querySelectorAll('.data-item'))
-                .slice(start - 1, end)
-                .map(item => {
-                    return item.querySelector('span').textContent
-                        .replace(/^\d+\. /, '');
-                });
+function copyToClipboard(text, successMsg) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert(successMsg);
+    } catch (err) {
+        navigator.clipboard.writeText(text)
+            .then(() => alert(successMsg))
+            .catch(err => alert('复制失败'));
+    }
+    document.body.removeChild(textarea);
+}
 
-            navigator.clipboard.writeText(items.join('\n'))
-                .then(() => alert(`已复制 ${items.length} 条内容（${start}-${end}）`))
-                .catch(err => console.error('复制失败:', err));
-        }
+function resetDateSuffix() {
+    document.getElementById('dateSuffix').value = '0324';
+}
 
-        function copySingle(text) {
-            navigator.clipboard.writeText(text)
-                .then(() => alert('已复制: ' + text))
-                .catch(err => console.error('复制失败:', err));
-        }
+function resetEmailDomain() {
+    document.getElementById('emailDomain').value = '@e.edu.kg';
+}
 
-        function copyAll() {
-            const items = Array.from(document.querySelectorAll('.data-item span'))
-                .map(span => span.textContent.replace(/^\d+\. /, ''));
-            
-            navigator.clipboard.writeText(items.join('\n'))
-                .then(() => alert('已复制全部内容到剪贴板'))
-                .catch(err => console.error('复制失败:', err));
-        }
+function exportTXT() {
+    const items = Array.from(document.querySelectorAll('.email-info'))
+        .map(div => div.textContent.split('. ')[1]);
+    const blob = new Blob([items.join('\n')], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `emails_${new Date().toISOString().slice(0,10)}.txt`;
+    a.click();
+}
 
-        function exportTXT() {
-            const items = Array.from(document.querySelectorAll('.data-item span'))
-                .map(span => span.textContent.replace(/^\d+\. /, ''));
-            
-            if(items.length === 0) {
-                alert('请先生成数据！');
-                return;
-            }
-            
-            const content = items.join('\n');
-            const blob = new Blob([content], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `data_${new Date().toISOString().slice(0,10)}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-    </script>
+// 初始化默认值
+document.getElementById('dateSuffix').value = '0324';
+document.getElementById('emailDomain').value = '@e.edu.kg';
+</script>
 </body>
 </html>
