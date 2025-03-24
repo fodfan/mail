@@ -35,6 +35,7 @@
             display: flex;
             gap: 20px;
             margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
         .input-group {
@@ -42,6 +43,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            min-width: 200px;
         }
 
         .input-group input {
@@ -176,19 +178,24 @@
 
         <div class="control-group">
             <div class="input-group">
-                <label>日期</label>
-                <input type="text" id="dateSuffix" value="0324" maxlength="4">
+                <label>日期后缀</label>
+                <input type="text" id="dateSuffix" maxlength="4">
                 <button class="btn btn-reset" onclick="resetDateSuffix()">恢复</button>
             </div>
             <div class="input-group">
-                <label>邮箱</label>
+                <label>邮箱域名</label>
                 <input type="text" id="emailDomain" value="@e.edu.kg">
                 <button class="btn btn-reset" onclick="resetEmailDomain()">恢复</button>
+            </div>
+            <div class="input-group">
+                <label>生成数量</label>
+                <input type="number" id="emailCount" value="100" min="1" max="100">
+                <button class="btn btn-reset" onclick="resetEmailCount()">恢复</button>
             </div>
         </div>
 
         <div class="action-buttons">
-            <button class="btn btn-main" onclick="generateData()">生成100组</button>
+            <button class="btn btn-main" onclick="generateData()">生成数据</button>
             <button class="btn btn-main" onclick="copyAll()">复制全部</button>
             <button class="btn btn-main" onclick="exportTXT()">导出TXT</button>
         </div>
@@ -220,6 +227,13 @@ const email_prefixes = [
     'cx','cy','cz','da','db','dc','dd','de','df','dg'
 ];
 
+// 新增日期处理函数
+function getCurrentDate() {
+    const d = new Date();
+    return String(d.getMonth() + 1).padStart(2, '0') + 
+           String(d.getDate()).padStart(2, '0');
+}
+
 function generatePassword() {
     const allowedDigits = ['1','2','5','6','8','9'];
     return 'g' + Array.from({length:3}, 
@@ -227,21 +241,67 @@ function generatePassword() {
 }
 
 function generateData() {
-    const dateSuffix = document.getElementById('dateSuffix').value;
-    const domain = document.getElementById('emailDomain').value;
-    const container = document.getElementById('output-container');
-    
-    container.innerHTML = email_prefixes.map((prefix, index) => `
-        <div class="email-item">
-            <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
-            <div class="email-info">
-                ${String(index+1).padStart(3,'0')}. ${prefix}${dateSuffix}${domain} ${generatePassword()}
-            </div>
-            <button class="copy-btn" onclick="copySingle(this)">复制</button>
-        </div>
-    `).join('');
+    try {
+        const dateSuffix = document.getElementById('dateSuffix').value;
+        const domain = document.getElementById('emailDomain').value;
+        const inputCount = document.getElementById('emailCount').value;
+        const count = parseInt(inputCount);
+        
+        // 输入验证
+        if (count > 100 || count < 1) {
+            alert("生成数量必须在1-100之间！");
+            return;
+        }
+        if (!/^\d{4}$/.test(dateSuffix)) {
+            alert("日期后缀必须为4位数字");
+            return;
+        }
+        if (!domain.includes("@")) {
+            alert("邮箱域名必须包含@符号");
+            return;
+        }
+
+        const container = document.getElementById('output-container');
+        container.innerHTML = Array.from({length: count}, (_, index) => {
+            const prefix = email_prefixes[index % email_prefixes.length];
+            return `
+            <div class="email-item">
+                <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
+                <div class="email-info">
+                    ${String(index+1).padStart(3,'0')}. ${prefix}${dateSuffix}${domain} ${generatePassword()}
+                </div>
+                <button class="copy-btn" onclick="copySingle(this)">复制</button>
+            </div>`;
+        }).join('');
+    } catch (error) {
+        alert(`生成失败: ${error.message}`);
+    }
 }
 
+// 修改后的恢复功能
+function resetDateSuffix() {
+    document.getElementById('dateSuffix').value = getCurrentDate();
+}
+
+function resetEmailDomain() {
+    document.getElementById('emailDomain').value = '@e.edu.kg';
+}
+
+function resetEmailCount() {
+    document.getElementById('emailCount').value = 100;
+}
+
+// 初始化当天日期
+document.getElementById('dateSuffix').value = getCurrentDate();
+
+/* 保持原有其他函数不变 */
+// 此处保持原有toggleSelection、selectAll、invertSelection、
+// copySelected、copyRange、copySingle、copyAll、
+// copyToClipboard、exportTXT等函数不变
+</script>
+
+<script>
+// 保持原有功能函数
 function toggleSelection(checkbox) {
     const item = checkbox.closest('.email-item');
     item.classList.toggle('selected', checkbox.checked);
@@ -321,14 +381,6 @@ function copyToClipboard(text, successMsg) {
     document.body.removeChild(textarea);
 }
 
-function resetDateSuffix() {
-    document.getElementById('dateSuffix').value = '0324';
-}
-
-function resetEmailDomain() {
-    document.getElementById('emailDomain').value = '@e.edu.kg';
-}
-
 function exportTXT() {
     const items = Array.from(document.querySelectorAll('.email-info'))
         .map(div => div.textContent.split('. ')[1]);
@@ -339,9 +391,6 @@ function exportTXT() {
     a.download = `emails_${new Date().toISOString().slice(0,10)}.txt`;
     a.click();
 }
-
-document.getElementById('dateSuffix').value = '0324';
-document.getElementById('emailDomain').value = '@e.edu.kg';
 </script>
 </body>
 </html>
