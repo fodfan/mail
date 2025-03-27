@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -129,6 +130,7 @@
         .email-info {
             flex-grow: 1;
             margin-right: 15px;
+            white-space: nowrap;
         }
 
         .copy-btn {
@@ -227,17 +229,16 @@ const email_prefixes = [
     'cx','cy','cz','da','db','dc','dd','de','df','dg'
 ];
 
-// 新增日期处理函数
 function getCurrentDate() {
     const d = new Date();
-    return String(d.getMonth() + 1).padStart(2, '0') + 
-           String(d.getDate()).padStart(2, '0');
+    return String(d.getMonth() + 1).padStart(2, '0') +
+            String(d.getDate()).padStart(2, '0');
 }
 
 function generatePassword() {
     const allowedDigits = ['1','2','5','6','8','9'];
-    return 'g' + Array.from({length:3}, 
-        () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
+    return 'g' + Array.from({length:3},
+         () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
 }
 
 function generateData() {
@@ -246,8 +247,7 @@ function generateData() {
         const domain = document.getElementById('emailDomain').value;
         const inputCount = document.getElementById('emailCount').value;
         const count = parseInt(inputCount);
-        
-        // 输入验证
+
         if (count > 100 || count < 1) {
             alert("生成数量必须在1-100之间！");
             return;
@@ -264,12 +264,9 @@ function generateData() {
         const container = document.getElementById('output-container');
         container.innerHTML = Array.from({length: count}, (_, index) => {
             const prefix = email_prefixes[index % email_prefixes.length];
-            return `
-            <div class="email-item">
+            return `<div class="email-item">
                 <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
-                <div class="email-info">
-                    ${String(index+1).padStart(3,'0')}. ${prefix}${dateSuffix}${domain} ${generatePassword()}
-                </div>
+                <div class="email-info">${String(index+1).padStart(3,'0')}. ${prefix}${dateSuffix}${domain} ${generatePassword()}</div>
                 <button class="copy-btn" onclick="copySingle(this)">复制</button>
             </div>`;
         }).join('');
@@ -278,30 +275,15 @@ function generateData() {
     }
 }
 
-// 修改后的恢复功能
-function resetDateSuffix() {
-    document.getElementById('dateSuffix').value = getCurrentDate();
-}
-
-function resetEmailDomain() {
-    document.getElementById('emailDomain').value = '@e.edu.kg';
-}
-
-function resetEmailCount() {
-    document.getElementById('emailCount').value = 100;
-}
+// 恢复功能
+function resetDateSuffix() { document.getElementById('dateSuffix').value = getCurrentDate(); }
+function resetEmailDomain() { document.getElementById('emailDomain').value = '@e.edu.kg'; }
+function resetEmailCount() { document.getElementById('emailCount').value = 100; }
 
 // 初始化当天日期
 document.getElementById('dateSuffix').value = getCurrentDate();
 
-/* 保持原有其他函数不变 */
-// 此处保持原有toggleSelection、selectAll、invertSelection、
-// copySelected、copyRange、copySingle、copyAll、
-// copyToClipboard、exportTXT等函数不变
-</script>
-
-<script>
-// 保持原有功能函数
+// 其他功能函数
 function toggleSelection(checkbox) {
     const item = checkbox.closest('.email-item');
     item.classList.toggle('selected', checkbox.checked);
@@ -369,7 +351,7 @@ function copyToClipboard(text, successMsg) {
     textarea.value = text;
     document.body.appendChild(textarea);
     textarea.select();
-    
+
     try {
         document.execCommand('copy');
         alert(successMsg);
