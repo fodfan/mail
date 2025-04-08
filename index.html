@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -144,6 +143,13 @@
             background-color: #e3f2fd;
         }
 
+        .sort-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -191,7 +197,7 @@
             </div>
             <div class="input-group">
                 <label>生成数量</label>
-                <input type="number" id="emailCount" value="100" min="1" max="100">
+                <input type="number" id="emailCount" value="100" min="1" max="537">
                 <button class="btn btn-reset" onclick="resetEmailCount()">恢复</button>
             </div>
         </div>
@@ -212,21 +218,71 @@
             </div>
         </div>
 
+        <div class="sort-buttons">
+            <button class="btn btn-main" onclick="sortData('asc')">顺序排序</button>
+            <button class="btn btn-main" onclick="sortData('desc')">倒序排序</button>
+            <button class="btn btn-main" onclick="sortData('random')">随机排序</button>
+        </div>
+
         <div id="output-container"></div>
     </div>
 
 <script>
 const email_prefixes = [
-    'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
-    'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
-    'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
-    'ah','ai','aj','ak','am','an','ap','aq','ar','as',
-    'at','au','av','aw','ax','ay','az','ba','bc','bd',
-    'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
-    'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
-    'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
-    'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
-    'cx','cy','cz','da','db','dc','de','df','dg','dh'
+'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
+'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
+'ww','xx','yy','zz','ab','ac','ad','ae','af','ag', 
+'ah','ai','aj','ak','am','an','ap','aq','ar','as',
+'at','au','av','aw','ax','ay','az','ba','bc','bd',
+'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
+'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
+'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
+'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
+'cx','cy','cz','da','db','dc','de','df','dg','dh',
+'dj','dk','dm','dp','dq','dr','ds','dt','du','dv',
+'dw','dx','dy','dz','ea','eb','ec','ed','ee','ef',
+'eg','eh','ei','ej','ek','em','en','ep','eq','er',
+'es','et','eu','ev','ew','ex','ey','ez','fa','fb',
+'fc','fd','fe','ff','fg','fh','fi','fj','fk','fm',
+'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx',
+'fy','fz','ga','gb','gc','gd','ge','gf','gg','gh',
+'gi','gj','gk','gm','gn','gp','gq','gr','gs','gt',
+'gu','gv','gw','gx','gy','gz','ha','hb','hc','hd',
+'he','hf','hg','hh','hi','hj','hk','hm','hn','hp',
+'hq','hr','hs','ht','hu','hv','hw','hx','hy','hz',
+'ia','ib','ic','id','ie','if','ig','ih','ij','ik',
+'im','in','ip','iq','ir','is','it','iu','iv','iw',
+'ix','iy','iz','ja','jb','jc','jd','je','jf','jg',
+'jh','jk','jm','jn','jp','jq','jr','js','jt','ju',
+'jv','jw','jx','jy','jz','ka','kb','kc','kd','ke',
+'kf','kg','kh','ki','kj','km','kn','kp','kq','kr',
+'ks','kt','ku','kv','kw','kx','ky','kz','ma','mb',
+'mc','md','me','mf','mg','mh','mi','mj','mk','mp',
+'mq','mr','ms','mt','mu','mv','mw','mx','my','mz',
+'na','nb','nc','nd','ne','nf','ng','nh','ni','nj',
+'nk','nq','nr','ns','nt','nu','nv','nw','nx','ny',
+'nz','pa','pb','pc','pd','pe','pf','pg','ph','pi',
+'pj','pk','pq','pr','ps','pt','pu','pv','pw','px',
+'py','pz','qa','qb','qc','qd','qe','qf','qg','qh',
+'qi','qj','qk','qr','qs','qt','qu','qv','qw','qx',
+'qy','qz','ra','rb','rc','rd','re','rf','rg','rh',
+'ri','rj','rk','rq','rs','rt','ru','rv','rw','rx',
+'ry','rz','sa','sb','sc','sd','se','sf','sg','sh',
+'si','sj','sk','sq','sr','st','su','sv','sw','sx',
+'sy','sz','ta','tb','tc','td','te','tf','tg','th',
+'ti','tj','tk','tq','tr','ts','tu','tv','tw','tx',
+'ty','tz','ua','ub','uc','ud','ue','uf','ug','uh',
+'uj','uk','uq','ur','us','ut','uv','uw','ux','uy',
+'uz','va','vb','vc','vd','ve','vf','vg','vh','vi',
+'vj','vk','vq','vr','vs','vt','vu','vw','vx','vy',
+'vz','wa','wb','wc','wd','we','wf','wg','wh','wi',
+'wj','wk','wr','ws','wt','wu','wv','wx','wy','wz',
+'xa','xb','xc','xd','xe','xf','xg','xh','xi','xj',
+'xk','xr','xs','xt','xu','xv','xw','xy','xz','ya',
+'yb','yc','yd','ye','yf','yg','yh','yi','yj','yk',
+'yr','ys','yt','yu','yv','yw','yx','yz','za','zb',
+'zc','zd','ze','zf','zg','zh','zi','zj','zk','zr',
+'zs','zt','zu','zv','zw','zx','zy' 
 ];
 
 function getCurrentDate() {
@@ -248,8 +304,8 @@ function generateData() {
         const inputCount = document.getElementById('emailCount').value;
         const count = parseInt(inputCount);
 
-        if (count > 100 || count < 1) {
-            alert("生成数量必须在1-100之间！");
+        if (count > 537 || count < 1) {
+            alert("生成数量必须在1-537之间！");
             return;
         }
         if (!/^\d{4}$/.test(dateSuffix)) {
@@ -275,15 +331,12 @@ function generateData() {
     }
 }
 
-// 恢复功能
 function resetDateSuffix() { document.getElementById('dateSuffix').value = getCurrentDate(); }
 function resetEmailDomain() { document.getElementById('emailDomain').value = '@e.edu.kg'; }
 function resetEmailCount() { document.getElementById('emailCount').value = 100; }
 
-// 初始化当天日期
 document.getElementById('dateSuffix').value = getCurrentDate();
 
-// 其他功能函数
 function toggleSelection(checkbox) {
     const item = checkbox.closest('.email-item');
     item.classList.toggle('selected', checkbox.checked);
@@ -323,8 +376,8 @@ function copyRange() {
     }
 
     const [start, end] = rangeInput.split('-').map(Number);
-    if (start < 1 || end > 100 || start > end) {
-        alert('无效范围（1-100）');
+    if (start < 1 || end > 537 || start > end) {
+        alert('无效范围（1-537）');
         return;
     }
 
@@ -372,6 +425,37 @@ function exportTXT() {
     a.href = url;
     a.download = `emails_${new Date().toISOString().slice(0,10)}.txt`;
     a.click();
+}
+
+function sortData(type) {
+    const container = document.getElementById('output-container');
+    const emailItems = Array.from(container.children);
+
+    let sortedItems;
+    switch (type) {
+        case 'asc':
+            sortedItems = emailItems.sort((a, b) => {
+                const indexA = parseInt(a.querySelector('.email-info').textContent.split('.')[0]);
+                const indexB = parseInt(b.querySelector('.email-info').textContent.split('.')[0]);
+                return indexA - indexB;
+            });
+            break;
+        case 'desc':
+            sortedItems = emailItems.sort((a, b) => {
+                const indexA = parseInt(a.querySelector('.email-info').textContent.split('.')[0]);
+                const indexB = parseInt(b.querySelector('.email-info').textContent.split('.')[0]);
+                return indexB - indexA;
+            });
+            break;
+        case 'random':
+            sortedItems = emailItems.sort(() => Math.random() - 0.5);
+            break;
+        default:
+            return;
+    }
+
+    container.innerHTML = '';
+    sortedItems.forEach(item => container.appendChild(item));
 }
 </script>
 </body>
