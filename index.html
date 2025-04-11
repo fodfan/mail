@@ -197,8 +197,7 @@
         .btn-main {
             background-color: var(--secondary-color);
             color: white;
-            flex: 1 1 auto; /* Allow growing, shrinking, automatic base size */
-             /* Default: allow multiple buttons per line if space */
+            flex: 1 1 auto; /* Default: allow growing, shrinking, automatic base size */
         }
          .btn-main:hover {
             background-color: #1e88e5;
@@ -222,6 +221,10 @@
             font-size: 0.875em; /* Match other inputs */
             border: 1px solid #ccc;
             border-radius: 6px;
+            background: #fff; /* Ensure background */
+            line-height: normal; /* Reset line height */
+            appearance: none; /* Reset appearance */
+             -webkit-appearance: none;
         }
         .selection-tools .range-input .btn-main {
              flex-grow: 0; /* Don't allow button to grow */
@@ -355,28 +358,39 @@
                 width: 100%; /* Ensure full width */
             }
 
-             /* Make main buttons in groups take full width */
-            .action-buttons .btn-main,
-            .selection-tools .btn-main,
-            .sort-buttons .btn-main {
-                 flex-grow: 1; /* Allow growing */
-                 flex-basis: 100%; /* Force full width */
-                 width: 100%;
+            /* --- Button Group Layout Fix for Mobile --- */
+            .action-buttons,
+            .selection-tools,
+            .sort-buttons {
+                 gap: 12px; /* Adjust gap for vertical stacking */
             }
 
-            /* Ensure range input also takes full width */
+             /* Make main buttons in groups stack vertically (take full width) */
+            .action-buttons .btn-main,
+            .selection-tools .btn-main, /* Target direct children buttons */
+            .sort-buttons .btn-main {
+                 flex: 0 0 100%; /* Don't grow, don't shrink, full width basis */
+                 width: 100%;   /* Explicitly set width to 100% */
+            }
+
+            /* Ensure range input group also takes full width */
              .selection-tools .range-input {
-                 flex-basis: 100%;
+                 flex: 0 0 100%; /* Don't grow, don't shrink, full width basis */
                  width: 100%;
-                 min-width: unset; /* Remove min-width */
+                 min-width: unset; /* Remove min-width constraint */
              }
+             /* Keep the button *inside* range-input constrained */
              .selection-tools .range-input .btn-main {
-                 /* Keep range button from growing excessively */
-                 flex-grow: 0;
-                 flex-shrink: 0;
-                 width: auto; /* Size based on padding */
-                 min-width: 100px; /* Ensure it's tappable */
+                 flex: 0 0 auto; /* Don't grow, don't shrink, auto width based on content/padding */
+                 width: auto;    /* Reset width to auto */
+                 min-width: 100px; /* Ensure it remains tappable */
              }
+            /* Ensure the input *inside* range-input still grows */
+             .selection-tools .range-input input {
+                 flex-grow: 1;
+                 flex-basis: 0; /* Allow input to take remaining space */
+             }
+             /* --- End Button Group Layout Fix --- */
 
 
             #output-container {
@@ -407,6 +421,8 @@
             /* Adjust padding to keep text centered */
              .input-group input { padding: 8px 10px; }
              .btn { padding: 0 12px; }
+             .selection-tools .range-input input { padding: 8px 10px; } /* Match range input padding */
+
 
             .input-group label {
                 font-size: 0.8125em; /* 13px */
@@ -437,7 +453,7 @@
             .action-buttons,
             .selection-tools,
             .sort-buttons {
-                gap: 8px; /* Reduce gap between buttons */
+                gap: 10px; /* Reduce gap between buttons */
                 margin-bottom: 15px;
             }
         }
@@ -491,7 +507,7 @@
             <button class="btn btn-main" onclick="invertSelection()">反选</button>
             <button class="btn btn-main" onclick="copySelected()">复制选中</button>
             <div class="range-input">
-                <input type="text" id="copyRange" placeholder="例: 1-5"> <!-- Simpler placeholder -->
+                <input type="text" id="copyRange" placeholder="例: 1-5" inputmode="numeric"> <!-- Added inputmode -->
                 <button class="btn btn-main" onclick="copyRange()">复制范围</button>
             </div>
         </div>
@@ -570,7 +586,6 @@ const email_prefixes = [
 
 // --- Utility Functions ---
 
-// Get current date as MMDD string
 function getCurrentDateMMDD() {
     const d = new Date();
     const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -578,28 +593,28 @@ function getCurrentDateMMDD() {
     return month + day;
 }
 
-// Validate if a month/day combination is valid (considers leap years approximately)
 function isValidDate(month, day) {
     if (month < 1 || month > 12 || day < 1 || day > 31) return false;
-    // Quick check for months with 30 days
     if ([4, 6, 9, 11].includes(month) && day > 30) return false;
-    // Quick check for February
-    if (month === 2 && day > 29) return false; // Allow 29 for simplicity
+    if (month === 2 && day > 29) return false;
     return true;
 }
 
-// Show a temporary message (toast notification)
 function showToast(message, isError = false) {
+    // Remove existing toasts first to prevent overlap
+    document.querySelectorAll('.toast-notification').forEach(t => t.remove());
+
     const toast = document.createElement('div');
+    toast.className = 'toast-notification'; // Add class for potential removal
     toast.style.position = 'fixed';
     toast.style.bottom = '20px';
     toast.style.left = '50%';
     toast.style.transform = 'translateX(-50%)';
-    toast.style.backgroundColor = isError ? '#f44336' : 'var(--primary-color)'; // Use theme color
+    toast.style.backgroundColor = isError ? '#f44336' : 'var(--primary-color)';
     toast.style.color = 'white';
     toast.style.padding = '12px 25px';
     toast.style.borderRadius = '6px';
-    toast.style.zIndex = '1001'; // Ensure it's above loading overlay potentially
+    toast.style.zIndex = '1001';
     toast.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
     toast.style.textAlign = 'center';
     toast.style.fontSize = '0.875em';
@@ -609,26 +624,23 @@ function showToast(message, isError = false) {
 
     document.body.appendChild(toast);
 
-    // Fade in
     requestAnimationFrame(() => {
         toast.style.opacity = '1';
     });
 
-    // Fade out and remove
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.addEventListener('transitionend', () => {
             if (toast.parentNode) {
                 toast.parentNode.removeChild(toast);
             }
-        });
-    }, 2500); // Show for 2.5 seconds
+        }, { once: true }); // Ensure listener is removed after firing
+    }, 2500);
 }
 
-// Show/Hide Loading Indicator
 let loadingOverlay = null;
 function showLoading() {
-    if (loadingOverlay) return; // Already shown
+    if (loadingOverlay) return;
     loadingOverlay = document.createElement('div');
     loadingOverlay.className = 'loading-overlay';
     loadingOverlay.innerHTML = '<div class="spinner"></div>';
@@ -641,7 +653,6 @@ function hideLoading() {
     loadingOverlay = null;
 }
 
-// Copy text to clipboard (async function)
 async function copyToClipboard(text, successMsg) {
     if (!text) {
         showToast('没有内容可复制', true);
@@ -652,45 +663,54 @@ async function copyToClipboard(text, successMsg) {
             await navigator.clipboard.writeText(text);
             showToast(successMsg || '已复制到剪贴板');
         } else {
-            // Fallback for insecure contexts or older browsers
             const textarea = document.createElement('textarea');
             textarea.value = text;
             textarea.style.position = 'fixed';
-            textarea.style.opacity = '0'; // Hide it
+            textarea.style.top = '-9999px'; // Move off-screen
+            textarea.style.left = '-9999px';
+            textarea.style.opacity = '0';
             document.body.appendChild(textarea);
             textarea.select();
-            const success = document.execCommand('copy');
+            textarea.setSelectionRange(0, 99999); // For mobile devices
+            let success = false;
+            try {
+                 success = document.execCommand('copy');
+            } catch (err) {
+                 console.warn("Fallback execCommand failed:", err);
+            }
             document.body.removeChild(textarea);
             if (success) {
                 showToast(successMsg || '已复制到剪贴板 (fallback)');
             } else {
-                throw new Error('Fallback copy command failed');
+                throw new Error('Fallback copy command failed or denied');
             }
         }
     } catch (err) {
         console.error('复制失败:', err);
-        showToast('复制失败，请检查浏览器权限或手动复制', true);
+        // Provide more specific feedback if possible
+        if (err.name === 'NotAllowedError') {
+            showToast('复制失败：浏览器权限不足或页面非激活状态', true);
+        } else {
+            showToast('复制失败，请尝试手动复制', true);
+        }
     }
 }
 
 
 // --- Core Functionality ---
 
-// Adjust Date Suffix Input
 function adjustDateSuffix(delta) {
     const input = document.getElementById('dateSuffix');
     let currentValue = input.value.trim();
 
     if (!/^\d{4}$/.test(currentValue)) {
         const currentMMDD = getCurrentDateMMDD();
-        // Attempt to parse if valid, otherwise use today
         const initialMonth = parseInt(currentValue.substring(0, 2), 10);
         const initialDay = parseInt(currentValue.substring(2, 4), 10);
         if (!isValidDate(initialMonth, initialDay)) {
              input.value = currentMMDD;
              currentValue = currentMMDD;
         } else {
-             // Use the valid value entered by user
              currentValue = String(initialMonth).padStart(2,'0') + String(initialDay).padStart(2,'0');
              input.value = currentValue;
         }
@@ -699,9 +719,7 @@ function adjustDateSuffix(delta) {
     const month = parseInt(currentValue.substring(0, 2), 10);
     const day = parseInt(currentValue.substring(2, 4), 10);
 
-    // Use a date object for calculations
-    // Set year arbitrarily, only month/day matter here
-    const date = new Date(2024, month - 1, day); // Use a potential leap year
+    const date = new Date(2024, month - 1, day);
     date.setDate(date.getDate() + delta);
 
     const newMonth = String(date.getMonth() + 1).padStart(2, '0');
@@ -709,7 +727,6 @@ function adjustDateSuffix(delta) {
     input.value = newMonth + newDay;
 }
 
-// Adjust Email Count Input
 function adjustEmailCount(delta) {
     const input = document.getElementById('emailCount');
     const min = parseInt(input.min, 10);
@@ -717,38 +734,35 @@ function adjustEmailCount(delta) {
     let currentValue = parseInt(input.value, 10);
 
     if (isNaN(currentValue)) {
-        currentValue = 100; // Default if invalid
+        currentValue = 100;
     }
 
     let newValue = currentValue + delta;
-
-    // Clamp value within min/max
     newValue = Math.max(min, Math.min(max, newValue));
-
     input.value = newValue;
 }
 
-// Generate Random Password (Simplified)
 function generatePassword() {
-    const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const chars = 'abcdefghjkmnpqrstuvwxyz23456789'; // Simplified further
     let password = '';
-    for (let i = 0; i < 8; i++) {
+    // Generate a slightly shorter password for brevity if needed
+    for (let i = 0; i < 6; i++) {
         password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    // Example: Add a required character/number if needed
-    // password += '!';
-    return password;
-    // Original password logic:
-    // const allowedDigits = ['1','2','5','6','8','9'];
-    // return 'g' + Array.from({length:3},
-    //      () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
+    // Ensure at least one number maybe?
+     if (!/\d/.test(password)) {
+         password += Math.floor(Math.random() * 10);
+     }
+     // Ensure minimum length if needed (pad if too short after adding number)
+     while (password.length < 6) {
+          password += chars.charAt(Math.floor(Math.random() * chars.length));
+     }
+    return password.slice(0, 8); // Keep it max 8 chars
 }
 
-// Generate Email Data
 function generateData() {
     showLoading();
 
-    // Use setTimeout to allow UI to update (show loader) before heavy work
     setTimeout(() => {
         try {
             const dateSuffixInput = document.getElementById('dateSuffix');
@@ -768,7 +782,6 @@ function generateData() {
                 return;
             }
 
-
             const domainInput = document.getElementById('emailDomain');
             const domain = domainInput.value.trim();
             if (!domain || !domain.startsWith("@")) {
@@ -777,7 +790,6 @@ function generateData() {
                 hideLoading();
                 return;
             }
-
 
             const emailCountInput = document.getElementById('emailCount');
             const count = parseInt(emailCountInput.value, 10);
@@ -792,17 +804,16 @@ function generateData() {
             }
 
             const container = document.getElementById('output-container');
-            container.innerHTML = ''; // Clear previous results
-            const fragment = document.createDocumentFragment(); // Use fragment for performance
+            container.innerHTML = '';
+            const fragment = document.createDocumentFragment();
 
             for (let index = 0; index < count; index++) {
-                const prefix = email_prefixes[index % email_prefixes.length]; // Cycle through prefixes
+                const prefix = email_prefixes[index % email_prefixes.length];
                 const emailAddress = `${prefix}${dateSuffix}${domain}`;
-                const password = generatePassword(); // Generate a new password for each
+                const password = generatePassword();
 
                 const div = document.createElement('div');
                 div.className = 'email-item';
-                // Add data attributes for easy access if needed later
                 div.dataset.email = emailAddress;
                 div.dataset.password = password;
                 div.dataset.index = index + 1;
@@ -810,7 +821,7 @@ function generateData() {
                 div.innerHTML = `
                     <input type="checkbox" class="checkbox" aria-label="Select item ${index + 1}" onchange="toggleSelection(this)">
                     <div class="email-info" title="${emailAddress} ${password}">
-                        ${String(index + 1).padStart(3, '0')}. ${emailAddress} ${password}
+                        ${String(index + 1).padStart(3, '0')}. ${emailAddress}  ${password} <!-- Added non-breaking space -->
                     </div>
                     <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
                 `;
@@ -824,9 +835,9 @@ function generateData() {
             console.error("生成失败:", error);
             showToast(`生成失败: ${error.message}`, true);
         } finally {
-            hideLoading(); // Ensure loader is hidden
+            hideLoading();
         }
-    }, 50); // Small delay
+    }, 50);
 }
 
 
@@ -849,6 +860,7 @@ function toggleSelection(checkbox) {
 
 function selectAll() {
     let changed = false;
+    let count = 0;
     document.querySelectorAll('#output-container .email-item').forEach(item => {
         const checkbox = item.querySelector('.checkbox');
         if (!checkbox.checked) {
@@ -856,8 +868,10 @@ function selectAll() {
              item.classList.add('selected');
              changed = true;
         }
+        count++;
     });
-    if (!changed) showToast('所有条目已为选中状态');
+    if (count === 0) showToast('没有可选择的条目', true);
+    else if (!changed) showToast('所有条目已为选中状态');
 }
 
 function invertSelection() {
@@ -871,12 +885,12 @@ function invertSelection() {
      if (count === 0) showToast('没有可反选的条目', true);
 }
 
-// Helper to get text from items (email + password)
 function getItemText(itemElement) {
     const emailInfo = itemElement.querySelector('.email-info');
     if (!emailInfo) return '';
-    // Extract email and password from the text content, removing the leading index number
-    return emailInfo.textContent.replace(/^\d+\.\s+/, '').trim();
+    // Improved extraction to handle potential extra spaces
+    const textContent = emailInfo.textContent || '';
+    return textContent.replace(/^\d+\.\s+/, '').trim().replace(/\s+/g, ' '); // Replace multiple spaces with single
 }
 
 // --- Copy Functions ---
@@ -894,16 +908,22 @@ function copySelected() {
 
 function copyRange() {
     const rangeInput = document.getElementById('copyRange');
-    const rangeValue = rangeInput.value.trim();
-    const rangeRegex = /^(\d+)\s*-\s*(\d+)$/;
+    const rangeValue = rangeInput.value.trim().replace(/[^0-9-]/g, ''); // Sanitize input further
+    const rangeRegex = /^(\d+)-(\d+)$/; // Simpler regex, assuming cleaned input
 
-    if (!rangeRegex.test(rangeValue)) {
+    if (!rangeValue || !rangeRegex.test(rangeValue)) {
         showToast('请输入正确范围格式 (例: 1-5)', true);
         rangeInput.focus();
         return;
     }
 
     const match = rangeValue.match(rangeRegex);
+    // Check if match exists before accessing groups
+    if (!match) {
+        showToast('范围格式解析失败 (例: 1-5)', true);
+        rangeInput.focus();
+        return;
+    }
     const start = parseInt(match[1], 10);
     const end = parseInt(match[2], 10);
 
@@ -915,21 +935,21 @@ function copyRange() {
         return;
     }
 
-    if (start < 1 || end > totalItems || start > end || start === 0 ) {
+    // More robust validation
+    if (isNaN(start) || isNaN(end) || start < 1 || end > totalItems || start > end) {
         showToast(`无效范围 (请输入 1 到 ${totalItems} 之间, 且开始 ≤ 结束)`, true);
         rangeInput.focus();
         return;
     }
 
-    // Indices are 0-based, range is 1-based
     const itemsToCopy = Array.from(allItems)
-        .slice(start - 1, end) // end index is exclusive in slice
+        .slice(start - 1, end)
         .map(item => getItemText(item));
 
     if (itemsToCopy.length > 0) {
         copyToClipboard(itemsToCopy.join('\n'), `已复制范围 ${start}-${end} (${itemsToCopy.length}条)`);
     } else {
-         showToast('指定范围内没有找到条目 (可能范围有误)', true);
+         showToast(`指定范围内没有找到条目 (范围: ${start}-${end})`, true);
     }
 }
 
@@ -961,14 +981,13 @@ function exportTXT() {
     }
     const textToExport = Array.from(allItems)
                              .map(item => getItemText(item))
-                             .join('\r\n'); // Use CRLF for Windows compatibility
+                             .join('\r\n');
 
     const blob = new Blob([textToExport], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
 
-    // Generate filename
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const domainPart = (document.getElementById('emailDomain').value.split('@')[1] || 'domain').split('.')[0];
     a.download = `邮箱列表_${domainPart}_${dateStr}_${allItems.length}条.txt`;
@@ -976,96 +995,72 @@ function exportTXT() {
     document.body.appendChild(a);
     a.click();
 
-    // Cleanup
     setTimeout(() => {
         URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        showToast(`已导出 ${allItems.length} 条数据`);
+        if (a.parentNode) {
+             document.body.removeChild(a);
+        }
+        showToast(`已开始导出 ${allItems.length} 条数据`);
     }, 100);
 }
 
 // --- Sort Function ---
 function sortData(type) {
     const container = document.getElementById('output-container');
-    const items = Array.from(container.children); // Get direct children
+    // Ensure we only get direct children that are email items
+    const items = Array.from(container.querySelectorAll(':scope > .email-item'));
 
     if (items.length === 0) {
         showToast("没有可排序的数据", true);
         return;
     }
 
-    // Detach items before sorting for potential performance gain
-    items.forEach(item => container.removeChild(item));
+    items.forEach(item => container.removeChild(item)); // Detach before sorting
 
     switch (type) {
         case 'asc':
-            items.sort((a, b) => {
-                const aNum = parseInt(a.dataset.index || '0', 10);
-                const bNum = parseInt(b.dataset.index || '0', 10);
-                return aNum - bNum;
-            });
+            items.sort((a, b) => (parseInt(a.dataset.index || '0') - parseInt(b.dataset.index || '0')));
             break;
         case 'desc':
-            items.sort((a, b) => {
-                const aNum = parseInt(a.dataset.index || '0', 10);
-                const bNum = parseInt(b.dataset.index || '0', 10);
-                return bNum - aNum;
-            });
+            items.sort((a, b) => (parseInt(b.dataset.index || '0') - parseInt(a.dataset.index || '0')));
             break;
         case 'random':
-            // Fisher-Yates (Knuth) Shuffle
             for (let i = items.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [items[i], items[j]] = [items[j], items[i]];
             }
             break;
+        default: // Should not happen, but good practice
+            console.warn("Unknown sort type:", type);
+            // Re-append in original detached order if type is invalid
+             items.forEach(item => container.appendChild(item));
+            return;
     }
 
-    // Re-attach sorted items using a fragment
     const fragment = document.createDocumentFragment();
     items.forEach(item => fragment.appendChild(item));
-    container.appendChild(fragment);
+    container.appendChild(fragment); // Append sorted items
 
-    showToast(`数据已按 ${type === 'asc' ? '顺序' : type === 'desc' ? '倒序' : '随机'} 排序`);
+    const sortTypeText = type === 'asc' ? '顺序' : type === 'desc' ? '倒序' : '随机';
+    showToast(`数据已按 ${sortTypeText} 排序`);
 }
 
 
 // --- Initial Setup ---
 document.addEventListener('DOMContentLoaded', () => {
-    resetDateSuffix(); // Set initial date
+    resetDateSuffix();
 
-    // Add touchstart listeners for better responsiveness on touch devices
-    // Note: This can sometimes interfere with scrolling if not handled carefully
-    // Let's rely on the 'click' event which works well on mobile too.
-    // document.querySelectorAll('[onclick]').forEach(el => {
-    //     if (!el.hasAttribute('ontouchstart')) {
-    //        el.addEventListener('touchstart', (e) => {
-    //            // Optional: Add a visual feedback class
-    //            // e.currentTarget.classList.add('active-touch');
-    //        }, { passive: true }); // Use passive listener if not preventing default
-    //         el.addEventListener('touchend', (e) => {
-               // Optional: Remove visual feedback class
-               // e.currentTarget.classList.remove('active-touch');
-               // Execute the onclick logic programmatically
-               // Be careful with context 'this' if onclick relies on it
-               // const handler = new Function(el.getAttribute('onclick'));
-               // handler.call(el); // May need adjustment
-    //        });
-    //    }
-    // });
-
-    // iOS focus/blur scroll fix attempt (can be unreliable)
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    // iOS focus/blur scroll fix attempt
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent || '') && !window.MSStream;
     if (isIOS) {
         document.body.addEventListener('focusout', (e) => {
-             // Only scroll if an input element lost focus
-             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+             if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+                // Briefly delay to allow keyboard to potentially start dismissing
                 setTimeout(() => {
-                    window.scrollTo({ top: window.scrollY, behavior: 'smooth' });
-                     // console.log("iOS focusout scroll attempt");
-                }, 100); // Delay helps ensure keyboard is dismissed
+                    window.scrollTo({ top: window.scrollY, behavior: 'auto' }); // 'auto' might be less jarring
+                }, 50);
              }
-        });
+        }, true); // Use capture phase might sometimes help
     }
 });
 
