@@ -11,12 +11,8 @@
         }
 
         * {
+            -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on touch devices */
-        }
-
-        html {
-            -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
         }
 
         body {
@@ -24,94 +20,87 @@
             margin: 0;
             padding: 20px;
             background-color: #f5f5f5;
-            font-size: 16px; /* Base font size */
-            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .header {
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
-            font-size: 1.5em; /* Use em for scalability */
+            font-size: 24px;
             margin: 0;
             font-weight: 600;
         }
 
-        /* --- Input and Control Groups --- */
-
         .control-group {
-            display: flex; /* Use flexbox for layout */
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-            gap: 20px; /* Space between items */
-            margin-bottom: 25px;
-            align-items: center; /* Align items vertically */
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
         }
 
         .input-group {
-            flex: 1 1 250px; /* Allow growing and shrinking, base width */
+            flex: 1;
+            display: -webkit-box;
+            display: -webkit-flex;
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 0; /* Prevent overflow */
+            min-width: 0; /* Prevents overflow */
+             /* Ensure inputs don't get too small on flex lines */
+            min-width: 200px; /* Adjust as needed, prevents extreme squishing */
         }
 
         .input-group label {
-            font-size: 0.875em; /* 14px */
+            font-size: 14px;
             white-space: nowrap;
             color: #555;
-            flex-shrink: 0; /* Prevent label from shrinking */
         }
 
-        /* Input base style */
+        /* 输入框通用样式 */
         .input-group input {
             -webkit-appearance: none;
             appearance: none;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 6px;
             padding: 10px 12px;
-            font-size: 0.875em; /* 14px */
+            font-size: 14px;
             background: #fff;
-            flex-grow: 1; /* Take available space */
-            min-width: 0; /* Prevent overflow */
-            height: 40px; /* Consistent height */
-            line-height: normal; /* Reset line height for input */
-        }
-        /* Ensure number input looks consistent */
-        .input-group input[type="number"] {
-             -moz-appearance: textfield;
-        }
-        .input-group input[type="number"]::-webkit-outer-spin-button,
-        .input-group input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+            flex-grow: 1;
+            min-width: 0; /* Allow shrinking */
+            height: 40px;
         }
 
-        /* Input with Spinners */
+        /* 自定义spinner样式 */
         .input-with-spinners {
             position: relative;
-            display: inline-flex; /* Use inline-flex */
+            display: -webkit-inline-box;
+            display: -webkit-inline-flex;
+            display: inline-flex;
             align-items: center;
             flex-grow: 1;
-            min-width: 0;
+            min-width: 0; /* Allow shrinking */
         }
 
         .input-with-spinners input {
-            padding-right: 30px; /* Space for spinners */
-            width: 100%; /* Fill container */
+            padding-right: 30px;
+            width: 100%; /* Fill the spinner container */
         }
 
         .spinner-buttons {
@@ -120,162 +109,156 @@
             top: 1px;
             bottom: 1px;
             width: 24px;
+            display: -webkit-box;
+            display: -webkit-flex;
             display: flex;
             flex-direction: column;
             background-color: #f8f8f8;
-            border-left: 1px solid #ccc;
+            border-left: 1px solid #ddd;
             border-radius: 0 5px 5px 0;
-            overflow: hidden; /* Ensure rounded corners apply */
         }
 
         .spinner-btn {
+            display: -webkit-box;
+            display: -webkit-flex;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex: 1; /* Take half the height */
+            height: 50%;
             padding: 0;
             border: none;
             background: none;
             font-size: 10px;
             color: #555;
             cursor: pointer;
-            line-height: 1; /* Ensure icon is centered */
-            user-select: none; /* Prevent text selection */
         }
-        .spinner-btn:hover {
+
+        .spinner-btn:active {
             background-color: #eee;
         }
-        .spinner-btn:active {
-            background-color: #ddd;
+
+        /* 数字输入框特殊样式 */
+        .input-with-spinners input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .input-with-spinners input[type="number"]::-webkit-outer-spin-button,
+        .input-with-spinners input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
-        /* --- Buttons --- */
-
-        /* Button base style */
+        /* 按钮通用样式 */
         .btn {
-            padding: 0 16px; /* Use padding for horizontal sizing */
+            padding: 10px 16px;
             border: none;
             border-radius: 6px;
-            font-size: 0.875em; /* 14px */
+            font-size: 14px;
             font-weight: 500;
             height: 40px;
-            display: inline-flex; /* Use inline-flex */
+            display: -webkit-inline-box;
+            display: -webkit-inline-flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             white-space: nowrap;
-            cursor: pointer;
-            user-select: none; /* Prevent text selection */
-            transition: background-color 0.2s ease, box-shadow 0.2s ease;
-            line-height: 1; /* Align text vertically */
-            flex-shrink: 0; /* Prevent shrinking in flex containers */
-        }
-        .btn:active {
-             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer; /* Add pointer cursor */
         }
 
-        /* Reset Button */
         .btn-reset {
             background-color: var(--primary-color);
             color: white;
-            min-width: 60px; /* Ensure minimum width */
-        }
-        .btn-reset:hover {
-            background-color: #45a049;
+            min-width: 60px; /* Keep minimum width for reset buttons */
+            flex-shrink: 0; /* Prevent reset buttons from shrinking */
         }
 
-        /* Button Groups */
+        /* Button Group Containers */
         .action-buttons,
         .selection-tools,
         .sort-buttons {
+            display: -webkit-box;
+            display: -webkit-flex;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            flex-wrap: wrap; /* Allow wrapping on very small screens */
+            gap: 10px; /* Spacing between buttons */
+            margin-bottom: 15px;
         }
 
-        /* Main Action/Tool Buttons */
         .btn-main {
             background-color: var(--secondary-color);
             color: white;
-            flex: 1 1 auto; /* Default: allow growing, shrinking, automatic base size */
-        }
-         .btn-main:hover {
-            background-color: #1e88e5;
+            flex: 1 1 auto; /* Allow grow, shrink, auto basis */
+            min-width: 0; /* Allow shrinking below content size if needed */
         }
 
+        .selection-tools {
+            align-items: center; /* Align items vertically */
+        }
 
-        /* Range Input Specifics */
-        .selection-tools .range-input {
+        .range-input {
+            display: -webkit-box;
+            display: -webkit-flex;
             display: flex;
             align-items: center;
             gap: 8px;
-            flex: 1 1 200px; /* Allow growing/shrinking, base width */
-            min-width: 180px; /* Prevent becoming too small */
+            flex: 1 1 auto; /* Allow grow/shrink */
+            min-width: 180px; /* Ensure range input + button is usable */
         }
 
-        .selection-tools .range-input input {
-            flex-grow: 1; /* Input takes most space */
-            min-width: 80px; /* Minimum width for the input field */
-            height: 40px; /* Match button height */
-            padding: 10px 12px; /* Match other inputs */
-            font-size: 0.875em; /* Match other inputs */
-            border: 1px solid #ccc;
+        .range-input input {
+            -webkit-appearance: none;
+            appearance: none;
+            border: 1px solid #ddd;
             border-radius: 6px;
-            background: #fff; /* Ensure background */
-            line-height: normal; /* Reset line height */
-            appearance: none; /* Reset appearance */
-             -webkit-appearance: none;
+            padding: 10px 12px;
+            font-size: 14px;
+            background: #fff;
+            height: 40px;
+            flex-grow: 1;
+            min-width: 80px; /* Min width for the input field itself */
         }
-        .selection-tools .range-input .btn-main {
-             flex-grow: 0; /* Don't allow button to grow */
-             flex-shrink: 0; /* Don't allow button to shrink */
-             /* Width determined by padding */
+        .range-input button { /* Style the button inside range-input */
+             flex-shrink: 0; /* Prevent button from shrinking too much */
         }
-
-
-        /* --- Output Area --- */
 
         #output-container {
             border: 1px solid #eee;
             border-radius: 8px;
             padding: 10px;
-            max-height: 50vh; /* Limit height */
-            overflow-y: auto; /* Enable scrolling */
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            background-color: #f9f9f9;
+            max-height: 50vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .email-item {
+            display: -webkit-box;
+            display: -webkit-flex;
             display: flex;
             align-items: center;
             padding: 10px;
-            margin-bottom: 8px;
-            background: #fff;
+            margin: 5px 0;
+            background: #f8f8f8;
             border-radius: 5px;
-            border: 1px solid #eee;
+            -webkit-user-select: none;
             user-select: none;
-            transition: background-color 0.2s ease;
-        }
-        .email-item:last-child {
-            margin-bottom: 0;
         }
 
         .checkbox {
-            margin-right: 12px;
+            margin-right: 10px;
             width: 18px;
             height: 18px;
             accent-color: var(--primary-color);
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevent checkbox shrinking */
         }
 
         .email-info {
             flex-grow: 1;
             margin-right: 10px;
-            font-size: 0.875em; /* 14px */
+            font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            cursor: default; /* Default cursor over text */
+            min-width: 0; /* Allow shrinking */
         }
 
         .copy-btn {
@@ -283,25 +266,26 @@
             color: white;
             padding: 6px 12px;
             border-radius: 4px;
-            font-size: 0.8125em; /* 13px */
-            height: 32px; /* Smaller height */
+            font-size: 13px;
             min-width: 60px;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Prevent copy button shrinking */
+            height: auto; /* Override general .btn height if needed */
         }
-         .copy-btn:hover {
-             background-color: #45a049;
-         }
 
         .selected {
-            background-color: #e3f2fd !important; /* Use important to override potential hover */
-            border-color: var(--secondary-color);
+            background-color: #e3f2fd;
         }
 
-        /* --- Loading Spinner --- */
+        /* Loading Animation */
         .loading-overlay {
             position: fixed;
-            inset: 0; /* Replaces top, left, right, bottom */
-            background: rgba(255,255,255,0.8);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.7);
+            display: -webkit-box;
+            display: -webkit-flex;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -321,143 +305,82 @@
             to { transform: rotate(360deg); }
         }
 
-        /* --- Responsive Adjustments --- */
-
-        /* Medium screens and Tablets */
-        @media (max-width: 768px) {
-             .control-group {
-                 gap: 15px;
-             }
-             .input-group {
-                 /* Allow slightly smaller base width if needed */
-                 flex-basis: 220px;
-             }
-        }
-
-
-        /* Smaller screens (Mobile) */
+        /* Responsive Adjustments */
         @media (max-width: 600px) {
             body {
-                padding: 15px; /* Slightly reduce body padding */
-            }
-            .container {
-                padding: 20px; /* Reduce container padding */
-            }
-            .header h1 {
-                font-size: 1.3em; /* Adjust header size */
-            }
-
-            .control-group {
-                flex-direction: column; /* Stack controls vertically */
-                align-items: stretch; /* Make items full width */
-                gap: 15px; /* Adjust gap for vertical layout */
-            }
-
-            .input-group {
-                flex-basis: auto; /* Reset flex-basis */
-                width: 100%; /* Ensure full width */
-            }
-
-            /* --- Button Group Layout Fix for Mobile --- */
-            .action-buttons,
-            .selection-tools,
-            .sort-buttons {
-                 gap: 12px; /* Adjust gap for vertical stacking */
-            }
-
-             /* Make main buttons in groups stack vertically (take full width) */
-            .action-buttons .btn-main,
-            .selection-tools .btn-main, /* Target direct children buttons */
-            .sort-buttons .btn-main {
-                 flex: 0 0 100%; /* Don't grow, don't shrink, full width basis */
-                 width: 100%;   /* Explicitly set width to 100% */
-            }
-
-            /* Ensure range input group also takes full width */
-             .selection-tools .range-input {
-                 flex: 0 0 100%; /* Don't grow, don't shrink, full width basis */
-                 width: 100%;
-                 min-width: unset; /* Remove min-width constraint */
-             }
-             /* Keep the button *inside* range-input constrained */
-             .selection-tools .range-input .btn-main {
-                 flex: 0 0 auto; /* Don't grow, don't shrink, auto width based on content/padding */
-                 width: auto;    /* Reset width to auto */
-                 min-width: 100px; /* Ensure it remains tappable */
-             }
-            /* Ensure the input *inside* range-input still grows */
-             .selection-tools .range-input input {
-                 flex-grow: 1;
-                 flex-basis: 0; /* Allow input to take remaining space */
-             }
-             /* --- End Button Group Layout Fix --- */
-
-
-            #output-container {
-                max-height: 45vh; /* Adjust max height */
-            }
-            .email-item {
-                padding: 8px 10px;
-            }
-        }
-
-        /* Very Narrow Screens */
-        @media (max-width: 400px) {
-            body {
-                padding: 10px; /* Further reduce padding */
+                 padding: 15px; /* Slightly reduce padding */
             }
             .container {
                 padding: 15px;
             }
-            .header h1 {
-                font-size: 1.2em;
+
+            .control-group {
+                flex-direction: column; /* Stack controls vertically */
+                gap: 12px;
             }
 
-            /* Reduce height and font for inputs/buttons */
-            .input-group input, .btn {
-                height: 38px;
-                font-size: 0.8125em; /* 13px */
-            }
-            /* Adjust padding to keep text centered */
-             .input-group input { padding: 8px 10px; }
-             .btn { padding: 0 12px; }
-             .selection-tools .range-input input { padding: 8px 10px; } /* Match range input padding */
-
-
-            .input-group label {
-                font-size: 0.8125em; /* 13px */
+            .input-group {
+                width: 100%; /* Make input groups full width */
+                min-width: 0; /* Override previous min-width */
             }
 
-            .spinner-buttons {
-                width: 22px; /* Slightly smaller spinners */
-            }
-            .spinner-btn {
-                font-size: 9px;
-            }
-
-            .email-info {
-                font-size: 0.8125em; /* 13px */
-            }
-            .copy-btn {
-                height: 30px;
-                padding: 4px 10px;
-                font-size: 0.75em; /* 12px */
-                min-width: 50px;
-            }
-            .checkbox {
-                width: 16px;
-                height: 16px;
-                margin-right: 10px;
+             /* --- Button Layout Optimization --- */
+            .action-buttons .btn-main,
+            .sort-buttons .btn-main {
+                flex: 1 1 auto; /* Allow shrinking/growing */
+                min-width: 70px; /* Prevent extreme shrinking, adjust if text overflows */
+                /* Ensure base styles don't force wrapping */
             }
 
-            .action-buttons,
-            .selection-tools,
-            .sort-buttons {
-                gap: 10px; /* Reduce gap between buttons */
-                margin-bottom: 15px;
+             /* Target only the first 3 buttons for row layout */
+             /* Using direct child selectors might be more robust if structure changes */
+            .selection-tools > .btn-main:nth-child(1),
+            .selection-tools > .btn-main:nth-child(2),
+            .selection-tools > .btn-main:nth-child(3) {
+                 flex: 1 1 auto;
+                 min-width: 70px;
+            }
+
+            .selection-tools .range-input {
+                 flex: 1 1 auto; /* Allow range input to flex */
+                 min-width: 180px; /* Ensure it's usable */
+                 /* It might wrap below the first 3 buttons if space is tight */
+            }
+             /* --- End Button Layout Optimization --- */
+
+            #output-container {
+                max-height: 45vh; /* Adjust height */
             }
         }
 
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .email-info {
+                font-size: 13px;
+            }
+
+            /* Further reduce min-width on very small screens if needed */
+            .action-buttons .btn-main,
+            .sort-buttons .btn-main,
+            .selection-tools > .btn-main:nth-child(-n+3) {
+                 min-width: 60px;
+            }
+             .selection-tools .range-input {
+                 min-width: 150px; /* Reduce min-width for range input */
+             }
+
+             .btn {
+                 padding: 8px 12px; /* Slightly reduce button padding */
+                 font-size: 13px;
+             }
+        }
     </style>
 </head>
 <body>
@@ -470,7 +393,7 @@
             <div class="input-group">
                 <label for="dateSuffix">日期后缀</label>
                 <div class="input-with-spinners">
-                    <input type="text" id="dateSuffix" inputmode="numeric" pattern="[0-9]{4}" placeholder="MMDD">
+                    <input type="text" id="dateSuffix" inputmode="numeric" pattern="[0-9]*" placeholder="MMDD">
                     <div class="spinner-buttons">
                         <button type="button" class="spinner-btn" onclick="adjustDateSuffix(1)" aria-label="增加一天">▲</button>
                         <button type="button" class="spinner-btn" onclick="adjustDateSuffix(-1)" aria-label="减少一天">▼</button>
@@ -496,22 +419,25 @@
             </div>
         </div>
 
+        <!-- Button Row 1 -->
         <div class="action-buttons">
             <button class="btn btn-main" onclick="generateData()">生成数据</button>
             <button class="btn btn-main" onclick="copyAll()">复制全部</button>
             <button class="btn btn-main" onclick="exportTXT()">导出TXT</button>
         </div>
 
+        <!-- Button Row 2 (with range input) -->
         <div class="selection-tools">
             <button class="btn btn-main" onclick="selectAll()">全选</button>
             <button class="btn btn-main" onclick="invertSelection()">反选</button>
             <button class="btn btn-main" onclick="copySelected()">复制选中</button>
             <div class="range-input">
-                <input type="text" id="copyRange" placeholder="例: 1-5" inputmode="numeric"> <!-- Added inputmode -->
+                <input type="text" id="copyRange" placeholder="例: 001-005">
                 <button class="btn btn-main" onclick="copyRange()">复制范围</button>
             </div>
         </div>
 
+        <!-- Button Row 3 -->
         <div class="sort-buttons">
             <button class="btn btn-main" onclick="sortData('asc')">顺序排序</button>
             <button class="btn btn-main" onclick="sortData('desc')">倒序排序</button>
@@ -522,7 +448,7 @@
     </div>
 
 <script>
-// 邮箱前缀数组 (Assuming this remains unchanged)
+// 邮箱前缀数组
 const email_prefixes = [
 'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
 'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
@@ -584,75 +510,319 @@ const email_prefixes = [
 'zt','zu','zv','zw','zx','zy'
 ];
 
-// --- Utility Functions ---
-
-function getCurrentDateMMDD() {
+// Get current date MMDD format
+function getCurrentDate() {
     const d = new Date();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return month + day;
+    return String(d.getMonth() + 1).padStart(2, '0') +
+           String(d.getDate()).padStart(2, '0');
 }
 
-function isValidDate(month, day) {
+// Date validation function (simple version, assuming valid days per month roughly)
+function isValidDateMMDD(mmdd) {
+    if (!/^\d{4}$/.test(mmdd)) return false;
+    const month = parseInt(mmdd.substring(0, 2), 10);
+    const day = parseInt(mmdd.substring(2, 4), 10);
     if (month < 1 || month > 12 || day < 1 || day > 31) return false;
+    // Basic check, could be refined for specific month lengths
     if ([4, 6, 9, 11].includes(month) && day > 30) return false;
-    if (month === 2 && day > 29) return false;
+    if (month === 2 && day > 29) return false; // Allow 29 for simplicity
     return true;
 }
 
+
+// Adjust Date Suffix
+function adjustDateSuffix(delta) {
+    const input = document.getElementById('dateSuffix');
+    let currentValue = input.value;
+
+    // If empty or invalid, set to current date
+    if (!isValidDateMMDD(currentValue)) {
+        resetDateSuffix();
+        currentValue = getCurrentDate(); // Use the reset value
+    }
+
+    const month = parseInt(currentValue.substring(0, 2), 10);
+    const day = parseInt(currentValue.substring(2, 4), 10);
+
+    // Calculate new date
+    // Use a fixed year (non-leap) for consistency in calculation across years
+    const date = new Date(2023, month - 1, day);
+    date.setDate(date.getDate() + delta);
+
+    // Format new date
+    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
+    const newDay = String(date.getDate()).padStart(2, '0');
+    input.value = newMonth + newDay;
+}
+
+// Adjust Email Count
+function adjustEmailCount(delta) {
+    const input = document.getElementById('emailCount');
+    let currentValue = parseInt(input.value, 10) || 100;
+    let newValue = currentValue + delta;
+
+    // Clamp range
+    newValue = Math.max(1, Math.min(newValue, 576));
+
+    input.value = newValue;
+}
+
+// Generate Random Password
+function generatePassword() {
+    const allowedDigits = ['1','2','5','6','8','9'];
+    let password = 'g';
+    for (let i = 0; i < 3; i++) {
+        password += allowedDigits[Math.floor(Math.random() * allowedDigits.length)];
+    }
+    return password + '88';
+}
+
+// Show Loading Spinner
+function showLoading() {
+    // Check if loader already exists
+    if (document.querySelector('.loading-overlay')) return;
+
+    const loader = document.createElement('div');
+    loader.className = 'loading-overlay';
+    loader.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(loader);
+    // Return the loader element so it can be removed
+    return loader;
+}
+
+// Remove Loading Spinner
+function hideLoading(loader) {
+    if (loader && loader.parentNode) {
+        loader.parentNode.removeChild(loader);
+    } else {
+        // Fallback if loader reference is lost
+        const existingLoader = document.querySelector('.loading-overlay');
+        if (existingLoader) {
+            existingLoader.parentNode.removeChild(existingLoader);
+        }
+    }
+}
+
+
+// Generate Data Main Function
+function generateData() {
+    const loader = showLoading(); // Show loader and get reference
+
+    // Use setTimeout to allow UI update (show loader) before heavy work
+    setTimeout(() => {
+        let success = false;
+        try {
+            const dateSuffixInput = document.getElementById('dateSuffix');
+            const dateSuffix = dateSuffixInput.value;
+
+            // Validate date format
+            if (!isValidDateMMDD(dateSuffix)) {
+                alert("日期后缀格式无效，应为MMDD（例如 0721）。请修正或点击'恢复'。");
+                dateSuffixInput.focus();
+                hideLoading(loader); // Hide loader on error
+                return;
+            }
+
+            const domainInput = document.getElementById('emailDomain');
+            const domain = domainInput.value.trim();
+            const emailCountInput = document.getElementById('emailCount');
+            const count = parseInt(emailCountInput.value, 10);
+
+            // Validate count
+            if (isNaN(count) || count < 1 || count > 576) {
+                alert("生成数量必须是1到576之间的数字！");
+                emailCountInput.focus();
+                hideLoading(loader);
+                return;
+            }
+
+            // Validate domain
+            if (!domain || !domain.startsWith("@")) {
+                alert("邮箱域名不能为空且必须以@符号开头");
+                domainInput.focus();
+                hideLoading(loader);
+                return;
+            }
+
+            const container = document.getElementById('output-container');
+            container.innerHTML = ''; // Clear previous results
+
+            // Use DocumentFragment for performance
+            const fragment = document.createDocumentFragment();
+
+            for (let index = 0; index < count; index++) {
+                const prefix = email_prefixes[index % email_prefixes.length];
+                const div = document.createElement('div');
+                div.className = 'email-item';
+
+                const emailText = `${prefix}${dateSuffix}${domain}`;
+                const passwordText = generatePassword();
+                const fullText = `${emailText} ${passwordText}`;
+                const displayIndex = String(index + 1).padStart(3, '0');
+
+                div.innerHTML = `
+                    <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
+                    <div class="email-info" title="${fullText}">
+                        ${displayIndex}. ${fullText}
+                    </div>
+                    <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
+                `;
+                // Store raw text for easier access later
+                div.dataset.fullText = fullText;
+                div.dataset.index = displayIndex;
+
+                fragment.appendChild(div);
+            }
+
+            container.appendChild(fragment);
+            success = true;
+
+        } catch (error) {
+            console.error("生成失败:", error);
+            alert(`生成失败: ${error.message}`);
+        } finally {
+            // Ensure loader is always hidden, even on error
+             hideLoading(loader);
+        }
+    }, 50); // Small delay
+}
+
+
+// Reset Functions
+function resetDateSuffix() {
+    document.getElementById('dateSuffix').value = getCurrentDate();
+}
+function resetEmailDomain() {
+    document.getElementById('emailDomain').value = '@e.edu.kg';
+}
+function resetEmailCount() {
+    document.getElementById('emailCount').value = 100;
+}
+
+// Initial Setup on DOM Load
+document.addEventListener('DOMContentLoaded', () => {
+    resetDateSuffix(); // Set initial date
+
+    // iOS input focus scroll fix
+    document.body.addEventListener('focusout', (event) => {
+        // Check if the focusout occurred on an input/textarea
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+            if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream) {
+                // Delay slightly to allow keyboard to potentially hide
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                }, 100);
+            }
+        }
+    });
+
+    // Add touchstart listeners for better mobile responsiveness on buttons with onclick
+    // Note: Modern browsers often handle this well, but explicit touchstart can feel faster
+    document.querySelectorAll('[onclick]').forEach(el => {
+        // Avoid adding duplicate listeners if script runs multiple times
+        if (!el.hasAttribute('data-touch-listener-added')) {
+            const handlerString = el.getAttribute('onclick');
+            if (handlerString) {
+                // Create a function from the string
+                 // Using Function constructor is generally safer than eval
+                const handlerFunc = new Function(handlerString);
+                 el.addEventListener('touchstart', (e) => {
+                    // Basic handling: prevent default if it's just a click action
+                    // More complex logic might be needed depending on the action
+                    e.preventDefault();
+                    handlerFunc.call(el, e); // Call the original onclick logic
+                 }, { passive: false }); // Need passive: false to call preventDefault
+                 el.setAttribute('data-touch-listener-added', 'true');
+            }
+        }
+    });
+
+});
+
+// Selection Functions
+function toggleSelection(checkbox) {
+    checkbox.closest('.email-item').classList.toggle('selected', checkbox.checked);
+}
+
+function selectAll() {
+    let changed = false;
+    document.querySelectorAll('#output-container .email-item').forEach(item => {
+        const checkbox = item.querySelector('.checkbox');
+        if (!checkbox.checked) {
+            checkbox.checked = true;
+            item.classList.add('selected');
+            changed = true;
+        }
+    });
+    if (!changed) showToast('所有项目已经为选中状态');
+}
+
+function invertSelection() {
+    const items = document.querySelectorAll('#output-container .email-item');
+    if (items.length === 0) {
+        showToast('没有项目可供反选', true);
+        return;
+    }
+    items.forEach(item => {
+        const checkbox = item.querySelector('.checkbox');
+        checkbox.checked = !checkbox.checked;
+        item.classList.toggle('selected', checkbox.checked);
+    });
+}
+
+// Get Text from Selected Items (using dataset for cleaner text)
+function getItemsText(selector) {
+    return Array.from(document.querySelectorAll(selector))
+        .map(div => div.dataset.fullText) // Use stored text
+        .filter(text => text); // Filter out any potential undefined/empty
+}
+
+// --- Copy Functions ---
+
+// Display Toast Message
 function showToast(message, isError = false) {
-    // Remove existing toasts first to prevent overlap
-    document.querySelectorAll('.toast-notification').forEach(t => t.remove());
+    // Remove existing toast first
+    const existingToast = document.querySelector('.toast-message');
+    if (existingToast) {
+        existingToast.remove();
+    }
 
     const toast = document.createElement('div');
-    toast.className = 'toast-notification'; // Add class for potential removal
+    toast.className = 'toast-message'; // Add class for potential removal
     toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
+    toast.style.bottom = '30px'; // Increased bottom margin
     toast.style.left = '50%';
     toast.style.transform = 'translateX(-50%)';
-    toast.style.backgroundColor = isError ? '#f44336' : 'var(--primary-color)';
+    toast.style.backgroundColor = isError ? 'rgba(244, 67, 54, 0.9)' : 'rgba(76, 175, 80, 0.9)'; // Use rgba for slight transparency
     toast.style.color = 'white';
-    toast.style.padding = '12px 25px';
-    toast.style.borderRadius = '6px';
-    toast.style.zIndex = '1001';
-    toast.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+    toast.style.padding = '12px 25px'; // Increased padding
+    toast.style.borderRadius = '8px'; // More rounded corners
+    toast.style.zIndex = '1001'; // Ensure it's above loader
+    toast.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+    toast.style.fontSize = '14px'; // Slightly larger font
     toast.style.textAlign = 'center';
-    toast.style.fontSize = '0.875em';
-    toast.style.opacity = '0';
-    toast.style.transition = 'opacity 0.3s ease';
+    toast.style.opacity = '0'; // Start invisible for fade-in
+    toast.style.transition = 'opacity 0.3s ease-in-out'; // Smooth fade
     toast.textContent = message;
 
     document.body.appendChild(toast);
 
-    requestAnimationFrame(() => {
-        toast.style.opacity = '1';
-    });
+    // Force reflow to enable transition
+    getComputedStyle(toast).opacity;
+    toast.style.opacity = '1'; // Fade in
 
     setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.addEventListener('transitionend', () => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
+        toast.style.opacity = '0'; // Fade out
+        setTimeout(() => {
+            if (toast.parentNode) { // Check if still in DOM
+                 document.body.removeChild(toast);
             }
-        }, { once: true }); // Ensure listener is removed after firing
-    }, 2500);
+        }, 300); // Remove after fade out
+    }, 2500); // Increased display time
 }
 
-let loadingOverlay = null;
-function showLoading() {
-    if (loadingOverlay) return;
-    loadingOverlay = document.createElement('div');
-    loadingOverlay.className = 'loading-overlay';
-    loadingOverlay.innerHTML = '<div class="spinner"></div>';
-    document.body.appendChild(loadingOverlay);
-}
-function hideLoading() {
-    if (loadingOverlay && loadingOverlay.parentNode) {
-        loadingOverlay.parentNode.removeChild(loadingOverlay);
-    }
-    loadingOverlay = null;
-}
 
+// Core Clipboard Function
 async function copyToClipboard(text, successMsg) {
     if (!text) {
         showToast('没有内容可复制', true);
@@ -663,406 +833,192 @@ async function copyToClipboard(text, successMsg) {
             await navigator.clipboard.writeText(text);
             showToast(successMsg || '已复制到剪贴板');
         } else {
+            // Fallback for http or older browsers
             const textarea = document.createElement('textarea');
             textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.top = '-9999px'; // Move off-screen
+            textarea.style.position = 'fixed'; // Prevent scrolling page
+            textarea.style.top = '-9999px';
             textarea.style.left = '-9999px';
-            textarea.style.opacity = '0';
             document.body.appendChild(textarea);
+            textarea.focus();
             textarea.select();
-            textarea.setSelectionRange(0, 99999); // For mobile devices
-            let success = false;
             try {
-                 success = document.execCommand('copy');
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast(successMsg || '已复制到剪贴板 (fallback)');
+                } else {
+                    throw new Error('Fallback copy failed');
+                }
             } catch (err) {
-                 console.warn("Fallback execCommand failed:", err);
-            }
-            document.body.removeChild(textarea);
-            if (success) {
-                showToast(successMsg || '已复制到剪贴板 (fallback)');
-            } else {
-                throw new Error('Fallback copy command failed or denied');
+                 console.error('Fallback Copy error:', err);
+                 showToast('复制失败，请手动复制', true);
+            } finally {
+                 document.body.removeChild(textarea);
             }
         }
     } catch (err) {
-        console.error('复制失败:', err);
-        // Provide more specific feedback if possible
-        if (err.name === 'NotAllowedError') {
-            showToast('复制失败：浏览器权限不足或页面非激活状态', true);
-        } else {
-            showToast('复制失败，请尝试手动复制', true);
-        }
+        console.error('Copy error:', err);
+        showToast('复制失败，请检查浏览器权限或手动复制', true);
     }
 }
 
 
-// --- Core Functionality ---
-
-function adjustDateSuffix(delta) {
-    const input = document.getElementById('dateSuffix');
-    let currentValue = input.value.trim();
-
-    if (!/^\d{4}$/.test(currentValue)) {
-        const currentMMDD = getCurrentDateMMDD();
-        const initialMonth = parseInt(currentValue.substring(0, 2), 10);
-        const initialDay = parseInt(currentValue.substring(2, 4), 10);
-        if (!isValidDate(initialMonth, initialDay)) {
-             input.value = currentMMDD;
-             currentValue = currentMMDD;
-        } else {
-             currentValue = String(initialMonth).padStart(2,'0') + String(initialDay).padStart(2,'0');
-             input.value = currentValue;
-        }
-    }
-
-    const month = parseInt(currentValue.substring(0, 2), 10);
-    const day = parseInt(currentValue.substring(2, 4), 10);
-
-    const date = new Date(2024, month - 1, day);
-    date.setDate(date.getDate() + delta);
-
-    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
-    const newDay = String(date.getDate()).padStart(2, '0');
-    input.value = newMonth + newDay;
-}
-
-function adjustEmailCount(delta) {
-    const input = document.getElementById('emailCount');
-    const min = parseInt(input.min, 10);
-    const max = parseInt(input.max, 10);
-    let currentValue = parseInt(input.value, 10);
-
-    if (isNaN(currentValue)) {
-        currentValue = 100;
-    }
-
-    let newValue = currentValue + delta;
-    newValue = Math.max(min, Math.min(max, newValue));
-    input.value = newValue;
-}
-
-function generatePassword() {
-    const chars = 'abcdefghjkmnpqrstuvwxyz23456789'; // Simplified further
-    let password = '';
-    // Generate a slightly shorter password for brevity if needed
-    for (let i = 0; i < 6; i++) {
-        password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    // Ensure at least one number maybe?
-     if (!/\d/.test(password)) {
-         password += Math.floor(Math.random() * 10);
-     }
-     // Ensure minimum length if needed (pad if too short after adding number)
-     while (password.length < 6) {
-          password += chars.charAt(Math.floor(Math.random() * chars.length));
-     }
-    return password.slice(0, 8); // Keep it max 8 chars
-}
-
-function generateData() {
-    showLoading();
-
-    setTimeout(() => {
-        try {
-            const dateSuffixInput = document.getElementById('dateSuffix');
-            const dateSuffix = dateSuffixInput.value.trim();
-            if (!/^\d{4}$/.test(dateSuffix)) {
-                showToast("日期后缀格式无效 (应为MMDD)", true);
-                dateSuffixInput.focus();
-                hideLoading();
-                return;
-            }
-            const month = parseInt(dateSuffix.substring(0, 2), 10);
-            const day = parseInt(dateSuffix.substring(2, 4), 10);
-            if (!isValidDate(month, day)) {
-                 showToast(`日期后缀无效: ${month}月 ${day}日 不存在`, true);
-                dateSuffixInput.focus();
-                hideLoading();
-                return;
-            }
-
-            const domainInput = document.getElementById('emailDomain');
-            const domain = domainInput.value.trim();
-            if (!domain || !domain.startsWith("@")) {
-                showToast("邮箱域名必须以@开头", true);
-                domainInput.focus();
-                hideLoading();
-                return;
-            }
-
-            const emailCountInput = document.getElementById('emailCount');
-            const count = parseInt(emailCountInput.value, 10);
-            const minCount = parseInt(emailCountInput.min, 10);
-            const maxCount = parseInt(emailCountInput.max, 10);
-
-            if (isNaN(count) || count < minCount || count > maxCount) {
-                showToast(`生成数量必须在 ${minCount} 和 ${maxCount} 之间`, true);
-                emailCountInput.focus();
-                hideLoading();
-                return;
-            }
-
-            const container = document.getElementById('output-container');
-            container.innerHTML = '';
-            const fragment = document.createDocumentFragment();
-
-            for (let index = 0; index < count; index++) {
-                const prefix = email_prefixes[index % email_prefixes.length];
-                const emailAddress = `${prefix}${dateSuffix}${domain}`;
-                const password = generatePassword();
-
-                const div = document.createElement('div');
-                div.className = 'email-item';
-                div.dataset.email = emailAddress;
-                div.dataset.password = password;
-                div.dataset.index = index + 1;
-
-                div.innerHTML = `
-                    <input type="checkbox" class="checkbox" aria-label="Select item ${index + 1}" onchange="toggleSelection(this)">
-                    <div class="email-info" title="${emailAddress} ${password}">
-                        ${String(index + 1).padStart(3, '0')}. ${emailAddress}  ${password} <!-- Added non-breaking space -->
-                    </div>
-                    <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
-                `;
-                fragment.appendChild(div);
-            }
-
-            container.appendChild(fragment);
-            showToast(`成功生成 ${count} 条数据`);
-
-        } catch (error) {
-            console.error("生成失败:", error);
-            showToast(`生成失败: ${error.message}`, true);
-        } finally {
-            hideLoading();
-        }
-    }, 50);
-}
-
-
-// --- Reset Functions ---
-function resetDateSuffix() {
-    document.getElementById('dateSuffix').value = getCurrentDateMMDD();
-}
-function resetEmailDomain() {
-    document.getElementById('emailDomain').value = '@e.edu.kg';
-}
-function resetEmailCount() {
-    document.getElementById('emailCount').value = 100;
-}
-
-
-// --- Selection Functions ---
-function toggleSelection(checkbox) {
-    checkbox.closest('.email-item').classList.toggle('selected', checkbox.checked);
-}
-
-function selectAll() {
-    let changed = false;
-    let count = 0;
-    document.querySelectorAll('#output-container .email-item').forEach(item => {
-        const checkbox = item.querySelector('.checkbox');
-        if (!checkbox.checked) {
-             checkbox.checked = true;
-             item.classList.add('selected');
-             changed = true;
-        }
-        count++;
-    });
-    if (count === 0) showToast('没有可选择的条目', true);
-    else if (!changed) showToast('所有条目已为选中状态');
-}
-
-function invertSelection() {
-     let count = 0;
-    document.querySelectorAll('#output-container .email-item').forEach(item => {
-        const checkbox = item.querySelector('.checkbox');
-        checkbox.checked = !checkbox.checked;
-        item.classList.toggle('selected', checkbox.checked);
-        count++;
-    });
-     if (count === 0) showToast('没有可反选的条目', true);
-}
-
-function getItemText(itemElement) {
-    const emailInfo = itemElement.querySelector('.email-info');
-    if (!emailInfo) return '';
-    // Improved extraction to handle potential extra spaces
-    const textContent = emailInfo.textContent || '';
-    return textContent.replace(/^\d+\.\s+/, '').trim().replace(/\s+/g, ' '); // Replace multiple spaces with single
-}
-
-// --- Copy Functions ---
+// Specific Copy Actions
 function copySelected() {
-    const selectedItems = document.querySelectorAll('#output-container .email-item.selected');
+    const selectedItems = document.querySelectorAll('.email-item.selected');
     if (selectedItems.length === 0) {
         showToast('请先选择要复制的条目', true);
         return;
     }
-    const textToCopy = Array.from(selectedItems)
-                           .map(item => getItemText(item))
-                           .join('\n');
-    copyToClipboard(textToCopy, `已复制 ${selectedItems.length} 条选中内容`);
+    const selectedItemsText = Array.from(selectedItems)
+                                   .map(item => item.dataset.fullText)
+                                   .join('\n');
+    copyToClipboard(selectedItemsText, `已复制 ${selectedItems.length} 条选中内容`);
 }
 
 function copyRange() {
-    const rangeInput = document.getElementById('copyRange');
-    const rangeValue = rangeInput.value.trim().replace(/[^0-9-]/g, ''); // Sanitize input further
-    const rangeRegex = /^(\d+)-(\d+)$/; // Simpler regex, assuming cleaned input
+    const rangeInput = document.getElementById('copyRange').value.trim();
+    const rangeRegex = /^(\d+)\s*-\s*(\d+)$/;
 
-    if (!rangeValue || !rangeRegex.test(rangeValue)) {
-        showToast('请输入正确范围格式 (例: 1-5)', true);
-        rangeInput.focus();
+    if (!rangeRegex.test(rangeInput)) {
+        showToast('请输入正确范围格式（例: 1-5 或 001-005）', true);
+        document.getElementById('copyRange').focus();
         return;
     }
 
-    const match = rangeValue.match(rangeRegex);
-    // Check if match exists before accessing groups
-    if (!match) {
-        showToast('范围格式解析失败 (例: 1-5)', true);
-        rangeInput.focus();
-        return;
-    }
+    const match = rangeInput.match(rangeRegex);
     const start = parseInt(match[1], 10);
     const end = parseInt(match[2], 10);
-
     const allItems = document.querySelectorAll('#output-container .email-item');
     const totalItems = allItems.length;
 
     if (totalItems === 0) {
-        showToast("请先生成数据", true);
+        showToast("请先生成数据，再复制范围", true);
         return;
     }
 
-    // More robust validation
-    if (isNaN(start) || isNaN(end) || start < 1 || end > totalItems || start > end) {
-        showToast(`无效范围 (请输入 1 到 ${totalItems} 之间, 且开始 ≤ 结束)`, true);
-        rangeInput.focus();
-        return;
-    }
+     if (start < 1 || end > totalItems || start > end) {
+         // Corrected error message format string
+         showToast(`无效范围（请输入 1 到 ${totalItems} 之间，且开始不大于结束）`, true);
+         document.getElementById('copyRange').focus();
+         return;
+     }
+
 
     const itemsToCopy = Array.from(allItems)
-        .slice(start - 1, end)
-        .map(item => getItemText(item));
+        .slice(start - 1, end) // slice uses 0-based index, end is exclusive
+        .map(item => item.dataset.fullText)
+        .join('\n');
 
-    if (itemsToCopy.length > 0) {
-        copyToClipboard(itemsToCopy.join('\n'), `已复制范围 ${start}-${end} (${itemsToCopy.length}条)`);
+    if (itemsToCopy) {
+        copyToClipboard(itemsToCopy, `已复制 ${start}-${end} 范围内容 (${end - start + 1}条)`);
     } else {
-         showToast(`指定范围内没有找到条目 (范围: ${start}-${end})`, true);
+         showToast('范围内没有找到项目', true);
     }
 }
 
+
 function copySingle(button) {
-    const itemElement = button.closest('.email-item');
-    const text = getItemText(itemElement);
-    copyToClipboard(text, '已复制单条内容');
+    const item = button.closest('.email-item');
+    const textToCopy = item.dataset.fullText;
+    copyToClipboard(textToCopy, '已复制单条内容');
 }
 
 function copyAll() {
     const allItems = document.querySelectorAll('#output-container .email-item');
     if (allItems.length === 0) {
-        showToast("没有内容可复制", true);
+        showToast("没有内容可以复制。请先生成数据。", true);
         return;
     }
-    const textToCopy = Array.from(allItems)
-                           .map(item => getItemText(item))
-                           .join('\n');
-    copyToClipboard(textToCopy, `已复制全部 ${allItems.length} 条内容`);
+    const itemsText = Array.from(allItems)
+                         .map(item => item.dataset.fullText)
+                         .join('\n');
+    copyToClipboard(itemsText, `已复制全部 ${allItems.length} 条内容`);
 }
 
-
-// --- Export Function ---
+// Export TXT
 function exportTXT() {
     const allItems = document.querySelectorAll('#output-container .email-item');
      if (allItems.length === 0) {
-        showToast("没有内容可导出", true);
+        showToast("没有内容可以导出。请先生成数据。", true);
         return;
     }
-    const textToExport = Array.from(allItems)
-                             .map(item => getItemText(item))
-                             .join('\r\n');
+    const itemsText = Array.from(allItems)
+                         .map(item => item.dataset.fullText)
+                         .join('\r\n'); // Use Windows line endings for better Notepad compatibility
 
-    const blob = new Blob([textToExport], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([itemsText], {type: 'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
 
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const domainPart = (document.getElementById('emailDomain').value.split('@')[1] || 'domain').split('.')[0];
+    const domainPart = document.getElementById('emailDomain').value.replace('@','').split('.')[0] || 'domain';
     a.download = `邮箱列表_${domainPart}_${dateStr}_${allItems.length}条.txt`;
 
     document.body.appendChild(a);
     a.click();
 
+    // Cleanup
     setTimeout(() => {
         URL.revokeObjectURL(url);
-        if (a.parentNode) {
-             document.body.removeChild(a);
-        }
-        showToast(`已开始导出 ${allItems.length} 条数据`);
+        document.body.removeChild(a);
+        showToast('TXT文件已开始导出');
     }, 100);
 }
+
 
 // --- Sort Function ---
 function sortData(type) {
     const container = document.getElementById('output-container');
-    // Ensure we only get direct children that are email items
-    const items = Array.from(container.querySelectorAll(':scope > .email-item'));
+    // Get items as an array to sort
+    const items = Array.from(container.children);
 
     if (items.length === 0) {
-        showToast("没有可排序的数据", true);
+        showToast('没有内容可以排序', true);
         return;
     }
 
-    items.forEach(item => container.removeChild(item)); // Detach before sorting
-
+    // Sorting logic
     switch (type) {
         case 'asc':
-            items.sort((a, b) => (parseInt(a.dataset.index || '0') - parseInt(b.dataset.index || '0')));
+            items.sort((a, b) => {
+                const aIndex = parseInt(a.dataset.index, 10);
+                const bIndex = parseInt(b.dataset.index, 10);
+                return aIndex - bIndex;
+            });
             break;
+
         case 'desc':
-            items.sort((a, b) => (parseInt(b.dataset.index || '0') - parseInt(a.dataset.index || '0')));
+             items.sort((a, b) => {
+                const aIndex = parseInt(a.dataset.index, 10);
+                const bIndex = parseInt(b.dataset.index, 10);
+                return bIndex - aIndex;
+            });
             break;
+
         case 'random':
+            // Fisher-Yates (Knuth) Shuffle
             for (let i = items.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [items[i], items[j]] = [items[j], items[i]];
+                [items[i], items[j]] = [items[j], items[i]]; // Swap
             }
             break;
-        default: // Should not happen, but good practice
-            console.warn("Unknown sort type:", type);
-            // Re-append in original detached order if type is invalid
-             items.forEach(item => container.appendChild(item));
-            return;
+        default:
+             console.warn("未知排序类型:", type);
+             return; // Do nothing if type is unknown
     }
 
+    // Re-append sorted items
+    // Clear container first efficiently
+    container.innerHTML = '';
+    // Append sorted items using a fragment for potential performance gain
     const fragment = document.createDocumentFragment();
     items.forEach(item => fragment.appendChild(item));
-    container.appendChild(fragment); // Append sorted items
+    container.appendChild(fragment);
 
-    const sortTypeText = type === 'asc' ? '顺序' : type === 'desc' ? '倒序' : '随机';
-    showToast(`数据已按 ${sortTypeText} 排序`);
+    showToast(`列表已按 ${type === 'asc' ? '顺序' : type === 'desc' ? '倒序' : '随机'} 排序`);
 }
-
-
-// --- Initial Setup ---
-document.addEventListener('DOMContentLoaded', () => {
-    resetDateSuffix();
-
-    // iOS focus/blur scroll fix attempt
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent || '') && !window.MSStream;
-    if (isIOS) {
-        document.body.addEventListener('focusout', (e) => {
-             if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
-                // Briefly delay to allow keyboard to potentially start dismissing
-                setTimeout(() => {
-                    window.scrollTo({ top: window.scrollY, behavior: 'auto' }); // 'auto' might be less jarring
-                }, 50);
-             }
-        }, true); // Use capture phase might sometimes help
-    }
-});
 
 </script>
 </body>
