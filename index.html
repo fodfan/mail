@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>元元DIY邮箱生成器</title>
     <style>
         :root {
@@ -11,10 +11,12 @@
         }
 
         * {
-            -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on touch devices */
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
         }
 
         body {
@@ -22,7 +24,8 @@
             margin: 0;
             padding: 20px;
             background-color: #f5f5f5;
-            -webkit-text-size-adjust: 100%;
+            font-size: 16px; /* Base font size */
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -31,103 +34,84 @@
             max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            -webkit-box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .header {
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .header h1 {
-            font-size: 24px;
+            font-size: 1.5em; /* Use em for scalability */
             margin: 0;
             font-weight: 600;
         }
 
+        /* --- Input and Control Groups --- */
+
         .control-group {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-flex-wrap: wrap;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
-            align-items: center;
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+            gap: 20px; /* Space between items */
+            margin-bottom: 25px;
+            align-items: center; /* Align items vertically */
         }
 
         .input-group {
-            -webkit-box-flex: 1;
-            -webkit-flex: 1;
-            -ms-flex: 1;
-            flex: 1;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
+            flex: 1 1 250px; /* Allow growing and shrinking, base width */
             display: flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
             align-items: center;
             gap: 10px;
-            min-width: 0;
+            min-width: 0; /* Prevent overflow */
         }
 
         .input-group label {
-            font-size: 14px;
+            font-size: 0.875em; /* 14px */
             white-space: nowrap;
             color: #555;
+            flex-shrink: 0; /* Prevent label from shrinking */
         }
 
-        /* 输入框通用样式 */
+        /* Input base style */
         .input-group input {
             -webkit-appearance: none;
-            -moz-appearance: none;
             appearance: none;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 6px;
             padding: 10px 12px;
-            font-size: 14px;
+            font-size: 0.875em; /* 14px */
             background: #fff;
-            -webkit-box-flex: 1;
-            -webkit-flex-grow: 1;
-            -ms-flex-positive: 1;
-            flex-grow: 1;
-            min-width: 0;
-            height: 40px;
-            width: 100%;
+            flex-grow: 1; /* Take available space */
+            min-width: 0; /* Prevent overflow */
+            height: 40px; /* Consistent height */
+            line-height: normal; /* Reset line height for input */
+        }
+        /* Ensure number input looks consistent */
+        .input-group input[type="number"] {
+             -moz-appearance: textfield;
+        }
+        .input-group input[type="number"]::-webkit-outer-spin-button,
+        .input-group input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
-        /* 自定义spinner样式 */
+        /* Input with Spinners */
         .input-with-spinners {
             position: relative;
-            display: -webkit-inline-box;
-            display: -webkit-inline-flex;
-            display: -ms-inline-flexbox;
-            display: inline-flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
+            display: inline-flex; /* Use inline-flex */
             align-items: center;
-            -webkit-box-flex: 1;
-            -webkit-flex-grow: 1;
-            -ms-flex-positive: 1;
             flex-grow: 1;
             min-width: 0;
         }
 
         .input-with-spinners input {
-            padding-right: 30px;
-            width: 100%;
+            padding-right: 30px; /* Space for spinners */
+            width: 100%; /* Fill container */
         }
 
         .spinner-buttons {
@@ -136,191 +120,159 @@
             top: 1px;
             bottom: 1px;
             width: 24px;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
             display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -webkit-flex-direction: column;
-            -ms-flex-direction: column;
             flex-direction: column;
             background-color: #f8f8f8;
-            border-left: 1px solid #ddd;
+            border-left: 1px solid #ccc;
             border-radius: 0 5px 5px 0;
+            overflow: hidden; /* Ensure rounded corners apply */
         }
 
         .spinner-btn {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
             display: flex;
-            -webkit-box-pack: center;
-            -webkit-justify-content: center;
-            -ms-flex-pack: center;
             justify-content: center;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
             align-items: center;
-            height: 50%;
+            flex: 1; /* Take half the height */
             padding: 0;
             border: none;
             background: none;
             font-size: 10px;
             color: #555;
             cursor: pointer;
+            line-height: 1; /* Ensure icon is centered */
+            user-select: none; /* Prevent text selection */
         }
-
-        .spinner-btn:active {
+        .spinner-btn:hover {
             background-color: #eee;
         }
-
-        /* 数字输入框特殊样式 */
-        .input-with-spinners input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        .input-with-spinners input[type="number"]::-webkit-outer-spin-button,
-        .input-with-spinners input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        .spinner-btn:active {
+            background-color: #ddd;
         }
 
-        /* 按钮通用样式 */
+        /* --- Buttons --- */
+
+        /* Button base style */
         .btn {
-            padding: 10px 16px;
+            padding: 0 16px; /* Use padding for horizontal sizing */
             border: none;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 0.875em; /* 14px */
             font-weight: 500;
             height: 40px;
-            display: -webkit-inline-box;
-            display: -webkit-inline-flex;
-            display: -ms-inline-flexbox;
-            display: inline-flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
+            display: inline-flex; /* Use inline-flex */
             align-items: center;
-            -webkit-box-pack: center;
-            -webkit-justify-content: center;
-            -ms-flex-pack: center;
             justify-content: center;
             white-space: nowrap;
-            -webkit-tap-highlight-color: transparent;
             cursor: pointer;
+            user-select: none; /* Prevent text selection */
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            line-height: 1; /* Align text vertically */
+            flex-shrink: 0; /* Prevent shrinking in flex containers */
+        }
+        .btn:active {
+             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        /* Reset Button */
         .btn-reset {
             background-color: var(--primary-color);
             color: white;
-            min-width: 60px;
+            min-width: 60px; /* Ensure minimum width */
+        }
+        .btn-reset:hover {
+            background-color: #45a049;
         }
 
-        .action-buttons {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
+        /* Button Groups */
+        .action-buttons,
+        .selection-tools,
+        .sort-buttons {
             display: flex;
-            -webkit-flex-wrap: wrap;
-            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
+        /* Main Action/Tool Buttons */
         .btn-main {
             background-color: var(--secondary-color);
             color: white;
-            -webkit-box-flex: 1;
-            -webkit-flex: 1;
-            -ms-flex: 1;
-            flex: 1;
-            min-width: calc(50% - 5px);
+            flex: 1 1 auto; /* Allow growing, shrinking, automatic base size */
+             /* Default: allow multiple buttons per line if space */
+        }
+         .btn-main:hover {
+            background-color: #1e88e5;
         }
 
-        .selection-tools {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-flex-wrap: wrap;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
 
-        .range-input {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
+        /* Range Input Specifics */
+        .selection-tools .range-input {
             display: flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
             align-items: center;
             gap: 8px;
-            -webkit-box-flex: 1;
-            -webkit-flex: 1;
-            -ms-flex: 1;
-            flex: 1;
-            min-width: 0;
+            flex: 1 1 200px; /* Allow growing/shrinking, base width */
+            min-width: 180px; /* Prevent becoming too small */
         }
 
-        .range-input input {
-            -webkit-box-flex: 1;
-            -webkit-flex-grow: 1;
-            -ms-flex-positive: 1;
-            flex-grow: 1;
-            min-width: 0;
+        .selection-tools .range-input input {
+            flex-grow: 1; /* Input takes most space */
+            min-width: 80px; /* Minimum width for the input field */
+            height: 40px; /* Match button height */
+            padding: 10px 12px; /* Match other inputs */
+            font-size: 0.875em; /* Match other inputs */
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }
+        .selection-tools .range-input .btn-main {
+             flex-grow: 0; /* Don't allow button to grow */
+             flex-shrink: 0; /* Don't allow button to shrink */
+             /* Width determined by padding */
+        }
+
+
+        /* --- Output Area --- */
 
         #output-container {
             border: 1px solid #eee;
             border-radius: 8px;
             padding: 10px;
-            max-height: 50vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            max-height: 50vh; /* Limit height */
+            overflow-y: auto; /* Enable scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            background-color: #f9f9f9;
         }
 
         .email-item {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
             display: flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
             align-items: center;
             padding: 10px;
-            margin: 5px 0;
-            background: #f8f8f8;
+            margin-bottom: 8px;
+            background: #fff;
             border-radius: 5px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            border: 1px solid #eee;
             user-select: none;
+            transition: background-color 0.2s ease;
+        }
+        .email-item:last-child {
+            margin-bottom: 0;
         }
 
         .checkbox {
-            margin-right: 10px;
+            margin-right: 12px;
             width: 18px;
             height: 18px;
             accent-color: var(--primary-color);
+            flex-shrink: 0;
         }
 
         .email-info {
-            -webkit-box-flex: 1;
-            -webkit-flex-grow: 1;
-            -ms-flex-positive: 1;
             flex-grow: 1;
             margin-right: 10px;
-            font-size: 14px;
+            font-size: 0.875em; /* 14px */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            cursor: default; /* Default cursor over text */
         }
 
         .copy-btn {
@@ -328,47 +280,27 @@
             color: white;
             padding: 6px 12px;
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 0.8125em; /* 13px */
+            height: 32px; /* Smaller height */
             min-width: 60px;
-            border: none;
-            cursor: pointer;
+            flex-shrink: 0;
         }
+         .copy-btn:hover {
+             background-color: #45a049;
+         }
 
         .selected {
-            background-color: #e3f2fd;
+            background-color: #e3f2fd !important; /* Use important to override potential hover */
+            border-color: var(--secondary-color);
         }
 
-        .sort-buttons {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-flex-wrap: wrap;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        /* 加载动画 */
+        /* --- Loading Spinner --- */
         .loading-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.7);
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
+            inset: 0; /* Replaces top, left, right, bottom */
+            background: rgba(255,255,255,0.8);
             display: flex;
-            -webkit-box-pack: center;
-            -webkit-justify-content: center;
-            -ms-flex-pack: center;
             justify-content: center;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
             align-items: center;
             z-index: 1000;
         }
@@ -379,72 +311,137 @@
             border: 4px solid rgba(0,0,0,0.1);
             border-radius: 50%;
             border-top-color: var(--secondary-color);
-            -webkit-animation: spin 1s linear infinite;
             animation: spin 1s linear infinite;
         }
 
-        @-webkit-keyframes spin {
-            to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
-        }
-
         @keyframes spin {
-            to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* iOS输入框样式修复 */
-        input, textarea {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            border-radius: 0;
+        /* --- Responsive Adjustments --- */
+
+        /* Medium screens and Tablets */
+        @media (max-width: 768px) {
+             .control-group {
+                 gap: 15px;
+             }
+             .input-group {
+                 /* Allow slightly smaller base width if needed */
+                 flex-basis: 220px;
+             }
         }
 
-        /* 响应式调整 */
+
+        /* Smaller screens (Mobile) */
         @media (max-width: 600px) {
             body {
-                padding: 10px;
+                padding: 15px; /* Slightly reduce body padding */
             }
-            
             .container {
-                padding: 15px;
+                padding: 20px; /* Reduce container padding */
+            }
+            .header h1 {
+                font-size: 1.3em; /* Adjust header size */
             }
 
             .control-group {
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -webkit-flex-direction: column;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                gap: 12px;
+                flex-direction: column; /* Stack controls vertically */
+                align-items: stretch; /* Make items full width */
+                gap: 15px; /* Adjust gap for vertical layout */
             }
 
             .input-group {
-                width: 100%;
+                flex-basis: auto; /* Reset flex-basis */
+                width: 100%; /* Ensure full width */
             }
 
-            .btn-main {
-                min-width: 100%;
+             /* Make main buttons in groups take full width */
+            .action-buttons .btn-main,
+            .selection-tools .btn-main,
+            .sort-buttons .btn-main {
+                 flex-grow: 1; /* Allow growing */
+                 flex-basis: 100%; /* Force full width */
+                 width: 100%;
             }
+
+            /* Ensure range input also takes full width */
+             .selection-tools .range-input {
+                 flex-basis: 100%;
+                 width: 100%;
+                 min-width: unset; /* Remove min-width */
+             }
+             .selection-tools .range-input .btn-main {
+                 /* Keep range button from growing excessively */
+                 flex-grow: 0;
+                 flex-shrink: 0;
+                 width: auto; /* Size based on padding */
+                 min-width: 100px; /* Ensure it's tappable */
+             }
+
 
             #output-container {
-                max-height: 40vh;
+                max-height: 45vh; /* Adjust max height */
+            }
+            .email-item {
+                padding: 8px 10px;
             }
         }
 
+        /* Very Narrow Screens */
         @media (max-width: 400px) {
+            body {
+                padding: 10px; /* Further reduce padding */
+            }
+            .container {
+                padding: 15px;
+            }
             .header h1 {
-                font-size: 20px;
+                font-size: 1.2em;
+            }
+
+            /* Reduce height and font for inputs/buttons */
+            .input-group input, .btn {
+                height: 38px;
+                font-size: 0.8125em; /* 13px */
+            }
+            /* Adjust padding to keep text centered */
+             .input-group input { padding: 8px 10px; }
+             .btn { padding: 0 12px; }
+
+            .input-group label {
+                font-size: 0.8125em; /* 13px */
+            }
+
+            .spinner-buttons {
+                width: 22px; /* Slightly smaller spinners */
+            }
+            .spinner-btn {
+                font-size: 9px;
             }
 
             .email-info {
-                font-size: 13px;
+                font-size: 0.8125em; /* 13px */
             }
-            
-            .btn {
-                padding: 8px 12px;
-                font-size: 13px;
+            .copy-btn {
+                height: 30px;
+                padding: 4px 10px;
+                font-size: 0.75em; /* 12px */
+                min-width: 50px;
+            }
+            .checkbox {
+                width: 16px;
+                height: 16px;
+                margin-right: 10px;
+            }
+
+            .action-buttons,
+            .selection-tools,
+            .sort-buttons {
+                gap: 8px; /* Reduce gap between buttons */
+                margin-bottom: 15px;
             }
         }
+
     </style>
 </head>
 <body>
@@ -457,7 +454,7 @@
             <div class="input-group">
                 <label for="dateSuffix">日期后缀</label>
                 <div class="input-with-spinners">
-                    <input type="text" id="dateSuffix" inputmode="numeric" pattern="[0-9]*" placeholder="MMDD">
+                    <input type="text" id="dateSuffix" inputmode="numeric" pattern="[0-9]{4}" placeholder="MMDD">
                     <div class="spinner-buttons">
                         <button type="button" class="spinner-btn" onclick="adjustDateSuffix(1)" aria-label="增加一天">▲</button>
                         <button type="button" class="spinner-btn" onclick="adjustDateSuffix(-1)" aria-label="减少一天">▼</button>
@@ -494,7 +491,7 @@
             <button class="btn btn-main" onclick="invertSelection()">反选</button>
             <button class="btn btn-main" onclick="copySelected()">复制选中</button>
             <div class="range-input">
-                <input type="text" id="copyRange" placeholder="例: 001-005">
+                <input type="text" id="copyRange" placeholder="例: 1-5"> <!-- Simpler placeholder -->
                 <button class="btn btn-main" onclick="copyRange()">复制范围</button>
             </div>
         </div>
@@ -509,453 +506,514 @@
     </div>
 
 <script>
-// 邮箱前缀数组
+// 邮箱前缀数组 (Assuming this remains unchanged)
 const email_prefixes = [
-    'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
-    'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
-    'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
-    'ah','ai','aj','ak','am','an','ap','aq','ar','as',
-    'at','au','av','aw','ax','ay','az','ba','bc','bd',
-    'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
-    'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
-    'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
-    'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
-    'cx','cy','cz','da','db','dc','de','df','dg','dh',
-    'di','dj','dk','dm','dn','dp','dq','dr','ds','dt',
-    'du','dv','dw','dx','dy','dz','ea','eb','ec','ed',
-    'ef','eg','eh','ei','ej','ek','em','en','ep','eq',
-    'er','es','et','eu','ev','ew','ex','ey','ez','fa',
-    'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm',
-    'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx',
-    'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi',
-    'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu',
-    'gv','gw','gx','gy','gz','ha','hb','hc','hd','he',
-    'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr',
-    'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib',
-    'ic','id','ie','if','ig','ih','ij','ik','im','in',
-    'ip','iq','ir','is','it','iu','iv','iw','ix','iy',
-    'iz','ja','jb','jc','jd','je','jf','jg','jh','ji',
-    'jk','jm','jn','jp','jq','jr','js','jt','ju','jv',
-    'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf',
-    'kg','kh','ki','kj','km','kn','kp','kq','kr','ks',
-    'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc',
-    'md','me','mf','mg','mh','mi','mj','mk','mn','mp',
-    'mq','mr','ms','mt','mu','mv','mw','mx','my','mz',
-    'na','nb','nc','nd','ne','nf','ng','nh','ni','nj',
-    'nk','nm','np','nq','nr','ns','nt','nu','nv','nw',
-    'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg',
-    'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt',
-    'pu','pv','pw','px','py','pz','qa','qb','qc','qd',
-    'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp',
-    'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra',
-    'rb','rc','rd','re','rf','rg','rh','ri','rj','rk',
-    'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx',
-    'ry','rz','sa','sb','sc','sd','se','sf','sg','sh',
-    'si','sj','sk','sm','sn','sp','sq','sr','st','su',
-    'sv','sw','sx','sy','sz','ta','tb','tc','td','te',
-    'tf','tg','th','ti','tj','tk','tm','tn','tp','tq',
-    'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub',
-    'uc','ud','ue','uf','ug','uh','ui','uj','uk','um',
-    'un','up','uq','ur','us','ut','uv','uw','ux','uy',
-    'uz','va','vb','vc','vd','ve','vf','vg','vh','vi',
-    'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu',
-    'vw','vx','vy','vz','wa','wb','wc','wd','we','wf',
-    'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr',
-    'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc',
-    'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn',
-    'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz',
-    'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj',
-    'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv',
-    'yw','yx','yz','za','zb','zc','zd','ze','zf','zg',
-    'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs',
-    'zt','zu','zv','zw','zx','zy'
+'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
+'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
+'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
+'ah','ai','aj','ak','am','an','ap','aq','ar','as',
+'at','au','av','aw','ax','ay','az','ba','bc','bd',
+'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
+'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
+'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
+'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
+'cx','cy','cz','da','db','dc','de','df','dg','dh',
+'di','dj','dk','dm','dn','dp','dq','dr','ds','dt',
+'du','dv','dw','dx','dy','dz','ea','eb','ec','ed',
+'ef','eg','eh','ei','ej','ek','em','en','ep','eq',
+'er','es','et','eu','ev','ew','ex','ey','ez','fa',
+'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm',
+'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx',
+'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi',
+'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu',
+'gv','gw','gx','gy','gz','ha','hb','hc','hd','he',
+'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr',
+'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib',
+'ic','id','ie','if','ig','ih','ij','ik','im','in',
+'ip','iq','ir','is','it','iu','iv','iw','ix','iy',
+'iz','ja','jb','jc','jd','je','jf','jg','jh','ji',
+'jk','jm','jn','jp','jq','jr','js','jt','ju','jv',
+'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf',
+'kg','kh','ki','kj','km','kn','kp','kq','kr','ks',
+'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc',
+'md','me','mf','mg','mh','mi','mj','mk','mn','mp',
+'mq','mr','ms','mt','mu','mv','mw','mx','my','mz',
+'na','nb','nc','nd','ne','nf','ng','nh','ni','nj',
+'nk','nm','np','nq','nr','ns','nt','nu','nv','nw',
+'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg',
+'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt',
+'pu','pv','pw','px','py','pz','qa','qb','qc','qd',
+'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp',
+'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra',
+'rb','rc','rd','re','rf','rg','rh','ri','rj','rk',
+'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx',
+'ry','rz','sa','sb','sc','sd','se','sf','sg','sh',
+'si','sj','sk','sm','sn','sp','sq','sr','st','su',
+'sv','sw','sx','sy','sz','ta','tb','tc','td','te',
+'tf','tg','th','ti','tj','tk','tm','tn','tp','tq',
+'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub',
+'uc','ud','ue','uf','ug','uh','ui','uj','uk','um',
+'un','up','uq','ur','us','ut','uv','uw','ux','uy',
+'uz','va','vb','vc','vd','ve','vf','vg','vh','vi',
+'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu',
+'vw','vx','vy','vz','wa','wb','wc','wd','we','wf',
+'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr',
+'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc',
+'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn',
+'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz',
+'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj',
+'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv',
+'yw','yx','yz','za','zb','zc','zd','ze','zf','zg',
+'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs',
+'zt','zu','zv','zw','zx','zy'
 ];
 
-// 获取当前日期MMDD格式
-function getCurrentDate() {
+// --- Utility Functions ---
+
+// Get current date as MMDD string
+function getCurrentDateMMDD() {
     const d = new Date();
-    return String(d.getMonth() + 1).padStart(2, '0') +
-           String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return month + day;
 }
 
-// 日期验证函数
-function validateDate(month, day) {
-    if (month < 1 || month > 12) return false;
-    const date = new Date();
-    date.setFullYear(2020, month - 1, 0); // 使用非闰年
-    return day <= date.getDate();
+// Validate if a month/day combination is valid (considers leap years approximately)
+function isValidDate(month, day) {
+    if (month < 1 || month > 12 || day < 1 || day > 31) return false;
+    // Quick check for months with 30 days
+    if ([4, 6, 9, 11].includes(month) && day > 30) return false;
+    // Quick check for February
+    if (month === 2 && day > 29) return false; // Allow 29 for simplicity
+    return true;
 }
 
-// 调整日期后缀
-function adjustDateSuffix(delta) {
-    const input = document.getElementById('dateSuffix');
-    let currentValue = input.value;
-    
-    // 如果为空或无效，设为当前日期
-    if (!/^\d{4}$/.test(currentValue)) {
-        resetDateSuffix();
-        return;
-    }
-
-    const month = parseInt(currentValue.substring(0, 2), 10);
-    const day = parseInt(currentValue.substring(2, 4), 10);
-    
-    // 验证日期有效性
-    if (!validateDate(month, day)) {
-        resetDateSuffix();
-        return;
-    }
-
-    // 计算新日期
-    const date = new Date();
-    date.setMonth(month - 1);
-    date.setDate(day);
-    date.setDate(date.getDate() + delta);
-
-    // 格式化新日期
-    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
-    const newDay = String(date.getDate()).padStart(2, '0');
-    input.value = newMonth + newDay;
-}
-
-// 调整生成数量
-function adjustEmailCount(delta) {
-    const input = document.getElementById('emailCount');
-    let currentValue = parseInt(input.value, 10) || 100;
-    let newValue = currentValue + delta;
-    
-    // 限制范围
-    if (newValue < 1) newValue = 1;
-    if (newValue > 576) newValue = 576;
-
-    input.value = newValue;
-}
-
-// 生成随机密码
-function generatePassword() {
-    const allowedDigits = ['1','2','5','6','8','9'];
-    return 'g' + Array.from({length:3}, 
-         () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
-}
-
-// 显示加载状态
-function showLoading() {
-    const loader = document.createElement('div');
-    loader.className = 'loading-overlay';
-    loader.innerHTML = '<div class="spinner"></div>';
-    document.body.appendChild(loader);
-    return loader;
-}
-
-// 生成数据主函数
-function generateData() {
-    const loader = showLoading();
-    
-    // 使用setTimeout确保UI更新
-    setTimeout(() => {
-        try {
-            const dateSuffixInput = document.getElementById('dateSuffix');
-            const dateSuffix = dateSuffixInput.value;
-            
-            // 验证日期格式
-            if (!/^\d{4}$/.test(dateSuffix)) {
-                alert("日期后缀格式无效，应为MMDD（例如 0721）。请修正或点击'恢复'。");
-                dateSuffixInput.focus();
-                loader.remove();
-                return;
-            }
-
-            const month = parseInt(dateSuffix.substring(0, 2), 10);
-            const day = parseInt(dateSuffix.substring(2, 4), 10);
-            
-            if (!validateDate(month, day)) {
-                alert(`日期后缀无效：${month}月没有${day}日。`);
-                dateSuffixInput.focus();
-                loader.remove();
-                return;
-            }
-
-            const domainInput = document.getElementById('emailDomain');
-            const domain = domainInput.value.trim();
-            const emailCountInput = document.getElementById('emailCount');
-            const count = parseInt(emailCountInput.value, 10);
-
-            // 验证输入
-            if (isNaN(count) || count < 1 || count > 576) {
-                alert("生成数量必须是1到576之间的数字！");
-                emailCountInput.focus();
-                loader.remove();
-                return;
-            }
-            
-            if (!domain || !domain.startsWith("@")) {
-                alert("邮箱域名不能为空且必须以@符号开头");
-                domainInput.focus();
-                loader.remove();
-                return;
-            }
-
-            // 生成数据
-            const container = document.getElementById('output-container');
-            container.innerHTML = '';
-            
-            // 使用文档片段提高性能
-            const fragment = document.createDocumentFragment();
-            
-            for (let index = 0; index < count; index++) {
-                const prefix = email_prefixes[index % email_prefixes.length];
-                const div = document.createElement('div');
-                div.className = 'email-item';
-                
-                const emailText = `${prefix}${dateSuffix}${domain}`;
-                const passwordText = generatePassword();
-                
-                div.innerHTML = `
-                    <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
-                    <div class="email-info" title="${emailText} ${passwordText}">
-                        ${String(index+1).padStart(3,'0')}. ${emailText} ${passwordText}
-                    </div>
-                    <button class="copy-btn" onclick="copySingle(this)">复制</button>
-                `;
-                
-                fragment.appendChild(div);
-            }
-            
-            container.appendChild(fragment);
-            
-        } catch (error) {
-            console.error("生成失败:", error);
-            alert(`生成失败: ${error.message}`);
-        } finally {
-            loader.remove();
-        }
-    }, 50);
-}
-
-// 重置函数
-function resetDateSuffix() {
-     document.getElementById('dateSuffix').value = getCurrentDate(); 
-}
-function resetEmailDomain() {
-     document.getElementById('emailDomain').value = '@e.edu.kg'; 
-}
-function resetEmailCount() {
-     document.getElementById('emailCount').value = 100; 
-}
-
-// 初始化
-document.addEventListener('DOMContentLoaded', () => {
-    resetDateSuffix();
-    
-    // iOS输入框失焦后滚动复位
-    document.body.addEventListener('focusout', () => {
-        if (/iPhone|iPad/i.test(navigator.userAgent)) {
-            setTimeout(() => window.scrollTo(0, 0), 100);
-        }
-    });
-});
-
-// 选择功能
-function toggleSelection(checkbox) {
-    checkbox.closest('.email-item').classList.toggle('selected', checkbox.checked);
-}
-
-function selectAll() {
-    document.querySelectorAll('.email-item').forEach(item => {
-        const checkbox = item.querySelector('.checkbox');
-        checkbox.checked = true;
-        item.classList.add('selected');
-    });
-}
-
-function invertSelection() {
-    document.querySelectorAll('.email-item').forEach(item => {
-        const checkbox = item.querySelector('.checkbox');
-        checkbox.checked = !checkbox.checked;
-        item.classList.toggle('selected', checkbox.checked);
-    });
-}
-
-// 获取项目文本
-function getItemsText(selector) {
-    return Array.from(document.querySelectorAll(selector))
-        .map(div => {
-            const text = div.textContent.trim();
-            return text.replace(/^\d+\.\s+/, ''); // 移除序号
-        })
-        .filter(text => text);
-}
-
-// 复制功能
-async function copyToClipboard(text, successMsg) {
-    try {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-            showToast(successMsg);
-        } else {
-            // 兼容旧版浏览器
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            document.body.appendChild(textarea);
-            textarea.select();
-            
-            try {
-                const copied = document.execCommand('copy');
-                if (copied) {
-                    showToast(successMsg);
-                } else {
-                    throw new Error('复制失败');
-                }
-            } finally {
-                document.body.removeChild(textarea);
-            }
-        }
-    } catch (err) {
-        console.error('复制失败:', err);
-        showToast('复制失败，请手动复制', true);
-    }
-}
-
-// 显示操作提示
+// Show a temporary message (toast notification)
 function showToast(message, isError = false) {
     const toast = document.createElement('div');
     toast.style.position = 'fixed';
     toast.style.bottom = '20px';
     toast.style.left = '50%';
     toast.style.transform = 'translateX(-50%)';
-    toast.style.backgroundColor = isError ? '#f44336' : '#4CAF50';
+    toast.style.backgroundColor = isError ? '#f44336' : 'var(--primary-color)'; // Use theme color
     toast.style.color = 'white';
-    toast.style.padding = '10px 20px';
-    toast.style.borderRadius = '4px';
-    toast.style.zIndex = '1000';
-    toast.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+    toast.style.padding = '12px 25px';
+    toast.style.borderRadius = '6px';
+    toast.style.zIndex = '1001'; // Ensure it's above loading overlay potentially
+    toast.style.boxShadow = '0 4px 10px rgba(0,0,0,0.2)';
+    toast.style.textAlign = 'center';
+    toast.style.fontSize = '0.875em';
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s ease';
     toast.textContent = message;
-    
+
     document.body.appendChild(toast);
-    
+
+    // Fade in
+    requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+    });
+
+    // Fade out and remove
     setTimeout(() => {
         toast.style.opacity = '0';
-        setTimeout(() => document.body.removeChild(toast), 300);
-    }, 2000);
+        toast.addEventListener('transitionend', () => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        });
+    }, 2500); // Show for 2.5 seconds
 }
 
-// 具体复制功能
+// Show/Hide Loading Indicator
+let loadingOverlay = null;
+function showLoading() {
+    if (loadingOverlay) return; // Already shown
+    loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'loading-overlay';
+    loadingOverlay.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(loadingOverlay);
+}
+function hideLoading() {
+    if (loadingOverlay && loadingOverlay.parentNode) {
+        loadingOverlay.parentNode.removeChild(loadingOverlay);
+    }
+    loadingOverlay = null;
+}
+
+// Copy text to clipboard (async function)
+async function copyToClipboard(text, successMsg) {
+    if (!text) {
+        showToast('没有内容可复制', true);
+        return;
+    }
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            showToast(successMsg || '已复制到剪贴板');
+        } else {
+            // Fallback for insecure contexts or older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0'; // Hide it
+            document.body.appendChild(textarea);
+            textarea.select();
+            const success = document.execCommand('copy');
+            document.body.removeChild(textarea);
+            if (success) {
+                showToast(successMsg || '已复制到剪贴板 (fallback)');
+            } else {
+                throw new Error('Fallback copy command failed');
+            }
+        }
+    } catch (err) {
+        console.error('复制失败:', err);
+        showToast('复制失败，请检查浏览器权限或手动复制', true);
+    }
+}
+
+
+// --- Core Functionality ---
+
+// Adjust Date Suffix Input
+function adjustDateSuffix(delta) {
+    const input = document.getElementById('dateSuffix');
+    let currentValue = input.value.trim();
+
+    if (!/^\d{4}$/.test(currentValue)) {
+        const currentMMDD = getCurrentDateMMDD();
+        // Attempt to parse if valid, otherwise use today
+        const initialMonth = parseInt(currentValue.substring(0, 2), 10);
+        const initialDay = parseInt(currentValue.substring(2, 4), 10);
+        if (!isValidDate(initialMonth, initialDay)) {
+             input.value = currentMMDD;
+             currentValue = currentMMDD;
+        } else {
+             // Use the valid value entered by user
+             currentValue = String(initialMonth).padStart(2,'0') + String(initialDay).padStart(2,'0');
+             input.value = currentValue;
+        }
+    }
+
+    const month = parseInt(currentValue.substring(0, 2), 10);
+    const day = parseInt(currentValue.substring(2, 4), 10);
+
+    // Use a date object for calculations
+    // Set year arbitrarily, only month/day matter here
+    const date = new Date(2024, month - 1, day); // Use a potential leap year
+    date.setDate(date.getDate() + delta);
+
+    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
+    const newDay = String(date.getDate()).padStart(2, '0');
+    input.value = newMonth + newDay;
+}
+
+// Adjust Email Count Input
+function adjustEmailCount(delta) {
+    const input = document.getElementById('emailCount');
+    const min = parseInt(input.min, 10);
+    const max = parseInt(input.max, 10);
+    let currentValue = parseInt(input.value, 10);
+
+    if (isNaN(currentValue)) {
+        currentValue = 100; // Default if invalid
+    }
+
+    let newValue = currentValue + delta;
+
+    // Clamp value within min/max
+    newValue = Math.max(min, Math.min(max, newValue));
+
+    input.value = newValue;
+}
+
+// Generate Random Password (Simplified)
+function generatePassword() {
+    const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let password = '';
+    for (let i = 0; i < 8; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    // Example: Add a required character/number if needed
+    // password += '!';
+    return password;
+    // Original password logic:
+    // const allowedDigits = ['1','2','5','6','8','9'];
+    // return 'g' + Array.from({length:3},
+    //      () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
+}
+
+// Generate Email Data
+function generateData() {
+    showLoading();
+
+    // Use setTimeout to allow UI to update (show loader) before heavy work
+    setTimeout(() => {
+        try {
+            const dateSuffixInput = document.getElementById('dateSuffix');
+            const dateSuffix = dateSuffixInput.value.trim();
+            if (!/^\d{4}$/.test(dateSuffix)) {
+                showToast("日期后缀格式无效 (应为MMDD)", true);
+                dateSuffixInput.focus();
+                hideLoading();
+                return;
+            }
+            const month = parseInt(dateSuffix.substring(0, 2), 10);
+            const day = parseInt(dateSuffix.substring(2, 4), 10);
+            if (!isValidDate(month, day)) {
+                 showToast(`日期后缀无效: ${month}月 ${day}日 不存在`, true);
+                dateSuffixInput.focus();
+                hideLoading();
+                return;
+            }
+
+
+            const domainInput = document.getElementById('emailDomain');
+            const domain = domainInput.value.trim();
+            if (!domain || !domain.startsWith("@")) {
+                showToast("邮箱域名必须以@开头", true);
+                domainInput.focus();
+                hideLoading();
+                return;
+            }
+
+
+            const emailCountInput = document.getElementById('emailCount');
+            const count = parseInt(emailCountInput.value, 10);
+            const minCount = parseInt(emailCountInput.min, 10);
+            const maxCount = parseInt(emailCountInput.max, 10);
+
+            if (isNaN(count) || count < minCount || count > maxCount) {
+                showToast(`生成数量必须在 ${minCount} 和 ${maxCount} 之间`, true);
+                emailCountInput.focus();
+                hideLoading();
+                return;
+            }
+
+            const container = document.getElementById('output-container');
+            container.innerHTML = ''; // Clear previous results
+            const fragment = document.createDocumentFragment(); // Use fragment for performance
+
+            for (let index = 0; index < count; index++) {
+                const prefix = email_prefixes[index % email_prefixes.length]; // Cycle through prefixes
+                const emailAddress = `${prefix}${dateSuffix}${domain}`;
+                const password = generatePassword(); // Generate a new password for each
+
+                const div = document.createElement('div');
+                div.className = 'email-item';
+                // Add data attributes for easy access if needed later
+                div.dataset.email = emailAddress;
+                div.dataset.password = password;
+                div.dataset.index = index + 1;
+
+                div.innerHTML = `
+                    <input type="checkbox" class="checkbox" aria-label="Select item ${index + 1}" onchange="toggleSelection(this)">
+                    <div class="email-info" title="${emailAddress} ${password}">
+                        ${String(index + 1).padStart(3, '0')}. ${emailAddress} ${password}
+                    </div>
+                    <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
+                `;
+                fragment.appendChild(div);
+            }
+
+            container.appendChild(fragment);
+            showToast(`成功生成 ${count} 条数据`);
+
+        } catch (error) {
+            console.error("生成失败:", error);
+            showToast(`生成失败: ${error.message}`, true);
+        } finally {
+            hideLoading(); // Ensure loader is hidden
+        }
+    }, 50); // Small delay
+}
+
+
+// --- Reset Functions ---
+function resetDateSuffix() {
+    document.getElementById('dateSuffix').value = getCurrentDateMMDD();
+}
+function resetEmailDomain() {
+    document.getElementById('emailDomain').value = '@e.edu.kg';
+}
+function resetEmailCount() {
+    document.getElementById('emailCount').value = 100;
+}
+
+
+// --- Selection Functions ---
+function toggleSelection(checkbox) {
+    checkbox.closest('.email-item').classList.toggle('selected', checkbox.checked);
+}
+
+function selectAll() {
+    let changed = false;
+    document.querySelectorAll('#output-container .email-item').forEach(item => {
+        const checkbox = item.querySelector('.checkbox');
+        if (!checkbox.checked) {
+             checkbox.checked = true;
+             item.classList.add('selected');
+             changed = true;
+        }
+    });
+    if (!changed) showToast('所有条目已为选中状态');
+}
+
+function invertSelection() {
+     let count = 0;
+    document.querySelectorAll('#output-container .email-item').forEach(item => {
+        const checkbox = item.querySelector('.checkbox');
+        checkbox.checked = !checkbox.checked;
+        item.classList.toggle('selected', checkbox.checked);
+        count++;
+    });
+     if (count === 0) showToast('没有可反选的条目', true);
+}
+
+// Helper to get text from items (email + password)
+function getItemText(itemElement) {
+    const emailInfo = itemElement.querySelector('.email-info');
+    if (!emailInfo) return '';
+    // Extract email and password from the text content, removing the leading index number
+    return emailInfo.textContent.replace(/^\d+\.\s+/, '').trim();
+}
+
+// --- Copy Functions ---
 function copySelected() {
-    const selectedItemsText = getItemsText('.email-item.selected .email-info');
-    
-    if (selectedItemsText.length === 0) {
+    const selectedItems = document.querySelectorAll('#output-container .email-item.selected');
+    if (selectedItems.length === 0) {
         showToast('请先选择要复制的条目', true);
         return;
     }
-
-    copyToClipboard(selectedItemsText.join('\n'), `已复制 ${selectedItemsText.length} 条选中内容`);
+    const textToCopy = Array.from(selectedItems)
+                           .map(item => getItemText(item))
+                           .join('\n');
+    copyToClipboard(textToCopy, `已复制 ${selectedItems.length} 条选中内容`);
 }
 
 function copyRange() {
-    const rangeInput = document.getElementById('copyRange').value.trim();
+    const rangeInput = document.getElementById('copyRange');
+    const rangeValue = rangeInput.value.trim();
     const rangeRegex = /^(\d+)\s*-\s*(\d+)$/;
-    
-    if (!rangeRegex.test(rangeInput)) {
-        showToast('请输入正确范围格式（例: 1-5 或 001-005）', true);
-        document.getElementById('copyRange').focus();
+
+    if (!rangeRegex.test(rangeValue)) {
+        showToast('请输入正确范围格式 (例: 1-5)', true);
+        rangeInput.focus();
         return;
     }
 
-    const match = rangeInput.match(rangeRegex);
+    const match = rangeValue.match(rangeRegex);
     const start = parseInt(match[1], 10);
     const end = parseInt(match[2], 10);
-    const allItems = document.querySelectorAll('.email-info');
+
+    const allItems = document.querySelectorAll('#output-container .email-item');
     const totalItems = allItems.length;
 
     if (totalItems === 0) {
-        showToast("请先生成数据，再复制范围", true);
+        showToast("请先生成数据", true);
         return;
     }
 
-    if (start < 1 || end > totalItems || start > end) {
-        showToast(`无效范围（请输入 1 到 ${totalItems} 之间）`, true);
+    if (start < 1 || end > totalItems || start > end || start === 0 ) {
+        showToast(`无效范围 (请输入 1 到 ${totalItems} 之间, 且开始 ≤ 结束)`, true);
+        rangeInput.focus();
         return;
     }
 
+    // Indices are 0-based, range is 1-based
     const itemsToCopy = Array.from(allItems)
-        .slice(start - 1, end)
-        .map(div => div.textContent.replace(/^\d+\.\s+/, '').trim());
-        
+        .slice(start - 1, end) // end index is exclusive in slice
+        .map(item => getItemText(item));
+
     if (itemsToCopy.length > 0) {
-        copyToClipboard(itemsToCopy.join('\n'), `已复制 ${start}-${end} 范围内容`);
+        copyToClipboard(itemsToCopy.join('\n'), `已复制范围 ${start}-${end} (${itemsToCopy.length}条)`);
+    } else {
+         showToast('指定范围内没有找到条目 (可能范围有误)', true);
     }
 }
 
 function copySingle(button) {
-    const text = button.previousElementSibling.textContent
-        .replace(/^\d+\.\s+/, '').trim();
+    const itemElement = button.closest('.email-item');
+    const text = getItemText(itemElement);
     copyToClipboard(text, '已复制单条内容');
 }
 
 function copyAll() {
-    const itemsText = getItemsText('.email-info');
-    
-    if (itemsText.length === 0) {
-        showToast("没有内容可以复制。请先生成数据。", true);
+    const allItems = document.querySelectorAll('#output-container .email-item');
+    if (allItems.length === 0) {
+        showToast("没有内容可复制", true);
         return;
     }
-    
-    copyToClipboard(itemsText.join('\n'), `已复制全部 ${itemsText.length} 条内容`);
+    const textToCopy = Array.from(allItems)
+                           .map(item => getItemText(item))
+                           .join('\n');
+    copyToClipboard(textToCopy, `已复制全部 ${allItems.length} 条内容`);
 }
 
-// 导出TXT
+
+// --- Export Function ---
 function exportTXT() {
-    const itemsText = getItemsText('.email-info');
-    
-    if (itemsText.length === 0) {
-        showToast("没有内容可以导出。请先生成数据。", true);
+    const allItems = document.querySelectorAll('#output-container .email-item');
+     if (allItems.length === 0) {
+        showToast("没有内容可导出", true);
         return;
     }
+    const textToExport = Array.from(allItems)
+                             .map(item => getItemText(item))
+                             .join('\r\n'); // Use CRLF for Windows compatibility
 
-    const blob = new Blob([itemsText.join('\r\n')], {type: 'text/plain;charset=utf-8'});
+    const blob = new Blob([textToExport], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    
+
+    // Generate filename
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const domainPart = document.getElementById('emailDomain').value.replace('@','').split('.')[0];
-    a.download = `邮箱列表_${domainPart}_${dateStr}_${itemsText.length}条.txt`;
-    
+    const domainPart = (document.getElementById('emailDomain').value.split('@')[1] || 'domain').split('.')[0];
+    a.download = `邮箱列表_${domainPart}_${dateStr}_${allItems.length}条.txt`;
+
     document.body.appendChild(a);
     a.click();
-    
+
+    // Cleanup
     setTimeout(() => {
         URL.revokeObjectURL(url);
         document.body.removeChild(a);
+        showToast(`已导出 ${allItems.length} 条数据`);
     }, 100);
 }
 
-// 排序功能
+// --- Sort Function ---
 function sortData(type) {
     const container = document.getElementById('output-container');
-    const items = Array.from(container.children);
+    const items = Array.from(container.children); // Get direct children
 
-    if (items.length === 0) return;
+    if (items.length === 0) {
+        showToast("没有可排序的数据", true);
+        return;
+    }
+
+    // Detach items before sorting for potential performance gain
+    items.forEach(item => container.removeChild(item));
 
     switch (type) {
         case 'asc':
             items.sort((a, b) => {
-                const aNum = parseInt(a.querySelector('.email-info').textContent);
-                const bNum = parseInt(b.querySelector('.email-info').textContent);
+                const aNum = parseInt(a.dataset.index || '0', 10);
+                const bNum = parseInt(b.dataset.index || '0', 10);
                 return aNum - bNum;
             });
             break;
-            
         case 'desc':
             items.sort((a, b) => {
-                const aNum = parseInt(a.querySelector('.email-info').textContent);
-                const bNum = parseInt(b.querySelector('.email-info').textContent);
+                const aNum = parseInt(a.dataset.index || '0', 10);
+                const bNum = parseInt(b.dataset.index || '0', 10);
                 return bNum - aNum;
             });
             break;
-            
         case 'random':
+            // Fisher-Yates (Knuth) Shuffle
             for (let i = items.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [items[i], items[j]] = [items[j], items[i]];
@@ -963,15 +1021,54 @@ function sortData(type) {
             break;
     }
 
-    container.innerHTML = '';
-    items.forEach(item => container.appendChild(item));
+    // Re-attach sorted items using a fragment
+    const fragment = document.createDocumentFragment();
+    items.forEach(item => fragment.appendChild(item));
+    container.appendChild(fragment);
+
+    showToast(`数据已按 ${type === 'asc' ? '顺序' : type === 'desc' ? '倒序' : '随机'} 排序`);
 }
 
-// 触摸事件支持
-document.querySelectorAll('[onclick]').forEach(el => {
-    const handler = el.getAttribute('onclick');
-    el.setAttribute('ontouchstart', handler);
+
+// --- Initial Setup ---
+document.addEventListener('DOMContentLoaded', () => {
+    resetDateSuffix(); // Set initial date
+
+    // Add touchstart listeners for better responsiveness on touch devices
+    // Note: This can sometimes interfere with scrolling if not handled carefully
+    // Let's rely on the 'click' event which works well on mobile too.
+    // document.querySelectorAll('[onclick]').forEach(el => {
+    //     if (!el.hasAttribute('ontouchstart')) {
+    //        el.addEventListener('touchstart', (e) => {
+    //            // Optional: Add a visual feedback class
+    //            // e.currentTarget.classList.add('active-touch');
+    //        }, { passive: true }); // Use passive listener if not preventing default
+    //         el.addEventListener('touchend', (e) => {
+               // Optional: Remove visual feedback class
+               // e.currentTarget.classList.remove('active-touch');
+               // Execute the onclick logic programmatically
+               // Be careful with context 'this' if onclick relies on it
+               // const handler = new Function(el.getAttribute('onclick'));
+               // handler.call(el); // May need adjustment
+    //        });
+    //    }
+    // });
+
+    // iOS focus/blur scroll fix attempt (can be unreliable)
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS) {
+        document.body.addEventListener('focusout', (e) => {
+             // Only scroll if an input element lost focus
+             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                setTimeout(() => {
+                    window.scrollTo({ top: window.scrollY, behavior: 'smooth' });
+                     // console.log("iOS focusout scroll attempt");
+                }, 100); // Delay helps ensure keyboard is dismissed
+             }
+        });
+    }
 });
+
 </script>
 </body>
 </html>
