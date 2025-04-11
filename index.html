@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>元元DIY邮箱生成器</title>
     <style>
         :root {
@@ -13,6 +13,8 @@
         * {
             -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
         }
 
         body {
@@ -22,6 +24,7 @@
             background-color: #f5f5f5;
             -webkit-text-size-adjust: 100%;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
@@ -31,6 +34,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            -webkit-box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .header {
@@ -48,18 +52,31 @@
         .control-group {
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
         }
 
         .input-group {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
             flex: 1;
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
             gap: 10px;
             min-width: 0;
@@ -74,15 +91,20 @@
         /* 输入框通用样式 */
         .input-group input {
             -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
             border: 1px solid #ddd;
             border-radius: 6px;
             padding: 10px 12px;
             font-size: 14px;
             background: #fff;
+            -webkit-box-flex: 1;
+            -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
             flex-grow: 1;
             min-width: 0;
             height: 40px;
+            width: 100%;
         }
 
         /* 自定义spinner样式 */
@@ -90,8 +112,15 @@
             position: relative;
             display: -webkit-inline-box;
             display: -webkit-inline-flex;
+            display: -ms-inline-flexbox;
             display: inline-flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
+            -webkit-box-flex: 1;
+            -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
             flex-grow: 1;
             min-width: 0;
         }
@@ -109,7 +138,12 @@
             width: 24px;
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
             flex-direction: column;
             background-color: #f8f8f8;
             border-left: 1px solid #ddd;
@@ -119,8 +153,15 @@
         .spinner-btn {
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
             height: 50%;
             padding: 0;
@@ -155,11 +196,19 @@
             height: 40px;
             display: -webkit-inline-box;
             display: -webkit-inline-flex;
+            display: -ms-inline-flexbox;
             display: inline-flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
             justify-content: center;
             white-space: nowrap;
             -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
         }
 
         .btn-reset {
@@ -171,7 +220,10 @@
         .action-buttons {
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 15px;
@@ -180,6 +232,9 @@
         .btn-main {
             background-color: var(--secondary-color);
             color: white;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
             flex: 1;
             min-width: calc(50% - 5px);
         }
@@ -187,7 +242,10 @@
         .selection-tools {
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 15px;
@@ -196,14 +254,24 @@
         .range-input {
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
             gap: 8px;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
             flex: 1;
             min-width: 0;
         }
 
         .range-input input {
+            -webkit-box-flex: 1;
+            -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
             flex-grow: 1;
             min-width: 0;
         }
@@ -220,13 +288,19 @@
         .email-item {
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
             padding: 10px;
             margin: 5px 0;
             background: #f8f8f8;
             border-radius: 5px;
             -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
         }
 
@@ -238,6 +312,9 @@
         }
 
         .email-info {
+            -webkit-box-flex: 1;
+            -webkit-flex-grow: 1;
+            -ms-flex-positive: 1;
             flex-grow: 1;
             margin-right: 10px;
             font-size: 14px;
@@ -253,6 +330,8 @@
             border-radius: 4px;
             font-size: 13px;
             min-width: 60px;
+            border: none;
+            cursor: pointer;
         }
 
         .selected {
@@ -262,7 +341,10 @@
         .sort-buttons {
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 15px;
@@ -278,8 +360,15 @@
             background: rgba(255,255,255,0.7);
             display: -webkit-box;
             display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
             z-index: 1000;
         }
@@ -290,47 +379,69 @@
             border: 4px solid rgba(0,0,0,0.1);
             border-radius: 50%;
             border-top-color: var(--secondary-color);
+            -webkit-animation: spin 1s linear infinite;
             animation: spin 1s linear infinite;
         }
 
+        @-webkit-keyframes spin {
+            to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        /* iOS输入框样式修复 */
+        input, textarea {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0;
         }
 
         /* 响应式调整 */
         @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
             .container {
                 padding: 15px;
             }
-            
+
             .control-group {
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -webkit-flex-direction: column;
+                -ms-flex-direction: column;
                 flex-direction: column;
                 gap: 12px;
             }
-            
+
             .input-group {
                 width: 100%;
             }
-            
+
             .btn-main {
                 min-width: 100%;
             }
-            
+
             #output-container {
                 max-height: 40vh;
             }
         }
 
         @media (max-width: 400px) {
-            body {
-                padding: 10px;
-            }
-            
             .header h1 {
                 font-size: 20px;
             }
-            
+
             .email-info {
+                font-size: 13px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
                 font-size: 13px;
             }
         }
@@ -400,64 +511,64 @@
 <script>
 // 邮箱前缀数组
 const email_prefixes = [
-'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
-'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
-'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
-'ah','ai','aj','ak','am','an','ap','aq','ar','as',
-'at','au','av','aw','ax','ay','az','ba','bc','bd',
-'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
-'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
-'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
-'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
-'cx','cy','cz','da','db','dc','de','df','dg','dh',
-'di','dj','dk','dm','dn','dp','dq','dr','ds','dt',
-'du','dv','dw','dx','dy','dz','ea','eb','ec','ed',
-'ef','eg','eh','ei','ej','ek','em','en','ep','eq',
-'er','es','et','eu','ev','ew','ex','ey','ez','fa',
-'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm',
-'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx',
-'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi',
-'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu',
-'gv','gw','gx','gy','gz','ha','hb','hc','hd','he',
-'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr',
-'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib',
-'ic','id','ie','if','ig','ih','ij','ik','im','in',
-'ip','iq','ir','is','it','iu','iv','iw','ix','iy',
-'iz','ja','jb','jc','jd','je','jf','jg','jh','ji',
-'jk','jm','jn','jp','jq','jr','js','jt','ju','jv',
-'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf',
-'kg','kh','ki','kj','km','kn','kp','kq','kr','ks',
-'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc',
-'md','me','mf','mg','mh','mi','mj','mk','mn','mp',
-'mq','mr','ms','mt','mu','mv','mw','mx','my','mz',
-'na','nb','nc','nd','ne','nf','ng','nh','ni','nj',
-'nk','nm','np','nq','nr','ns','nt','nu','nv','nw',
-'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg',
-'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt',
-'pu','pv','pw','px','py','pz','qa','qb','qc','qd',
-'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp',
-'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra',
-'rb','rc','rd','re','rf','rg','rh','ri','rj','rk',
-'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx',
-'ry','rz','sa','sb','sc','sd','se','sf','sg','sh',
-'si','sj','sk','sm','sn','sp','sq','sr','st','su',
-'sv','sw','sx','sy','sz','ta','tb','tc','td','te',
-'tf','tg','th','ti','tj','tk','tm','tn','tp','tq',
-'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub',
-'uc','ud','ue','uf','ug','uh','ui','uj','uk','um',
-'un','up','uq','ur','us','ut','uv','uw','ux','uy',
-'uz','va','vb','vc','vd','ve','vf','vg','vh','vi',
-'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu',
-'vw','vx','vy','vz','wa','wb','wc','wd','we','wf',
-'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr',
-'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc',
-'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn',
-'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz',
-'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj',
-'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv',
-'yw','yx','yz','za','zb','zc','zd','ze','zf','zg',
-'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs',
-'zt','zu','zv','zw','zx','zy'
+    'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
+    'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
+    'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
+    'ah','ai','aj','ak','am','an','ap','aq','ar','as',
+    'at','au','av','aw','ax','ay','az','ba','bc','bd',
+    'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
+    'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
+    'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
+    'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
+    'cx','cy','cz','da','db','dc','de','df','dg','dh',
+    'di','dj','dk','dm','dn','dp','dq','dr','ds','dt',
+    'du','dv','dw','dx','dy','dz','ea','eb','ec','ed',
+    'ef','eg','eh','ei','ej','ek','em','en','ep','eq',
+    'er','es','et','eu','ev','ew','ex','ey','ez','fa',
+    'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm',
+    'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx',
+    'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi',
+    'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu',
+    'gv','gw','gx','gy','gz','ha','hb','hc','hd','he',
+    'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr',
+    'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib',
+    'ic','id','ie','if','ig','ih','ij','ik','im','in',
+    'ip','iq','ir','is','it','iu','iv','iw','ix','iy',
+    'iz','ja','jb','jc','jd','je','jf','jg','jh','ji',
+    'jk','jm','jn','jp','jq','jr','js','jt','ju','jv',
+    'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf',
+    'kg','kh','ki','kj','km','kn','kp','kq','kr','ks',
+    'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc',
+    'md','me','mf','mg','mh','mi','mj','mk','mn','mp',
+    'mq','mr','ms','mt','mu','mv','mw','mx','my','mz',
+    'na','nb','nc','nd','ne','nf','ng','nh','ni','nj',
+    'nk','nm','np','nq','nr','ns','nt','nu','nv','nw',
+    'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg',
+    'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt',
+    'pu','pv','pw','px','py','pz','qa','qb','qc','qd',
+    'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp',
+    'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra',
+    'rb','rc','rd','re','rf','rg','rh','ri','rj','rk',
+    'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx',
+    'ry','rz','sa','sb','sc','sd','se','sf','sg','sh',
+    'si','sj','sk','sm','sn','sp','sq','sr','st','su',
+    'sv','sw','sx','sy','sz','ta','tb','tc','td','te',
+    'tf','tg','th','ti','tj','tk','tm','tn','tp','tq',
+    'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub',
+    'uc','ud','ue','uf','ug','uh','ui','uj','uk','um',
+    'un','up','uq','ur','us','ut','uv','uw','ux','uy',
+    'uz','va','vb','vc','vd','ve','vf','vg','vh','vi',
+    'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu',
+    'vw','vx','vy','vz','wa','wb','wc','wd','we','wf',
+    'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr',
+    'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc',
+    'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn',
+    'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz',
+    'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj',
+    'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv',
+    'yw','yx','yz','za','zb','zc','zd','ze','zf','zg',
+    'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs',
+    'zt','zu','zv','zw','zx','zy'
 ];
 
 // 获取当前日期MMDD格式
@@ -516,14 +627,14 @@ function adjustEmailCount(delta) {
     // 限制范围
     if (newValue < 1) newValue = 1;
     if (newValue > 576) newValue = 576;
-    
+
     input.value = newValue;
 }
 
 // 生成随机密码
 function generatePassword() {
     const allowedDigits = ['1','2','5','6','8','9'];
-    return 'g' + Array.from({length:3},
+    return 'g' + Array.from({length:3}, 
          () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
 }
 
@@ -622,14 +733,14 @@ function generateData() {
 }
 
 // 重置函数
-function resetDateSuffix() { 
-    document.getElementById('dateSuffix').value = getCurrentDate(); 
+function resetDateSuffix() {
+     document.getElementById('dateSuffix').value = getCurrentDate(); 
 }
-function resetEmailDomain() { 
-    document.getElementById('emailDomain').value = '@e.edu.kg'; 
+function resetEmailDomain() {
+     document.getElementById('emailDomain').value = '@e.edu.kg'; 
 }
-function resetEmailCount() { 
-    document.getElementById('emailCount').value = 100; 
+function resetEmailCount() {
+     document.getElementById('emailCount').value = 100; 
 }
 
 // 初始化
@@ -770,7 +881,7 @@ function copyRange() {
     const itemsToCopy = Array.from(allItems)
         .slice(start - 1, end)
         .map(div => div.textContent.replace(/^\d+\.\s+/, '').trim());
-    
+        
     if (itemsToCopy.length > 0) {
         copyToClipboard(itemsToCopy.join('\n'), `已复制 ${start}-${end} 范围内容`);
     }
@@ -824,7 +935,7 @@ function exportTXT() {
 function sortData(type) {
     const container = document.getElementById('output-container');
     const items = Array.from(container.children);
-    
+
     if (items.length === 0) return;
 
     switch (type) {
