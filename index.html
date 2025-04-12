@@ -10,6 +10,11 @@
             --secondary-color: #2196F3;
         }
 
+        /* Apply box-sizing globally for easier layout */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -26,7 +31,7 @@
             overflow-wrap: break-word;
             word-wrap: break-word;
             position: relative;
-            overflow-x: hidden; /* Prevent horizontal scroll on container itself */
+            overflow-x: hidden;
         }
 
         .header {
@@ -40,6 +45,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
              font-size: 1.8em;
+             margin: 0; /* Remove default margin */
         }
 
         .control-group {
@@ -50,29 +56,28 @@
         }
 
         .input-group {
-            flex: 1;
+            flex: 1; /* Allow growing on desktop */
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 200px; /* Base min-width for desktop */
-             /* Prevent items overflowing the group itself */
-             overflow: hidden;
+            min-width: 200px;
+            overflow: hidden;
         }
 
         .input-group label {
              white-space: nowrap;
-             flex-shrink: 0; /* Prevent label shrinking */
+             flex-shrink: 0;
+             margin-right: auto; /* Push input/button to the right */
         }
 
         .input-group input {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            flex-grow: 1;
-            flex-shrink: 1; /* Allow input to shrink */
-            /* min-width: 60px; */ /* Setting min-width can cause issues, rely on flex */
-            min-width: 0; /* Critical: Allow shrinking below content size */
-            box-sizing: border-box;
+            flex-grow: 1; /* Grow to fill space */
+            flex-shrink: 1; /* Allow shrinking */
+            min-width: 0; /* Allow shrinking below content */
+            /* Remove width: auto if flex-grow is used */
         }
 
         .btn {
@@ -81,46 +86,50 @@
             border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
-            box-sizing: border-box;
             white-space: nowrap;
         }
 
         .btn-reset {
             background-color: var(--primary-color);
             color: white;
-            flex-shrink: 0; /* Prevent reset button from shrinking */
+            flex-shrink: 0;
         }
 
-        .action-buttons {
+        .action-buttons,
+        .selection-tools,
+        .sort-buttons {
             display: flex;
-            flex-wrap: nowrap;
-            gap: 2px;
-            margin-bottom: 22px;
-            overflow-x: auto; /* Allow scrolling for buttons if needed */
-            padding-bottom: 5px;
+            gap: 2px; /* Use consistent gap */
+            margin-bottom: 18px; /* Use consistent margin */
         }
+
+        .action-buttons,
+        .sort-buttons {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 5px; /* Space for potential scrollbar */
+        }
+
+        .selection-tools {
+            flex-wrap: wrap; /* Allow range input to wrap */
+        }
+
 
         .btn-main {
             background-color: var(--secondary-color);
             color: white;
-            flex: 1 0 auto;
-            min-width: 0;
+            flex: 1 0 auto; /* Allow shrinking/growing */
+            min-width: 0; /* Allow shrinking */
         }
 
-        .selection-tools {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2px;
-            margin-bottom: 18px;
-        }
 
         .range-input {
             display: flex;
             align-items: center;
             gap: 5px;
-            flex-basis: 100%;
-            min-width: 180px;
-            margin-top: 10px;
+            flex-basis: 100%; /* Force wrap */
+            min-width: 180px; /* Suggest minimum */
+            margin-top: 10px; /* Space when wrapped */
         }
 
         .range-input input {
@@ -132,8 +141,8 @@
         }
 
         .range-input .btn-main {
-             flex-grow: 0;
-             flex-shrink: 0;
+             flex-grow: 0; /* Don't grow */
+             flex-shrink: 0; /* Don't shrink */
         }
 
         #output-container {
@@ -144,6 +153,7 @@
             overflow-y: auto;
             min-height: 50px;
             background-color: #fff;
+            margin-top: 5px; /* Add small space above output */
         }
 
         .email-item {
@@ -184,14 +194,6 @@
             background-color: #e3f2fd;
         }
 
-        .sort-buttons {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 2px;
-            margin-bottom: 18px;
-            overflow-x: auto; /* Allow scrolling for buttons if needed */
-            padding-bottom: 5px;
-        }
 
         /* --- Mobile Optimizations --- */
         @media (max-width: 480px) {
@@ -213,32 +215,31 @@
                 margin-bottom: 20px;
             }
 
-            /* --- CSS Change Start --- */
             .input-group {
-                 min-width: unset;
-                 flex-wrap: nowrap; /* Keep label/input/button on one line */
-                 gap: 5px; /* Reduce gap */
+                 min-width: unset; /* Remove desktop min-width */
+                 flex-wrap: nowrap;
+                 gap: 8px; /* Slightly increase gap for touch */
+                 /* --- CSS Change Start --- */
+                 width: 100%; /* Ensure full width */
+                 /* --- CSS Change End --- */
             }
-             /* --- CSS Change End --- */
 
             .input-group label {
-                flex-shrink: 0;
-                 margin-right: 5px; /* Keep small margin */
+                /* margin-right: auto; /* Let gap handle spacing */
+                 flex-shrink: 0; /* Keep label size */
                  white-space: nowrap;
             }
 
-            /* --- CSS Change Start --- */
             .input-group input {
-                width: auto; /* Let flexbox decide width */
-                flex-grow: 1; /* Takes up available space */
-                flex-shrink: 1; /* Allows shrinking */
-                min-width: 0; /* CRITICAL: Allows shrinking below intrinsic size */
+                /* width: auto; Removed */
+                flex-grow: 1;
+                flex-shrink: 1;
+                min-width: 0;
             }
-             /* --- CSS Change End --- */
 
             .btn-reset {
                  padding: 6px 12px;
-                 flex-shrink: 0; /* Keep button size fixed */
+                 flex-shrink: 0;
             }
 
             .btn {
@@ -252,12 +253,19 @@
             }
              .range-input input {
                  padding: 6px 10px;
-                 min-width: 0; /* Also apply here for consistency */
+                 min-width: 0;
              }
 
              .action-buttons, .selection-tools, .sort-buttons {
-                 justify-content: flex-start;
+                 justify-content: flex-start; /* Align items to start */
              }
+             /* Ensure buttons in rows don't shrink too much */
+              .action-buttons .btn,
+              .selection-tools .btn,
+              .sort-buttons .btn {
+                   flex-basis: auto; /* Allow natural width */
+              }
+
 
              .email-item {
                  padding: 8px 6px;
