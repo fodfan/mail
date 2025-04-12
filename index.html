@@ -63,7 +63,7 @@
             align-items: center;
             gap: 10px;
             min-width: 0; /* Prevents overflow */
-             /* Ensure inputs don't get too small on flex lines */
+            /* Ensure inputs don't get too small on flex lines */
             min-width: 200px; /* Adjust as needed, prevents extreme squishing */
         }
 
@@ -305,6 +305,26 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Toast Message Styling */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            z-index: 1001;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 14px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            white-space: nowrap; /* Prevent wrapping */
+        }
+
+
         /* Responsive Adjustments */
         @media (max-width: 600px) {
             body {
@@ -448,7 +468,7 @@
     </div>
 
 <script>
-// 邮箱前缀数组
+// 邮箱前缀数组 (Remains unchanged)
 const email_prefixes = [
 'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
 'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
@@ -510,64 +530,44 @@ const email_prefixes = [
 'zt','zu','zv','zw','zx','zy'
 ];
 
-// Get current date MMDD format
+// --- Helper Functions (Date, Input Adjustments, Password, Loading) ---
+// These remain unchanged from your original code
 function getCurrentDate() {
     const d = new Date();
     return String(d.getMonth() + 1).padStart(2, '0') +
            String(d.getDate()).padStart(2, '0');
 }
-
-// Date validation function (simple version, assuming valid days per month roughly)
 function isValidDateMMDD(mmdd) {
     if (!/^\d{4}$/.test(mmdd)) return false;
     const month = parseInt(mmdd.substring(0, 2), 10);
     const day = parseInt(mmdd.substring(2, 4), 10);
     if (month < 1 || month > 12 || day < 1 || day > 31) return false;
-    // Basic check, could be refined for specific month lengths
     if ([4, 6, 9, 11].includes(month) && day > 30) return false;
     if (month === 2 && day > 29) return false; // Allow 29 for simplicity
     return true;
 }
-
-
-// Adjust Date Suffix
 function adjustDateSuffix(delta) {
     const input = document.getElementById('dateSuffix');
     let currentValue = input.value;
-
-    // If empty or invalid, set to current date
     if (!isValidDateMMDD(currentValue)) {
         resetDateSuffix();
-        currentValue = getCurrentDate(); // Use the reset value
+        currentValue = getCurrentDate();
     }
-
     const month = parseInt(currentValue.substring(0, 2), 10);
     const day = parseInt(currentValue.substring(2, 4), 10);
-
-    // Calculate new date
-    // Use a fixed year (non-leap) for consistency in calculation across years
-    const date = new Date(2023, month - 1, day);
+    const date = new Date(2023, month - 1, day); // Use a fixed non-leap year for consistency
     date.setDate(date.getDate() + delta);
-
-    // Format new date
     const newMonth = String(date.getMonth() + 1).padStart(2, '0');
     const newDay = String(date.getDate()).padStart(2, '0');
     input.value = newMonth + newDay;
 }
-
-// Adjust Email Count
 function adjustEmailCount(delta) {
     const input = document.getElementById('emailCount');
     let currentValue = parseInt(input.value, 10) || 100;
     let newValue = currentValue + delta;
-
-    // Clamp range
     newValue = Math.max(1, Math.min(newValue, 576));
-
     input.value = newValue;
 }
-
-// Generate Random Password
 function generatePassword() {
     const allowedDigits = ['1','2','5','6','8','9'];
     let password = 'g';
@@ -576,26 +576,18 @@ function generatePassword() {
     }
     return password + '88';
 }
-
-// Show Loading Spinner
 function showLoading() {
-    // Check if loader already exists
     if (document.querySelector('.loading-overlay')) return;
-
     const loader = document.createElement('div');
     loader.className = 'loading-overlay';
     loader.innerHTML = '<div class="spinner"></div>';
     document.body.appendChild(loader);
-    // Return the loader element so it can be removed
     return loader;
 }
-
-// Remove Loading Spinner
 function hideLoading(loader) {
     if (loader && loader.parentNode) {
         loader.parentNode.removeChild(loader);
     } else {
-        // Fallback if loader reference is lost
         const existingLoader = document.querySelector('.loading-overlay');
         if (existingLoader) {
             existingLoader.parentNode.removeChild(existingLoader);
@@ -603,63 +595,47 @@ function hideLoading(loader) {
     }
 }
 
-
-// Generate Data Main Function
+// --- Generate Data --- (Unchanged)
 function generateData() {
-    const loader = showLoading(); // Show loader and get reference
-
-    // Use setTimeout to allow UI update (show loader) before heavy work
+    const loader = showLoading();
     setTimeout(() => {
         let success = false;
         try {
             const dateSuffixInput = document.getElementById('dateSuffix');
             const dateSuffix = dateSuffixInput.value;
-
-            // Validate date format
             if (!isValidDateMMDD(dateSuffix)) {
                 alert("日期后缀格式无效，应为MMDD（例如 0721）。请修正或点击'恢复'。");
                 dateSuffixInput.focus();
-                hideLoading(loader); // Hide loader on error
+                hideLoading(loader);
                 return;
             }
-
             const domainInput = document.getElementById('emailDomain');
             const domain = domainInput.value.trim();
             const emailCountInput = document.getElementById('emailCount');
             const count = parseInt(emailCountInput.value, 10);
-
-            // Validate count
             if (isNaN(count) || count < 1 || count > 576) {
                 alert("生成数量必须是1到576之间的数字！");
                 emailCountInput.focus();
                 hideLoading(loader);
                 return;
             }
-
-            // Validate domain
             if (!domain || !domain.startsWith("@")) {
                 alert("邮箱域名不能为空且必须以@符号开头");
                 domainInput.focus();
                 hideLoading(loader);
                 return;
             }
-
             const container = document.getElementById('output-container');
-            container.innerHTML = ''; // Clear previous results
-
-            // Use DocumentFragment for performance
+            container.innerHTML = '';
             const fragment = document.createDocumentFragment();
-
             for (let index = 0; index < count; index++) {
                 const prefix = email_prefixes[index % email_prefixes.length];
                 const div = document.createElement('div');
                 div.className = 'email-item';
-
                 const emailText = `${prefix}${dateSuffix}${domain}`;
                 const passwordText = generatePassword();
                 const fullText = `${emailText} ${passwordText}`;
                 const displayIndex = String(index + 1).padStart(3, '0');
-
                 div.innerHTML = `
                     <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
                     <div class="email-info" title="${fullText}">
@@ -667,28 +643,22 @@ function generateData() {
                     </div>
                     <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
                 `;
-                // Store raw text for easier access later
                 div.dataset.fullText = fullText;
                 div.dataset.index = displayIndex;
-
                 fragment.appendChild(div);
             }
-
             container.appendChild(fragment);
             success = true;
-
         } catch (error) {
             console.error("生成失败:", error);
             alert(`生成失败: ${error.message}`);
         } finally {
-            // Ensure loader is always hidden, even on error
              hideLoading(loader);
         }
-    }, 50); // Small delay
+    }, 50);
 }
 
-
-// Reset Functions
+// --- Reset Functions --- (Unchanged)
 function resetDateSuffix() {
     document.getElementById('dateSuffix').value = getCurrentDate();
 }
@@ -699,51 +669,45 @@ function resetEmailCount() {
     document.getElementById('emailCount').value = 100;
 }
 
-// Initial Setup on DOM Load
+// --- Initial Setup --- (Unchanged)
 document.addEventListener('DOMContentLoaded', () => {
-    resetDateSuffix(); // Set initial date
-
-    // iOS input focus scroll fix
+    resetDateSuffix();
     document.body.addEventListener('focusout', (event) => {
-        // Check if the focusout occurred on an input/textarea
         if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
             if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream) {
-                // Delay slightly to allow keyboard to potentially hide
-                setTimeout(() => {
-                    window.scrollTo(0, 0);
-                }, 100);
+                setTimeout(() => { window.scrollTo(0, 0); }, 100);
             }
         }
     });
-
-    // Add touchstart listeners for better mobile responsiveness on buttons with onclick
-    // Note: Modern browsers often handle this well, but explicit touchstart can feel faster
+    // Add touchstart listeners - This part remains the same, but be aware
+    // it *could* subtly affect event timing on some devices.
     document.querySelectorAll('[onclick]').forEach(el => {
-        // Avoid adding duplicate listeners if script runs multiple times
         if (!el.hasAttribute('data-touch-listener-added')) {
             const handlerString = el.getAttribute('onclick');
             if (handlerString) {
-                // Create a function from the string
-                 // Using Function constructor is generally safer than eval
-                const handlerFunc = new Function(handlerString);
-                 el.addEventListener('touchstart', (e) => {
-                    // Basic handling: prevent default if it's just a click action
-                    // More complex logic might be needed depending on the action
-                    e.preventDefault();
-                    handlerFunc.call(el, e); // Call the original onclick logic
-                 }, { passive: false }); // Need passive: false to call preventDefault
-                 el.setAttribute('data-touch-listener-added', 'true');
+                try {
+                    const handlerFunc = new Function(handlerString);
+                     el.addEventListener('touchstart', (e) => {
+                        // Prevent default ONLY if it's likely just a click action
+                        // Check if the element is a button or has specific classes?
+                        if (el.tagName === 'BUTTON') {
+                             e.preventDefault();
+                        }
+                        handlerFunc.call(el, e);
+                     }, { passive: false }); // Needed for preventDefault
+                     el.setAttribute('data-touch-listener-added', 'true');
+                } catch (e) {
+                    console.error("Error creating function from onclick:", handlerString, e);
+                }
             }
         }
     });
-
 });
 
-// Selection Functions
+// --- Selection Functions --- (Unchanged)
 function toggleSelection(checkbox) {
     checkbox.closest('.email-item').classList.toggle('selected', checkbox.checked);
 }
-
 function selectAll() {
     let changed = false;
     document.querySelectorAll('#output-container .email-item').forEach(item => {
@@ -756,7 +720,6 @@ function selectAll() {
     });
     if (!changed) showToast('所有项目已经为选中状态');
 }
-
 function invertSelection() {
     const items = document.querySelectorAll('#output-container .email-item');
     if (items.length === 0) {
@@ -769,101 +732,97 @@ function invertSelection() {
         item.classList.toggle('selected', checkbox.checked);
     });
 }
-
-// Get Text from Selected Items (using dataset for cleaner text)
 function getItemsText(selector) {
     return Array.from(document.querySelectorAll(selector))
-        .map(div => div.dataset.fullText) // Use stored text
-        .filter(text => text); // Filter out any potential undefined/empty
+        .map(div => div.dataset.fullText)
+        .filter(text => text);
 }
 
-// --- Copy Functions ---
-
-// Display Toast Message
+// --- Toast Function --- (Unchanged)
 function showToast(message, isError = false) {
-    // Remove existing toast first
     const existingToast = document.querySelector('.toast-message');
     if (existingToast) {
         existingToast.remove();
     }
-
     const toast = document.createElement('div');
-    toast.className = 'toast-message'; // Add class for potential removal
-    toast.style.position = 'fixed';
-    toast.style.bottom = '30px'; // Increased bottom margin
-    toast.style.left = '50%';
-    toast.style.transform = 'translateX(-50%)';
-    toast.style.backgroundColor = isError ? 'rgba(244, 67, 54, 0.9)' : 'rgba(76, 175, 80, 0.9)'; // Use rgba for slight transparency
-    toast.style.color = 'white';
-    toast.style.padding = '12px 25px'; // Increased padding
-    toast.style.borderRadius = '8px'; // More rounded corners
-    toast.style.zIndex = '1001'; // Ensure it's above loader
-    toast.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
-    toast.style.fontSize = '14px'; // Slightly larger font
-    toast.style.textAlign = 'center';
-    toast.style.opacity = '0'; // Start invisible for fade-in
-    toast.style.transition = 'opacity 0.3s ease-in-out'; // Smooth fade
+    toast.className = 'toast-message';
+    toast.style.backgroundColor = isError ? 'rgba(244, 67, 54, 0.9)' : 'rgba(76, 175, 80, 0.9)';
     toast.textContent = message;
-
     document.body.appendChild(toast);
-
-    // Force reflow to enable transition
-    getComputedStyle(toast).opacity;
-    toast.style.opacity = '1'; // Fade in
-
+    getComputedStyle(toast).opacity; // Trigger reflow
+    toast.style.opacity = '1';
     setTimeout(() => {
-        toast.style.opacity = '0'; // Fade out
+        toast.style.opacity = '0';
         setTimeout(() => {
-            if (toast.parentNode) { // Check if still in DOM
+            if (toast.parentNode) {
                  document.body.removeChild(toast);
             }
-        }, 300); // Remove after fade out
-    }, 2500); // Increased display time
+        }, 300);
+    }, 2500);
 }
 
-
-// Core Clipboard Function
+// --- Core Clipboard Function (REFINED FALLBACK) ---
 async function copyToClipboard(text, successMsg) {
     if (!text) {
         showToast('没有内容可复制', true);
         return;
     }
     try {
+        // Use modern API if available (requires HTTPS/secure context)
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(text);
             showToast(successMsg || '已复制到剪贴板');
-        } else {
-            // Fallback for http or older browsers
+        }
+        // Fallback for HTTP or older/problematic browsers
+        else {
             const textarea = document.createElement('textarea');
             textarea.value = text;
-            textarea.style.position = 'fixed'; // Prevent scrolling page
-            textarea.style.top = '-9999px';
+            // Prevent keyboard from showing on mobile
+            textarea.setAttribute('readonly', '');
+            // Style to be invisible and off-screen
+            textarea.style.position = 'fixed';
             textarea.style.left = '-9999px';
+            textarea.style.top = '-9999px';
+            textarea.style.opacity = '0';
+            textarea.style.pointerEvents = 'none'; // Prevent interaction
+
             document.body.appendChild(textarea);
-            textarea.focus();
+
+            // Select the text
             textarea.select();
+            // Use setSelectionRange as a potential backup/enhancement for select()
+            textarea.setSelectionRange(0, textarea.value.length); // Select all content
+
+            let successful = false;
             try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast(successMsg || '已复制到剪贴板 (fallback)');
-                } else {
-                    throw new Error('Fallback copy failed');
-                }
+                // Attempt the copy command
+                successful = document.execCommand('copy');
             } catch (err) {
-                 console.error('Fallback Copy error:', err);
-                 showToast('复制失败，请手动复制', true);
+                 console.error('document.execCommand error:', err);
+                 successful = false; // Ensure successful is false on error
             } finally {
+                 // Clean up the textarea
                  document.body.removeChild(textarea);
+            }
+
+            // Report success or failure based on the result of execCommand
+            if (successful) {
+                showToast(successMsg || '已复制到剪贴板 (fallback)');
+            } else {
+                // This is where the user's reported error likely originates
+                console.error('Fallback copy command failed.');
+                showToast('复制失败，请检查浏览器权限或手动复制', true);
             }
         }
     } catch (err) {
-        console.error('Copy error:', err);
+        // Catch errors from navigator.clipboard or unexpected issues
+        console.error('Overall copy error:', err);
         showToast('复制失败，请检查浏览器权限或手动复制', true);
     }
 }
 
 
-// Specific Copy Actions
+// --- Specific Copy Actions --- (Unchanged logic, uses refined copyToClipboard)
 function copySelected() {
     const selectedItems = document.querySelectorAll('.email-item.selected');
     if (selectedItems.length === 0) {
@@ -875,55 +834,43 @@ function copySelected() {
                                    .join('\n');
     copyToClipboard(selectedItemsText, `已复制 ${selectedItems.length} 条选中内容`);
 }
-
 function copyRange() {
     const rangeInput = document.getElementById('copyRange').value.trim();
     const rangeRegex = /^(\d+)\s*-\s*(\d+)$/;
-
     if (!rangeRegex.test(rangeInput)) {
         showToast('请输入正确范围格式（例: 1-5 或 001-005）', true);
         document.getElementById('copyRange').focus();
         return;
     }
-
     const match = rangeInput.match(rangeRegex);
     const start = parseInt(match[1], 10);
     const end = parseInt(match[2], 10);
     const allItems = document.querySelectorAll('#output-container .email-item');
     const totalItems = allItems.length;
-
     if (totalItems === 0) {
         showToast("请先生成数据，再复制范围", true);
         return;
     }
-
      if (start < 1 || end > totalItems || start > end) {
-         // Corrected error message format string
          showToast(`无效范围（请输入 1 到 ${totalItems} 之间，且开始不大于结束）`, true);
          document.getElementById('copyRange').focus();
          return;
      }
-
-
     const itemsToCopy = Array.from(allItems)
-        .slice(start - 1, end) // slice uses 0-based index, end is exclusive
+        .slice(start - 1, end)
         .map(item => item.dataset.fullText)
         .join('\n');
-
     if (itemsToCopy) {
         copyToClipboard(itemsToCopy, `已复制 ${start}-${end} 范围内容 (${end - start + 1}条)`);
     } else {
          showToast('范围内没有找到项目', true);
     }
 }
-
-
 function copySingle(button) {
     const item = button.closest('.email-item');
     const textToCopy = item.dataset.fullText;
     copyToClipboard(textToCopy, '已复制单条内容');
 }
-
 function copyAll() {
     const allItems = document.querySelectorAll('#output-container .email-item');
     if (allItems.length === 0) {
@@ -936,7 +883,7 @@ function copyAll() {
     copyToClipboard(itemsText, `已复制全部 ${allItems.length} 条内容`);
 }
 
-// Export TXT
+// --- Export TXT --- (Unchanged)
 function exportTXT() {
     const allItems = document.querySelectorAll('#output-container .email-item');
      if (allItems.length === 0) {
@@ -945,21 +892,16 @@ function exportTXT() {
     }
     const itemsText = Array.from(allItems)
                          .map(item => item.dataset.fullText)
-                         .join('\r\n'); // Use Windows line endings for better Notepad compatibility
-
+                         .join('\r\n'); // Use Windows line endings
     const blob = new Blob([itemsText], {type: 'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const domainPart = document.getElementById('emailDomain').value.replace('@','').split('.')[0] || 'domain';
     a.download = `邮箱列表_${domainPart}_${dateStr}_${allItems.length}条.txt`;
-
     document.body.appendChild(a);
     a.click();
-
-    // Cleanup
     setTimeout(() => {
         URL.revokeObjectURL(url);
         document.body.removeChild(a);
@@ -967,56 +909,34 @@ function exportTXT() {
     }, 100);
 }
 
-
-// --- Sort Function ---
+// --- Sort Function --- (Unchanged)
 function sortData(type) {
     const container = document.getElementById('output-container');
-    // Get items as an array to sort
     const items = Array.from(container.children);
-
     if (items.length === 0) {
         showToast('没有内容可以排序', true);
         return;
     }
-
-    // Sorting logic
     switch (type) {
         case 'asc':
-            items.sort((a, b) => {
-                const aIndex = parseInt(a.dataset.index, 10);
-                const bIndex = parseInt(b.dataset.index, 10);
-                return aIndex - bIndex;
-            });
+            items.sort((a, b) => parseInt(a.dataset.index, 10) - parseInt(b.dataset.index, 10));
             break;
-
         case 'desc':
-             items.sort((a, b) => {
-                const aIndex = parseInt(a.dataset.index, 10);
-                const bIndex = parseInt(b.dataset.index, 10);
-                return bIndex - aIndex;
-            });
+             items.sort((a, b) => parseInt(b.dataset.index, 10) - parseInt(a.dataset.index, 10));
             break;
-
         case 'random':
-            // Fisher-Yates (Knuth) Shuffle
             for (let i = items.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [items[i], items[j]] = [items[j], items[i]]; // Swap
+                [items[i], items[j]] = [items[j], items[i]];
             }
             break;
         default:
-             console.warn("未知排序类型:", type);
-             return; // Do nothing if type is unknown
+             return;
     }
-
-    // Re-append sorted items
-    // Clear container first efficiently
     container.innerHTML = '';
-    // Append sorted items using a fragment for potential performance gain
     const fragment = document.createDocumentFragment();
     items.forEach(item => fragment.appendChild(item));
     container.appendChild(fragment);
-
     showToast(`列表已按 ${type === 'asc' ? '顺序' : type === 'desc' ? '倒序' : '随机'} 排序`);
 }
 
