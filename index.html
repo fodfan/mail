@@ -25,10 +25,8 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow-wrap: break-word;
             word-wrap: break-word;
-             /* Helps contain absolutely positioned children if needed later */
             position: relative;
-            /* Prevent content like buttons slightly overflowing due to box model issues */
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevent horizontal scroll on container itself */
         }
 
         .header {
@@ -41,7 +39,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-             /* Adjust base font size if needed */
              font-size: 1.8em;
         }
 
@@ -57,21 +54,24 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 200px;
+            min-width: 200px; /* Base min-width for desktop */
+             /* Prevent items overflowing the group itself */
+             overflow: hidden;
         }
 
         .input-group label {
              white-space: nowrap;
+             flex-shrink: 0; /* Prevent label shrinking */
         }
 
         .input-group input {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            /* Let flexbox handle width distribution better */
-            /* width: 120px; */
-            flex-grow: 1; /* Allow input to take space */
-            min-width: 60px; /* Prevent input from becoming too small */
+            flex-grow: 1;
+            flex-shrink: 1; /* Allow input to shrink */
+            /* min-width: 60px; */ /* Setting min-width can cause issues, rely on flex */
+            min-width: 0; /* Critical: Allow shrinking below content size */
             box-sizing: border-box;
         }
 
@@ -95,8 +95,8 @@
             display: flex;
             flex-wrap: nowrap;
             gap: 2px;
-            margin-bottom: 22px; /* Increased spacing */
-            overflow-x: auto;
+            margin-bottom: 22px;
+            overflow-x: auto; /* Allow scrolling for buttons if needed */
             padding-bottom: 5px;
         }
 
@@ -111,7 +111,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 2px;
-            margin-bottom: 18px; /* Increased spacing */
+            margin-bottom: 18px;
         }
 
         .range-input {
@@ -124,15 +124,13 @@
         }
 
         .range-input input {
-            /* width: 100px; */ /* Let flex handle it */
-            padding: 5px 8px; /* Adjust padding slightly */
+            padding: 5px 8px;
             border: 1px solid #ddd;
             border-radius: 3px;
             flex-grow: 1;
-            min-width: 0; /* Crucial: Allows input to shrink below its content size */
+            min-width: 0;
         }
 
-         /* Ensure range button doesn't cause overflow */
         .range-input .btn-main {
              flex-grow: 0;
              flex-shrink: 0;
@@ -144,18 +142,18 @@
             padding: 15px;
             max-height: 400px;
             overflow-y: auto;
-            min-height: 50px; /* Give it some initial height */
-            background-color: #fff; /* Ensure background */
+            min-height: 50px;
+            background-color: #fff;
         }
 
         .email-item {
             display: flex;
             align-items: center;
-            padding: 10px 8px; /* Slightly reduce padding */
+            padding: 10px 8px;
             margin: 5px 0;
             background: #f8f8f8;
             border-radius: 5px;
-            gap: 8px; /* Slightly reduce gap */
+            gap: 8px;
         }
 
         .checkbox {
@@ -169,18 +167,17 @@
             overflow: hidden;
             text-overflow: ellipsis;
             min-width: 0;
-             /* Prevent text wrapping inside info */
              white-space: nowrap;
-             font-size: 0.95em; /* Slightly smaller font for emails */
+             font-size: 0.95em;
         }
 
         .copy-btn {
             background-color: var(--primary-color);
             color: white;
-            padding: 5px 10px; /* Slightly reduce padding */
+            padding: 5px 10px;
             border-radius: 3px;
             flex-shrink: 0;
-            font-size: 0.9em; /* Slightly smaller font */
+            font-size: 0.9em;
         }
 
         .selected {
@@ -191,77 +188,83 @@
             display: flex;
             flex-wrap: nowrap;
             gap: 2px;
-            margin-bottom: 18px; /* Consistent spacing */
-            overflow-x: auto;
+            margin-bottom: 18px;
+            overflow-x: auto; /* Allow scrolling for buttons if needed */
             padding-bottom: 5px;
         }
 
         /* --- Mobile Optimizations --- */
         @media (max-width: 480px) {
             body {
-                margin: 10px; /* Reduce body margin */
+                margin: 10px;
             }
             .container {
-                padding: 15px; /* Reduce container padding */
-                margin: 0; /* Use full width potentially */
+                padding: 15px;
+                margin: 0;
             }
 
-            /* Reduce title size */
             .header h1 {
-                font-size: 1.4em; /* Smaller font */
+                font-size: 1.4em;
             }
 
             .control-group {
                 flex-direction: column;
-                gap: 12px; /* Adjust vertical gap between input rows */
-                margin-bottom: 20px; /* Adjust margin */
+                gap: 12px;
+                margin-bottom: 20px;
             }
 
-            /* Ensure input fields take full width correctly */
+            /* --- CSS Change Start --- */
             .input-group {
-                 min-width: unset; /* Remove min-width constraint */
-                 flex-wrap: nowrap; /* Prevent label/input wrapping */
+                 min-width: unset;
+                 flex-wrap: nowrap; /* Keep label/input/button on one line */
+                 gap: 5px; /* Reduce gap */
             }
+             /* --- CSS Change End --- */
+
             .input-group label {
-                flex-shrink: 0; /* Prevent label shrinking */
-                 margin-right: 5px;
-            }
-            .input-group input {
-                width: auto; /* Let flexbox handle width */
-                flex-grow: 1;
-                min-width: 50px; /* Ensure minimum touchable size */
+                flex-shrink: 0;
+                 margin-right: 5px; /* Keep small margin */
+                 white-space: nowrap;
             }
 
-            /* Make reset buttons less tall */
+            /* --- CSS Change Start --- */
+            .input-group input {
+                width: auto; /* Let flexbox decide width */
+                flex-grow: 1; /* Takes up available space */
+                flex-shrink: 1; /* Allows shrinking */
+                min-width: 0; /* CRITICAL: Allows shrinking below intrinsic size */
+            }
+             /* --- CSS Change End --- */
+
             .btn-reset {
                  padding: 6px 12px;
+                 flex-shrink: 0; /* Keep button size fixed */
             }
 
             .btn {
-                 padding: 8px 15px; /* Adjust general button padding */
-                 font-size: 0.95em; /* Slightly smaller font */
+                 padding: 8px 15px;
+                 font-size: 0.95em;
             }
 
-            /* Adjust range input layout */
             .range-input {
                  gap: 5px;
-                 margin-top: 8px; /* Adjust top margin */
+                 margin-top: 8px;
             }
              .range-input input {
-                 padding: 6px 10px; /* Consistent padding */
+                 padding: 6px 10px;
+                 min-width: 0; /* Also apply here for consistency */
              }
 
              .action-buttons, .selection-tools, .sort-buttons {
-                 /* Ensure buttons can shrink if needed */
                  justify-content: flex-start;
              }
 
              .email-item {
-                 padding: 8px 6px; /* Further reduce padding */
-                 gap: 5px; /* Further reduce gap */
+                 padding: 8px 6px;
+                 gap: 5px;
              }
              .email-info {
-                 font-size: 0.9em; /* Further reduce font size */
+                 font-size: 0.9em;
              }
              .copy-btn {
                  padding: 4px 8px;
@@ -402,7 +405,7 @@ function generateData() {
         const inputCount = document.getElementById('emailCount').value;
         const count = parseInt(inputCount);
 
-        if (isNaN(count) || count > 576 || count < 1) { // Added isNaN check
+        if (isNaN(count) || count > 576 || count < 1) {
             alert("生成数量必须是1-576之间的数字！");
             return;
         }
@@ -412,7 +415,7 @@ function generateData() {
         }
 
         const container = document.getElementById('output-container');
-        const fragment = document.createDocumentFragment(); // Use fragment for performance
+        const fragment = document.createDocumentFragment();
         for (let index = 0; index < count; index++) {
             const prefix = email_prefixes[index % email_prefixes.length];
             const emailUser = `${prefix}${dateSuffix}`;
@@ -428,11 +431,11 @@ function generateData() {
             `;
             fragment.appendChild(itemDiv);
         }
-        container.innerHTML = ''; // Clear previous content
-        container.appendChild(fragment); // Append new content
+        container.innerHTML = '';
+        container.appendChild(fragment);
 
     } catch (error) {
-        console.error("Generation error:", error); // Log error for debugging
+        console.error("Generation error:", error);
         alert(`生成失败: ${error.message}`);
     }
 }
@@ -441,11 +444,8 @@ function resetDateSuffix() { document.getElementById('dateSuffix').value = getCu
 function resetEmailDomain() { document.getElementById('emailDomain').value = '@e.edu.kg'; }
 function resetEmailCount() { document.getElementById('emailCount').value = 100; }
 
-// Initialize date suffix on load
 document.addEventListener('DOMContentLoaded', () => {
     resetDateSuffix();
-    // Optional: Generate initial data on load?
-    // generateData();
 });
 
 
@@ -455,7 +455,7 @@ function toggleSelection(checkbox) {
 }
 
 function selectAll() {
-    document.querySelectorAll('#output-container .checkbox').forEach(checkbox => { // Scope selector
+    document.querySelectorAll('#output-container .checkbox').forEach(checkbox => {
         if (!checkbox.checked) {
             checkbox.checked = true;
             checkbox.dispatchEvent(new Event('change'));
@@ -464,14 +464,14 @@ function selectAll() {
 }
 
 function invertSelection() {
-    document.querySelectorAll('#output-container .checkbox').forEach(checkbox => { // Scope selector
+    document.querySelectorAll('#output-container .checkbox').forEach(checkbox => {
         checkbox.checked = !checkbox.checked;
         checkbox.dispatchEvent(new Event('change'));
     });
 }
 
 function getSelectedItemsText() {
-    return Array.from(document.querySelectorAll('#output-container .checkbox:checked')) // Scope selector
+    return Array.from(document.querySelectorAll('#output-container .checkbox:checked'))
         .map(checkbox => {
             const emailInfoDiv = checkbox.nextElementSibling;
             if (emailInfoDiv && emailInfoDiv.classList.contains('email-info')) {
@@ -485,49 +485,39 @@ function getSelectedItemsText() {
 
 function copySelected() {
     const selectedItems = getSelectedItemsText();
-
     if (selectedItems.length === 0) {
         alert('请先选择要复制的条目！');
         return;
     }
-
     copyToClipboard(selectedItems.join('\n'), `已复制 ${selectedItems.length} 条选中内容`);
 }
 
 function copyRange() {
     const rangeInput = document.getElementById('copyRange').value.trim();
-    // Updated regex to better match example (e.g., 001-005) or simpler 1-5
     if (!/^\d{1,3}-\d{1,3}$/.test(rangeInput)) {
         alert('请输入正确格式（例: 1-5 或 001-005）');
         return;
     }
-
     const [startStr, endStr] = rangeInput.split('-');
     const start = parseInt(startStr, 10);
     const end = parseInt(endStr, 10);
-
     const totalItems = document.querySelectorAll('#output-container .email-info').length;
-
     if (isNaN(start) || isNaN(end) || start < 1 || end > totalItems || start > end) {
          alert(`无效范围 (应在 1-${totalItems} 之间，且开始不大于结束)`);
         return;
     }
-
     const items = Array.from(document.querySelectorAll('#output-container .email-info'))
         .slice(start - 1, end)
         .map(div => {
              const match = div.textContent.match(/^\d+\.\s*(.*)/);
              return match ? match[1] : div.textContent;
          });
-
     if (items.length === 0) {
          alert(`范围 ${start}-${end} 内没有数据可复制。`);
          return;
     }
-
     copyToClipboard(items.join('\n'), `已复制 ${start}-${end} (${items.length} 条) 内容`);
 }
-
 
 function copySingle(button) {
     const emailInfoDiv = button.previousElementSibling;
@@ -544,7 +534,6 @@ function copyAll() {
              const match = div.textContent.match(/^\d+\.\s*(.*)/);
              return match ? match[1] : div.textContent;
          });
-
     if (items.length === 0) {
          alert('没有内容可复制！');
          return;
@@ -591,19 +580,16 @@ function fallbackCopyTextToClipboard(text, successMsg) {
     document.body.removeChild(textarea);
 }
 
-
 function exportTXT() {
     const items = Array.from(document.querySelectorAll('#output-container .email-info'))
         .map(div => {
              const match = div.textContent.match(/^\d+\.\s*(.*)/);
              return match ? match[1] : div.textContent;
          });
-
     if (items.length === 0) {
          alert('没有内容可导出！');
          return;
     }
-
     const blob = new Blob([items.join('\n')], {type: 'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -620,18 +606,14 @@ function exportTXT() {
 function sortData(type) {
     const container = document.getElementById('output-container');
     const emailItems = Array.from(container.children);
-
     if (emailItems.length === 0) return;
-
     let sortedItems;
-
     const getIndex = (item) => {
         const infoDiv = item.querySelector('.email-info');
         if (!infoDiv) return 0;
         const match = infoDiv.textContent.match(/^(\d+)\./);
         return match ? parseInt(match[1], 10) : 0;
     };
-
     switch (type) {
         case 'asc':
             sortedItems = emailItems.sort((a, b) => getIndex(a) - getIndex(b));
@@ -649,7 +631,6 @@ function sortData(type) {
         default:
             return;
     }
-
     const fragment = document.createDocumentFragment();
     sortedItems.forEach(item => fragment.appendChild(item));
     container.innerHTML = '';
