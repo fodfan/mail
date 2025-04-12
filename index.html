@@ -7,10 +7,9 @@
     <style>
         :root {
             --primary-color: #4CAF50;
-            --secondary-color: #2196F3;
+            --secondary-color: #2196F3; /* Kept for reference, but not used for buttons now */
         }
 
-        /* Apply box-sizing globally for easier layout */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -45,7 +44,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
              font-size: 1.8em;
-             margin: 0; /* Remove default margin */
+             margin: 0;
         }
 
         .control-group {
@@ -56,7 +55,7 @@
         }
 
         .input-group {
-            flex: 1; /* Allow growing on desktop */
+            flex: 1;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -67,59 +66,66 @@
         .input-group label {
              white-space: nowrap;
              flex-shrink: 0;
-             margin-right: auto; /* Push input/button to the right */
+             margin-right: auto;
         }
 
         .input-group input {
-            padding: 8px 12px;
+            padding: 8px 12px; /* Input padding remains different */
             border: 1px solid #ddd;
-            border-radius: 5px;
-            flex-grow: 1; /* Grow to fill space */
-            flex-shrink: 1; /* Allow shrinking */
-            min-width: 0; /* Allow shrinking below content */
-            /* Remove width: auto if flex-grow is used */
+            border-radius: 5px; /* Input radius remains different */
+            flex-grow: 1;
+            flex-shrink: 1;
+            min-width: 0;
         }
 
+        /* --- Unified Button Styles Start --- */
         .btn {
-            padding: 10px 20px;
+            /* padding: 10px 20px;  Replaced */
+            padding: 5px 10px; /* Match copy-btn */
             border: none;
-            border-radius: 5px;
+            /* border-radius: 5px; Replaced */
+            border-radius: 3px; /* Match copy-btn */
             cursor: pointer;
             transition: 0.3s;
             white-space: nowrap;
+            background-color: var(--primary-color); /* Default Green */
+            color: white; /* Default White Text */
+            /* font-size: 1em; Set below */
+            font-size: 0.9em; /* Match copy-btn */
+            flex: 0 0 auto; /* Don't grow or shrink, size based on content/padding */
         }
 
         .btn-reset {
-            background-color: var(--primary-color);
-            color: white;
-            flex-shrink: 0;
+            /* background-color: var(--primary-color); Inherited from .btn */
+            /* color: white; Inherited from .btn */
+            /* flex-shrink: 0; Handled by flex in .btn */
         }
+
+        .btn-main {
+            /* background-color: var(--secondary-color); Removed, inherit green */
+            /* color: white; Inherited from .btn */
+            /* flex: 1 0 auto; Replaced by flex in .btn */
+            /* min-width: 0; Handled by flex in .btn */
+        }
+         /* --- Unified Button Styles End --- */
 
         .action-buttons,
         .selection-tools,
         .sort-buttons {
             display: flex;
-            gap: 2px; /* Use consistent gap */
-            margin-bottom: 18px; /* Use consistent margin */
+            gap: 5px; /* Increased gap slightly for small buttons */
+            margin-bottom: 18px;
         }
 
         .action-buttons,
         .sort-buttons {
             flex-wrap: nowrap;
             overflow-x: auto;
-            padding-bottom: 5px; /* Space for potential scrollbar */
+            padding-bottom: 5px;
         }
 
         .selection-tools {
-            flex-wrap: wrap; /* Allow range input to wrap */
-        }
-
-
-        .btn-main {
-            background-color: var(--secondary-color);
-            color: white;
-            flex: 1 0 auto; /* Allow shrinking/growing */
-            min-width: 0; /* Allow shrinking */
+            flex-wrap: wrap;
         }
 
 
@@ -127,23 +133,21 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            flex-basis: 100%; /* Force wrap */
-            min-width: 180px; /* Suggest minimum */
-            margin-top: 10px; /* Space when wrapped */
+            flex-basis: 100%;
+            min-width: 180px;
+            margin-top: 10px;
         }
 
         .range-input input {
-            padding: 5px 8px;
+            padding: 5px 8px; /* Keep input padding */
             border: 1px solid #ddd;
-            border-radius: 3px;
+            border-radius: 3px; /* Match button radius */
             flex-grow: 1;
             min-width: 0;
+            font-size: 0.9em; /* Match button font size */
         }
 
-        .range-input .btn-main {
-             flex-grow: 0; /* Don't grow */
-             flex-shrink: 0; /* Don't shrink */
-        }
+        /* .range-input .btn-main styles are now covered by .btn */
 
         #output-container {
             border: 2px solid #eee;
@@ -153,7 +157,7 @@
             overflow-y: auto;
             min-height: 50px;
             background-color: #fff;
-            margin-top: 5px; /* Add small space above output */
+            margin-top: 5px;
         }
 
         .email-item {
@@ -181,13 +185,15 @@
              font-size: 0.95em;
         }
 
+        /* This specific class might become redundant but kept for clarity */
         .copy-btn {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 3px;
-            flex-shrink: 0;
-            font-size: 0.9em;
+            /* Styles now primarily handled by .btn */
+            /* background-color: var(--primary-color); */
+            /* color: white; */
+            /* padding: 5px 10px; */
+            /* border-radius: 3px; */
+            /* flex-shrink: 0; */
+            /* font-size: 0.9em; */
         }
 
         .selected {
@@ -216,56 +222,48 @@
             }
 
             .input-group {
-                 min-width: unset; /* Remove desktop min-width */
+                 min-width: unset;
                  flex-wrap: nowrap;
-                 gap: 8px; /* Slightly increase gap for touch */
-                 /* --- CSS Change Start --- */
-                 width: 100%; /* Ensure full width */
-                 /* --- CSS Change End --- */
+                 gap: 8px;
+                 width: 100%;
             }
 
             .input-group label {
-                /* margin-right: auto; /* Let gap handle spacing */
-                 flex-shrink: 0; /* Keep label size */
+                 flex-shrink: 0;
                  white-space: nowrap;
             }
 
             .input-group input {
-                /* width: auto; Removed */
                 flex-grow: 1;
                 flex-shrink: 1;
                 min-width: 0;
+                padding: 6px 10px; /* Mobile input padding */
             }
 
-            .btn-reset {
-                 padding: 6px 12px;
-                 flex-shrink: 0;
-            }
-
+            /* Unified Mobile Button Style */
             .btn {
-                 padding: 8px 15px;
-                 font-size: 0.95em;
+                 /* padding: 8px 15px; Replaced */
+                 /* font-size: 0.95em; Replaced */
+                 padding: 4px 8px; /* Match mobile copy-btn */
+                 font-size: 0.85em; /* Match mobile copy-btn */
             }
+
+            /* No specific overrides needed for .btn-reset or .btn-main */
 
             .range-input {
                  gap: 5px;
                  margin-top: 8px;
             }
              .range-input input {
-                 padding: 6px 10px;
+                 padding: 4px 8px; /* Match mobile button padding */
                  min-width: 0;
+                 font-size: 0.85em; /* Match mobile button font */
              }
 
              .action-buttons, .selection-tools, .sort-buttons {
-                 justify-content: flex-start; /* Align items to start */
+                 justify-content: flex-start;
+                 gap: 4px; /* Adjust gap for smaller buttons */
              }
-             /* Ensure buttons in rows don't shrink too much */
-              .action-buttons .btn,
-              .selection-tools .btn,
-              .sort-buttons .btn {
-                   flex-basis: auto; /* Allow natural width */
-              }
-
 
              .email-item {
                  padding: 8px 6px;
@@ -274,10 +272,11 @@
              .email-info {
                  font-size: 0.9em;
              }
-             .copy-btn {
-                 padding: 4px 8px;
-                 font-size: 0.85em;
-             }
+             /* copy-btn inherits mobile style from .btn */
+             /* .copy-btn { */
+                 /* padding: 4px 8px; */
+                 /* font-size: 0.85em; */
+             /* } */
         }
     </style>
 </head>
@@ -291,37 +290,44 @@
             <div class="input-group">
                 <label>日期后缀</label>
                 <input type="text" id="dateSuffix">
+                <!-- Button now uses unified style -->
                 <button class="btn btn-reset" onclick="resetDateSuffix()">恢复</button>
             </div>
             <div class="input-group">
                 <label>邮箱域名</label>
                 <input type="text" id="emailDomain" value="@e.edu.kg">
+                 <!-- Button now uses unified style -->
                 <button class="btn btn-reset" onclick="resetEmailDomain()">恢复</button>
             </div>
             <div class="input-group">
                 <label>生成数量</label>
                 <input type="number" id="emailCount" value="100" min="1" max="576">
+                 <!-- Button now uses unified style -->
                 <button class="btn btn-reset" onclick="resetEmailCount()">恢复</button>
             </div>
         </div>
 
         <div class="action-buttons">
+             <!-- Buttons now use unified style -->
             <button class="btn btn-main" onclick="generateData()">生成数据</button>
             <button class="btn btn-main" onclick="copyAll()">复制全部</button>
             <button class="btn btn-main" onclick="exportTXT()">导出TXT</button>
         </div>
 
         <div class="selection-tools">
+             <!-- Buttons now use unified style -->
             <button class="btn btn-main" onclick="selectAll()">全选</button>
             <button class="btn btn-main" onclick="invertSelection()">反选</button>
             <button class="btn btn-main" onclick="copySelected()">复制选中</button>
             <div class="range-input">
                 <input type="text" id="copyRange" placeholder="例: 001-005">
+                 <!-- Button now uses unified style -->
                 <button class="btn btn-main" onclick="copyRange()">复制范围</button>
             </div>
         </div>
 
         <div class="sort-buttons">
+             <!-- Buttons now use unified style -->
             <button class="btn btn-main" onclick="sortData('asc')">顺序排序</button>
             <button class="btn btn-main" onclick="sortData('desc')">倒序排序</button>
             <button class="btn btn-main" onclick="sortData('random')">随机排序</button>
@@ -432,10 +438,11 @@ function generateData() {
 
             const itemDiv = document.createElement('div');
             itemDiv.className = 'email-item';
+            // Use the base .btn class for the copy button now
             itemDiv.innerHTML = `
                 <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
                 <div class="email-info">${String(index+1).padStart(3,'0')}. ${fullEmail} ${password}</div>
-                <button class="copy-btn" onclick="copySingle(this)">复制</button>
+                <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
             `;
             fragment.appendChild(itemDiv);
         }
