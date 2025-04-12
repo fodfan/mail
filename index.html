@@ -196,18 +196,25 @@
             }
 
             /* Style range input container for mobile */
-            .range-input-container {
-                  /* display: flex, gap: 10px already set */
-                  /* Can stack if needed on very small screens */
-                  flex-wrap: wrap; /* Allow wrap if needed */
-            }
+            /* Keep it as a row by default unless screen is tiny */
+             .range-input-container {
+                  /* It's already display: flex, gap: 10px */
+             }
              .range-input-container input[type="text"] {
-                  min-width: 100px;
-                  flex: 1 1 150px; /* Allow grow/shrink, base width */
+                  min-width: 100px; /* Reduce min-width slightly */
              }
-             .range-input-container .btn-main {
-                  flex: 1 0 auto; /* Allow button to take space if wrapped */
-             }
+
+            /* Optional: Stack range input below 320px */
+            /* @media (max-width: 320px) {
+                 .range-input-container {
+                     flex-direction: column;
+                     align-items: stretch;
+                 }
+                 .range-input-container input[type="text"],
+                 .range-input-container .btn-main {
+                     width: 100%;
+                 }
+            } */
 
 
             .email-info {
@@ -271,7 +278,7 @@
     </div>
 
 <script>
-// Javascript constants and utility functions (no changes)
+// Javascript remains the same as the previous correct version
 const email_prefixes = [
 'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
 'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
@@ -345,7 +352,6 @@ function generatePassword() {
          () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
 }
 
-// Main UI functions (generateData, resets, etc. - no changes)
 function generateData() {
     try {
         const dateSuffix = document.getElementById('dateSuffix').value;
@@ -540,18 +546,15 @@ function fallbackCopyToClipboard(text, successMsg) {
          console.error('Fallback copy failed:', err);
          alert('复制失败，您的浏览器可能不支持此操作。');
      } finally {
-        // Ensure removal even if execCommand fails
-        if (document.body.contains(textarea)) {
-            document.body.removeChild(textarea);
-        }
+        document.body.removeChild(textarea);
      }
 }
 
-// -------- MODIFIED FUNCTION --------
+
 function exportTXT() {
-    const items = Array.from(document.querySelectorAll('#output-container .email-info')) // Scope query
+    const items = Array.from(document.querySelectorAll('#output-container .email-info'))
         .map(div => div.textContent.split('. ')[1])
-        .filter(text => text); // Filter out potential issues
+        .filter(text => text);
 
     if (items.length === 0) {
         alert('没有内容可导出。');
@@ -559,40 +562,17 @@ function exportTXT() {
     }
 
     const textContent = items.join('\n');
-    const blob = new Blob([textContent], {type: 'text/plain;charset=utf-8'}); // Specify charset
+    const blob = new Blob([textContent], {type: 'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-
-    // Make the link invisible and append it
-    a.style.display = 'none';
     a.href = url;
-    // Generate filename with current date
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g,'');
     a.download = `emails_${dateStr}.txt`;
     document.body.appendChild(a);
-
-    try {
-        a.click(); // Programmatically click the link to trigger the download
-    } catch (e) {
-        console.error("Error triggering download click:", e);
-        alert("导出失败，浏览器可能阻止了自动下载。");
-    }
-
-
-    // **Crucial Fix for Mobile:** Delay the cleanup slightly
-    // This gives the browser (especially mobile ones) more time to initiate the download
-    // before the object URL is revoked and the link is removed.
-    setTimeout(() => {
-        // Ensure the link is still in the body before removing
-        if (document.body.contains(a)) {
-             document.body.removeChild(a);
-        }
-        // Revoke the object URL to free up memory
-        URL.revokeObjectURL(url);
-    }, 100); // 100ms delay, adjust if necessary
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
-// -------- END OF MODIFIED FUNCTION --------
-
 
 function sortData(type) {
     const container = document.getElementById('output-container');
