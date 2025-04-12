@@ -5,410 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>元元DIY邮箱生成器</title>
     <style>
-        :root {
-            --primary-color: #4CAF50;
-            --secondary-color: #2196F3;
+        :root {--primary-color: #4CAF50;--secondary-color: #2196F3;}
+        * {-webkit-tap-highlight-color: transparent;box-sizing: border-box;}
+        body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;margin: 0;padding: 20px;background-color: #f5f5f5;-webkit-text-size-adjust: 100%;-webkit-font-smoothing: antialiased;}
+        .container {max-width: 800px;margin: 0 auto;background: white;padding: 20px;border-radius: 10px;box-shadow: 0 2px 10px rgba(0,0,0,0.1);}
+        .header {text-align: center;color: var(--primary-color);margin-bottom: 20px;}
+        .header h1 {font-size: 24px;margin: 0;font-weight: 600;}
+        .control-group {display: flex;gap: 15px;margin-bottom: 20px;flex-wrap: wrap;align-items: center;}
+        .input-group {flex: 1;display: flex;align-items: center;gap: 10px;min-width: 0;min-width: 200px;}
+        .input-group label {font-size: 14px;white-space: nowrap;color: #555;}
+        .input-group input {-webkit-appearance: none;appearance: none;border: 1px solid #ddd;border-radius: 6px;padding: 10px 12px;font-size: 14px;background: #fff;flex-grow: 1;min-width: 0;height: 40px;}
+        .input-with-spinners {position: relative;display: inline-flex;align-items: center;flex-grow: 1;min-width: 0;}
+        .input-with-spinners input {padding-right: 30px;width: 100%;}
+        .spinner-buttons {position: absolute;right: 1px;top: 1px;bottom: 1px;width: 24px;display: flex;flex-direction: column;background-color: #f8f8f8;border-left: 1px solid #ddd;border-radius: 0 5px 5px 0;}
+        .spinner-btn {display: flex;justify-content: center;align-items: center;height: 50%;padding: 0;border: none;background: none;font-size: 10px;color: #555;cursor: pointer;}
+        .spinner-btn:active {background-color: #eee;}
+        .input-with-spinners input[type="number"] {-moz-appearance: textfield;}
+        .input-with-spinners input[type="number"]::-webkit-outer-spin-button,
+        .input-with-spinners input[type="number"]::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
+        .btn {padding: 10px 16px;border: none;border-radius: 6px;font-size: 14px;font-weight: 500;height: 40px;display: inline-flex;align-items: center;justify-content: center;white-space: nowrap;-webkit-tap-highlight-color: transparent;cursor: pointer;}
+        .btn-reset {background-color: var(--primary-color);color: white;min-width: 60px;flex-shrink: 0;}
+        .action-buttons,
+        .selection-tools,
+        .sort-buttons {display: flex;flex-wrap: wrap;gap: 12px;margin-bottom: 15px;}
+        .btn-main {background-color: var(--secondary-color);color: white;flex: 1 1 auto;min-width: 0;}
+        .selection-tools {align-items: center;}
+        .range-input {display: flex;align-items: center;gap: 8px;flex: 1 1 auto;min-width: 180px;}
+        .range-input input {-webkit-appearance: none;appearance: none;border: 1px solid #ddd;border-radius: 6px;padding: 10px 12px;font-size: 14px;background: #fff;height: 40px;flex-grow: 1;min-width: 80px;}
+        .range-input button {flex-shrink: 0;}
+        #output-container {border: 1px solid #eee;border-radius: 8px;padding: 10px;max-height: 50vh;overflow-y: auto;-webkit-overflow-scrolling: touch;}
+        .email-item {display: flex;align-items: center;padding: 10px;margin: 5px 0;background: #f8f8f8;border-radius: 5px;-webkit-user-select: none;user-select: none;}
+        .checkbox {margin-right: 10px;width: 18px;height: 18px;accent-color: var(--primary-color);flex-shrink: 0;}
+        .email-info {flex-grow: 1;margin-right: 10px;font-size: 14px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;min-width: 0;}
+        .copy-btn {background-color: var(--primary-color);color: white;padding: 6px 12px;border-radius: 4px;font-size: 13px;min-width: 60px;flex-shrink: 0;height: auto;}
+        .selected {background-color: #e3f2fd;}
+        .loading-overlay {position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: rgba(255,255,255,0.7);display: flex;justify-content: center;align-items: center;z-index: 1000;}
+        .spinner {width: 40px;height: 40px;border: 4px solid rgba(0,0,0,0.1);border-radius: 50%;border-top-color: var(--secondary-color);animation: spin 1s linear infinite;}
+        @keyframes spin {to { transform: rotate(360deg); }}
+        @media (max-width: 600px) {
+            body {padding: 15px;}
+            .container {padding: 15px;}
+            .control-group {flex-direction: column;gap: 12px;}
+            .input-group {width: 100%;min-width: 0;}
+            .action-buttons .btn-main,
+            .sort-buttons .btn-main {flex: 1 1 auto;min-width: 70px;}
+            .selection-tools > .btn-main:nth-child(-n+3) {flex: 1 1 auto;min-width: 70px;}
+            .selection-tools .range-input {flex: 1 1 auto;min-width: 180px;}
+            #output-container {max-height: 45vh;}
         }
-
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
+        @media (max-width: 400px) {
+            body {padding: 10px;}
+            .header h1 {font-size: 20px;}
+            .email-info {font-size: 13px;}
+            .action-buttons .btn-main,
+            .sort-buttons .btn-main,
+            .selection-tools > .btn-main:nth-child(-n+3) {min-width: 60px;}
+            .selection-tools .range-input {min-width: 150px;}
+            .btn {padding: 8px 12px;font-size: 13px;}
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            -webkit-text-size-adjust: 100%;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        .manual-copy-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .control-group {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .input-group {
-            flex: 1;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 0; /* Prevents overflow */
-            /* Ensure inputs don't get too small on flex lines */
-            min-width: 200px; /* Adjust as needed, prevents extreme squishing */
-        }
-
-        .input-group label {
-            font-size: 14px;
-            white-space: nowrap;
-            color: #555;
-        }
-
-        /* 输入框通用样式 */
-        .input-group input {
-            -webkit-appearance: none;
-            appearance: none;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 10px 12px;
-            font-size: 14px;
-            background: #fff;
-            flex-grow: 1;
-            min-width: 0; /* Allow shrinking */
-            height: 40px;
-        }
-
-        /* 自定义spinner样式 */
-        .input-with-spinners {
-            position: relative;
-            display: -webkit-inline-box;
-            display: -webkit-inline-flex;
-            display: inline-flex;
-            align-items: center;
-            flex-grow: 1;
-            min-width: 0; /* Allow shrinking */
-        }
-
-        .input-with-spinners input {
-            padding-right: 30px;
-            width: 100%; /* Fill the spinner container */
-        }
-
-        .spinner-buttons {
-            position: absolute;
-            right: 1px;
-            top: 1px;
-            bottom: 1px;
-            width: 24px;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            flex-direction: column;
-            background-color: #f8f8f8;
-            border-left: 1px solid #ddd;
-            border-radius: 0 5px 5px 0;
-        }
-
-        .spinner-btn {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50%;
-            padding: 0;
-            border: none;
-            background: none;
-            font-size: 10px;
-            color: #555;
-            cursor: pointer;
-        }
-
-        .spinner-btn:active {
-            background-color: #eee;
-        }
-
-        /* 数字输入框特殊样式 */
-        .input-with-spinners input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        .input-with-spinners input[type="number"]::-webkit-outer-spin-button,
-        .input-with-spinners input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* 按钮通用样式 */
-        .btn {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            height: 40px;
-            display: -webkit-inline-box;
-            display: -webkit-inline-flex;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            -webkit-tap-highlight-color: transparent;
-            cursor: pointer; /* Add pointer cursor */
-        }
-
-        .btn-reset {
-            background-color: var(--primary-color);
-            color: white;
-            min-width: 60px; /* Keep minimum width for reset buttons */
-            flex-shrink: 0; /* Prevent reset buttons from shrinking */
-        }
-
-        /* Button Group Containers */
-        .action-buttons,
-        .selection-tools,
-        .sort-buttons {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            flex-wrap: wrap; /* Allow wrapping on very small screens */
-            gap: 12px; /* Increased spacing between buttons */
-            margin-bottom: 15px;
-        }
-
-        .btn-main {
-            background-color: var(--secondary-color);
-            color: white;
-            flex: 1 1 auto; /* Allow grow, shrink, auto basis */
-            min-width: 0; /* Allow shrinking below content size if needed */
-        }
-
-        .selection-tools {
-            align-items: center; /* Align items vertically */
-        }
-
-        .range-input {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            align-items: center;
-            gap: 8px; /* Keep gap inside range input smaller */
-            flex: 1 1 auto; /* Allow grow/shrink */
-            min-width: 180px; /* Ensure range input + button is usable */
-        }
-
-        .range-input input {
-            -webkit-appearance: none;
-            appearance: none;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 10px 12px;
-            font-size: 14px;
-            background: #fff;
-            height: 40px;
-            flex-grow: 1;
-            min-width: 80px; /* Min width for the input field itself */
-        }
-        .range-input button { /* Style the button inside range-input */
-             flex-shrink: 0; /* Prevent button from shrinking too much */
-        }
-
-        #output-container {
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 10px;
-            max-height: 50vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .email-item {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin: 5px 0;
-            background: #f8f8f8;
-            border-radius: 5px;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        .checkbox {
-            margin-right: 10px;
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-color);
-            flex-shrink: 0; /* Prevent checkbox shrinking */
-        }
-
-        .email-info {
-            flex-grow: 1;
-            margin-right: 10px;
-            font-size: 14px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-width: 0; /* Allow shrinking */
-        }
-
-        .copy-btn {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 13px;
-            min-width: 60px;
-            flex-shrink: 0; /* Prevent copy button shrinking */
-            height: auto; /* Override general .btn height if needed */
-        }
-
-        .selected {
-            background-color: #e3f2fd;
-        }
-
-        /* Loading Animation */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255,255,255,0.7);
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0,0,0,0.1);
-            border-radius: 50%;
-            border-top-color: var(--secondary-color);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Toast Message Styling */
-        .toast-message {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(76, 175, 80, 0.9);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
             z-index: 1001;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-size: 14px;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            white-space: nowrap; /* Prevent wrapping */
+            max-width: 90%;
         }
-
-
-        /* Responsive Adjustments */
-        @media (max-width: 600px) {
-            body {
-                 padding: 15px; /* Slightly reduce padding */
-            }
-            .container {
-                padding: 15px;
-            }
-
-            .control-group {
-                flex-direction: column; /* Stack controls vertically */
-                gap: 12px;
-            }
-
-            .input-group {
-                width: 100%; /* Make input groups full width */
-                min-width: 0; /* Override previous min-width */
-            }
-
-             /* --- Button Layout Optimization --- */
-            .action-buttons .btn-main,
-            .sort-buttons .btn-main {
-                flex: 1 1 auto; /* Allow shrinking/growing */
-                min-width: 70px; /* Prevent extreme shrinking, adjust if text overflows */
-                /* Ensure base styles don't force wrapping */
-            }
-
-             /* Target only the first 3 buttons for row layout */
-             /* Using direct child selectors might be more robust if structure changes */
-            .selection-tools > .btn-main:nth-child(1),
-            .selection-tools > .btn-main:nth-child(2),
-            .selection-tools > .btn-main:nth-child(3) {
-                 flex: 1 1 auto;
-                 min-width: 70px;
-            }
-
-            .selection-tools .range-input {
-                 flex: 1 1 auto; /* Allow range input to flex */
-                 min-width: 180px; /* Ensure it's usable */
-                 /* It might wrap below the first 3 buttons if space is tight */
-            }
-             /* --- End Button Layout Optimization --- */
-
-            #output-container {
-                max-height: 45vh; /* Adjust height */
-            }
+        .manual-copy-textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-family: monospace;
         }
-
-        @media (max-width: 400px) {
-            body {
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .email-info {
-                font-size: 13px;
-            }
-
-            /* Further reduce min-width on very small screens if needed */
-            .action-buttons .btn-main,
-            .sort-buttons .btn-main,
-            .selection-tools > .btn-main:nth-child(-n+3) {
-                 min-width: 60px;
-            }
-             .selection-tools .range-input {
-                 min-width: 150px; /* Reduce min-width for range input */
-             }
-
-             .btn {
-                 padding: 8px 12px; /* Slightly reduce button padding */
-                 font-size: 13px;
-             }
+        .manual-copy-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>元元DIY邮箱生成器</h1>
-        </div>
-
+        <div class="header"><h1>元元DIY邮箱生成器</h1></div>
         <div class="control-group">
             <div class="input-group">
                 <label for="dateSuffix">日期后缀</label>
@@ -438,15 +123,11 @@
                 <button class="btn btn-reset" onclick="resetEmailCount()">恢复</button>
             </div>
         </div>
-
-        <!-- Button Row 1 -->
         <div class="action-buttons">
             <button class="btn btn-main" onclick="generateData()">生成数据</button>
             <button class="btn btn-main" onclick="copyAll()">复制全部</button>
             <button class="btn btn-main" onclick="exportTXT()">导出TXT</button>
         </div>
-
-        <!-- Button Row 2 (with range input) -->
         <div class="selection-tools">
             <button class="btn btn-main" onclick="selectAll()">全选</button>
             <button class="btn btn-main" onclick="invertSelection()">反选</button>
@@ -456,490 +137,277 @@
                 <button class="btn btn-main" onclick="copyRange()">复制范围</button>
             </div>
         </div>
-
-        <!-- Button Row 3 -->
         <div class="sort-buttons">
             <button class="btn btn-main" onclick="sortData('asc')">顺序排序</button>
             <button class="btn btn-main" onclick="sortData('desc')">倒序排序</button>
             <button class="btn btn-main" onclick="sortData('random')">随机排序</button>
         </div>
-
         <div id="output-container"></div>
     </div>
 
-<script>
-// 邮箱前缀数组 (Remains unchanged)
-const email_prefixes = [
-'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
-'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
-'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
-'ah','ai','aj','ak','am','an','ap','aq','ar','as',
-'at','au','av','aw','ax','ay','az','ba','bc','bd',
-'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
-'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
-'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
-'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
-'cx','cy','cz','da','db','dc','de','df','dg','dh',
-'di','dj','dk','dm','dn','dp','dq','dr','ds','dt',
-'du','dv','dw','dx','dy','dz','ea','eb','ec','ed',
-'ef','eg','eh','ei','ej','ek','em','en','ep','eq',
-'er','es','et','eu','ev','ew','ex','ey','ez','fa',
-'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm',
-'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx',
-'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi',
-'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu',
-'gv','gw','gx','gy','gz','ha','hb','hc','hd','he',
-'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr',
-'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib',
-'ic','id','ie','if','ig','ih','ij','ik','im','in',
-'ip','iq','ir','is','it','iu','iv','iw','ix','iy',
-'iz','ja','jb','jc','jd','je','jf','jg','jh','ji',
-'jk','jm','jn','jp','jq','jr','js','jt','ju','jv',
-'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf',
-'kg','kh','ki','kj','km','kn','kp','kq','kr','ks',
-'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc',
-'md','me','mf','mg','mh','mi','mj','mk','mn','mp',
-'mq','mr','ms','mt','mu','mv','mw','mx','my','mz',
-'na','nb','nc','nd','ne','nf','ng','nh','ni','nj',
-'nk','nm','np','nq','nr','ns','nt','nu','nv','nw',
-'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg',
-'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt',
-'pu','pv','pw','px','py','pz','qa','qb','qc','qd',
-'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp',
-'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra',
-'rb','rc','rd','re','rf','rg','rh','ri','rj','rk',
-'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx',
-'ry','rz','sa','sb','sc','sd','se','sf','sg','sh',
-'si','sj','sk','sm','sn','sp','sq','sr','st','su',
-'sv','sw','sx','sy','sz','ta','tb','tc','td','te',
-'tf','tg','th','ti','tj','tk','tm','tn','tp','tq',
-'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub',
-'uc','ud','ue','uf','ug','uh','ui','uj','uk','um',
-'un','up','uq','ur','us','ut','uv','uw','ux','uy',
-'uz','va','vb','vc','vd','ve','vf','vg','vh','vi',
-'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu',
-'vw','vx','vy','vz','wa','wb','wc','wd','we','wf',
-'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr',
-'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc',
-'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn',
-'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz',
-'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj',
-'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv',
-'yw','yx','yz','za','zb','zc','zd','ze','zf','zg',
-'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs',
-'zt','zu','zv','zw','zx','zy'
-];
+    <script>
+        const email_prefixes = ['aa','bb','cc','dd','ee','ff','gg','hh','ii','jj','kk','mm','nn','pp','qq','rr','ss','tt','uu','vv','ww','xx','yy','zz','ab','ac','ad','ae','af','ag','ah','ai','aj','ak','am','an','ap','aq','ar','as','at','au','av','aw','ax','ay','az','ba','bc','bd','be','bf','bg','bh','bi','bj','bk','bm','bn','bp','bq','br','bs','bt','bu','bv','bw','bx','by','bz','ca','cb','cd','ce','cf','cg','ch','ci','cj','ck','cm','cn','cp','cq','cr','cs','ct','cu','cv','cw','cx','cy','cz','da','db','dc','de','df','dg','dh','di','dj','dk','dm','dn','dp','dq','dr','ds','dt','du','dv','dw','dx','dy','dz','ea','eb','ec','ed','ef','eg','eh','ei','ej','ek','em','en','ep','eq','er','es','et','eu','ev','ew','ex','ey','ez','fa','fb','fc','fd','fe','fg','fh','fi','fj','fk','fm','fn','fp','fq','fr','fs','ft','fu','fv','fw','fx','fy','fz','ga','gb','gc','gd','ge','gf','gh','gi','gj','gk','gm','gn','gp','gq','gr','gs','gt','gu','gv','gw','gx','gy','gz','ha','hb','hc','hd','he','hf','hg','hi','hj','hk','hm','hn','hp','hq','hr','hs','ht','hu','hv','hw','hx','hy','hz','ia','ib','ic','id','ie','if','ig','ih','ij','ik','im','in','ip','iq','ir','is','it','iu','iv','iw','ix','iy','iz','ja','jb','jc','jd','je','jf','jg','jh','ji','jk','jm','jn','jp','jq','jr','js','jt','ju','jv','jw','jx','jy','jz','ka','kb','kc','kd','ke','kf','kg','kh','ki','kj','km','kn','kp','kq','kr','ks','kt','ku','kv','kw','kx','ky','kz','ma','mb','mc','md','me','mf','mg','mh','mi','mj','mk','mn','mp','mq','mr','ms','mt','mu','mv','mw','mx','my','mz','na','nb','nc','nd','ne','nf','ng','nh','ni','nj','nk','nm','np','nq','nr','ns','nt','nu','nv','nw','nx','ny','nz','pa','pb','pc','pd','pe','pf','pg','ph','pi','pj','pk','pm','pn','pq','pr','ps','pt','pu','pv','pw','px','py','pz','qa','qb','qc','qd','qe','qf','qg','qh','qi','qj','qk','qm','qn','qp','qr','qs','qt','qu','qv','qw','qx','qy','qz','ra','rb','rc','rd','re','rf','rg','rh','ri','rj','rk','rm','rn','rp','rq','rs','rt','ru','rv','rw','rx','ry','rz','sa','sb','sc','sd','se','sf','sg','sh','si','sj','sk','sm','sn','sp','sq','sr','st','su','sv','sw','sx','sy','sz','ta','tb','tc','td','te','tf','tg','th','ti','tj','tk','tm','tn','tp','tq','tr','ts','tu','tv','tw','tx','ty','tz','ua','ub','uc','ud','ue','uf','ug','uh','ui','uj','uk','um','un','up','uq','ur','us','ut','uv','uw','ux','uy','uz','va','vb','vc','vd','ve','vf','vg','vh','vi','vj','vk','vm','vn','vp','vq','vr','vs','vt','vu','vw','vx','vy','vz','wa','wb','wc','wd','we','wf','wg','wh','wi','wj','wk','wm','wn','wp','wq','wr','ws','wt','wu','wv','wx','wy','wz','xa','xb','xc','xd','xe','xf','xg','xh','xi','xj','xk','xm','xn','xp','xq','xr','xs','xt','xu','xv','xw','xy','xz','ya','yb','yc','yd','ye','yf','yg','yh','yi','yj','yk','ym','yn','yp','yq','yr','ys','yt','yu','yv','yw','yx','yz','za','zb','zc','zd','ze','zf','zg','zh','zi','zj','zk','zm','zn','zp','zq','zr','zs','zt','zu','zv','zw','zx','zy'];
 
-// --- Helper Functions (Date, Input Adjustments, Password, Loading) ---
-// These remain unchanged from your original code
-function getCurrentDate() {
-    const d = new Date();
-    return String(d.getMonth() + 1).padStart(2, '0') +
-           String(d.getDate()).padStart(2, '0');
-}
-function isValidDateMMDD(mmdd) {
-    if (!/^\d{4}$/.test(mmdd)) return false;
-    const month = parseInt(mmdd.substring(0, 2), 10);
-    const day = parseInt(mmdd.substring(2, 4), 10);
-    if (month < 1 || month > 12 || day < 1 || day > 31) return false;
-    if ([4, 6, 9, 11].includes(month) && day > 30) return false;
-    if (month === 2 && day > 29) return false; // Allow 29 for simplicity
-    return true;
-}
-function adjustDateSuffix(delta) {
-    const input = document.getElementById('dateSuffix');
-    let currentValue = input.value;
-    if (!isValidDateMMDD(currentValue)) {
-        resetDateSuffix();
-        currentValue = getCurrentDate();
-    }
-    const month = parseInt(currentValue.substring(0, 2), 10);
-    const day = parseInt(currentValue.substring(2, 4), 10);
-    const date = new Date(2023, month - 1, day); // Use a fixed non-leap year for consistency
-    date.setDate(date.getDate() + delta);
-    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
-    const newDay = String(date.getDate()).padStart(2, '0');
-    input.value = newMonth + newDay;
-}
-function adjustEmailCount(delta) {
-    const input = document.getElementById('emailCount');
-    let currentValue = parseInt(input.value, 10) || 100;
-    let newValue = currentValue + delta;
-    newValue = Math.max(1, Math.min(newValue, 576));
-    input.value = newValue;
-}
-function generatePassword() {
-    const allowedDigits = ['1','2','5','6','8','9'];
-    let password = 'g';
-    for (let i = 0; i < 3; i++) {
-        password += allowedDigits[Math.floor(Math.random() * allowedDigits.length)];
-    }
-    return password + '88';
-}
-function showLoading() {
-    if (document.querySelector('.loading-overlay')) return;
-    const loader = document.createElement('div');
-    loader.className = 'loading-overlay';
-    loader.innerHTML = '<div class="spinner"></div>';
-    document.body.appendChild(loader);
-    return loader;
-}
-function hideLoading(loader) {
-    if (loader && loader.parentNode) {
-        loader.parentNode.removeChild(loader);
-    } else {
-        const existingLoader = document.querySelector('.loading-overlay');
-        if (existingLoader) {
-            existingLoader.parentNode.removeChild(existingLoader);
+        function getCurrentDate() {
+            const d = new Date();
+            return String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
         }
-    }
-}
 
-// --- Generate Data --- (Unchanged)
-function generateData() {
-    const loader = showLoading();
-    setTimeout(() => {
-        let success = false;
-        try {
-            const dateSuffixInput = document.getElementById('dateSuffix');
-            const dateSuffix = dateSuffixInput.value;
-            if (!isValidDateMMDD(dateSuffix)) {
-                alert("日期后缀格式无效，应为MMDD（例如 0721）。请修正或点击'恢复'。");
-                dateSuffixInput.focus();
-                hideLoading(loader);
-                return;
-            }
-            const domainInput = document.getElementById('emailDomain');
-            const domain = domainInput.value.trim();
-            const emailCountInput = document.getElementById('emailCount');
-            const count = parseInt(emailCountInput.value, 10);
-            if (isNaN(count) || count < 1 || count > 576) {
-                alert("生成数量必须是1到576之间的数字！");
-                emailCountInput.focus();
-                hideLoading(loader);
-                return;
-            }
-            if (!domain || !domain.startsWith("@")) {
-                alert("邮箱域名不能为空且必须以@符号开头");
-                domainInput.focus();
-                hideLoading(loader);
-                return;
-            }
-            const container = document.getElementById('output-container');
-            container.innerHTML = '';
-            const fragment = document.createDocumentFragment();
-            for (let index = 0; index < count; index++) {
-                const prefix = email_prefixes[index % email_prefixes.length];
-                const div = document.createElement('div');
-                div.className = 'email-item';
-                const emailText = `${prefix}${dateSuffix}${domain}`;
-                const passwordText = generatePassword();
-                const fullText = `${emailText} ${passwordText}`;
-                const displayIndex = String(index + 1).padStart(3, '0');
-                div.innerHTML = `
-                    <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
-                    <div class="email-info" title="${fullText}">
-                        ${displayIndex}. ${fullText}
-                    </div>
-                    <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
-                `;
-                div.dataset.fullText = fullText;
-                div.dataset.index = displayIndex;
-                fragment.appendChild(div);
-            }
-            container.appendChild(fragment);
-            success = true;
-        } catch (error) {
-            console.error("生成失败:", error);
-            alert(`生成失败: ${error.message}`);
-        } finally {
-             hideLoading(loader);
+        function isValidDateMMDD(mmdd) {
+            if (!/^\d{4}$/.test(mmdd)) return false;
+            const month = parseInt(mmdd.substring(0, 2), 10);
+            const day = parseInt(mmdd.substring(2, 4), 10);
+            if (month < 1 || month > 12 || day < 1 || day > 31) return false;
+            if ([4, 6, 9, 11].includes(month) && day > 30) return false;
+            if (month === 2 && day > 29) return false;
+            return true;
         }
-    }, 50);
-}
 
-// --- Reset Functions --- (Unchanged)
-function resetDateSuffix() {
-    document.getElementById('dateSuffix').value = getCurrentDate();
-}
-function resetEmailDomain() {
-    document.getElementById('emailDomain').value = '@e.edu.kg';
-}
-function resetEmailCount() {
-    document.getElementById('emailCount').value = 100;
-}
-
-// --- Initial Setup --- (Unchanged)
-document.addEventListener('DOMContentLoaded', () => {
-    resetDateSuffix();
-    document.body.addEventListener('focusout', (event) => {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
-            if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream) {
-                setTimeout(() => { window.scrollTo(0, 0); }, 100);
+        function adjustDateSuffix(delta) {
+            const input = document.getElementById('dateSuffix');
+            let currentValue = input.value;
+            if (!isValidDateMMDD(currentValue)) {
+                resetDateSuffix();
+                currentValue = getCurrentDate();
             }
+            const month = parseInt(currentValue.substring(0, 2), 10);
+            const day = parseInt(currentValue.substring(2, 4), 10);
+            const date = new Date(2023, month - 1, day);
+            date.setDate(date.getDate() + delta);
+            input.value = String(date.getMonth() + 1).padStart(2, '0') + String(date.getDate()).padStart(2, '0');
         }
-    });
-    // Add touchstart listeners - This part remains the same, but be aware
-    // it *could* subtly affect event timing on some devices.
-    document.querySelectorAll('[onclick]').forEach(el => {
-        if (!el.hasAttribute('data-touch-listener-added')) {
-            const handlerString = el.getAttribute('onclick');
-            if (handlerString) {
+
+        function adjustEmailCount(delta) {
+            const input = document.getElementById('emailCount');
+            let currentValue = parseInt(input.value, 10) || 100;
+            input.value = Math.max(1, Math.min(currentValue + delta, 576));
+        }
+
+        function generatePassword() {
+            const allowedDigits = ['1','2','5','6','8','9'];
+            let password = 'g';
+            for (let i = 0; i < 3; i++) password += allowedDigits[Math.floor(Math.random() * allowedDigits.length)];
+            return password + '88';
+        }
+
+        function showLoading() {
+            if (document.querySelector('.loading-overlay')) return;
+            const loader = document.createElement('div');
+            loader.className = 'loading-overlay';
+            loader.innerHTML = '<div class="spinner"></div>';
+            document.body.appendChild(loader);
+            return loader;
+        }
+
+        function hideLoading(loader) {
+            (loader || document.querySelector('.loading-overlay'))?.remove();
+        }
+
+        function generateData() {
+            const loader = showLoading();
+            setTimeout(() => {
                 try {
-                    const handlerFunc = new Function(handlerString);
-                     el.addEventListener('touchstart', (e) => {
-                        // Prevent default ONLY if it's likely just a click action
-                        // Check if the element is a button or has specific classes?
-                        if (el.tagName === 'BUTTON') {
-                             e.preventDefault();
-                        }
-                        handlerFunc.call(el, e);
-                     }, { passive: false }); // Needed for preventDefault
-                     el.setAttribute('data-touch-listener-added', 'true');
-                } catch (e) {
-                    console.error("Error creating function from onclick:", handlerString, e);
+                    const dateSuffix = document.getElementById('dateSuffix').value;
+                    if (!isValidDateMMDD(dateSuffix)) {
+                        alert("日期后缀格式无效，应为MMDD（例如 0721）。请修正或点击'恢复'。");
+                        hideLoading(loader);
+                        return;
+                    }
+                    const domain = document.getElementById('emailDomain').value.trim();
+                    const count = parseInt(document.getElementById('emailCount').value, 10);
+                    if (isNaN(count) || count < 1 || count > 576) {
+                        alert("生成数量必须是1到576之间的数字！");
+                        hideLoading(loader);
+                        return;
+                    }
+                    if (!domain || !domain.startsWith("@")) {
+                        alert("邮箱域名不能为空且必须以@符号开头");
+                        hideLoading(loader);
+                        return;
+                    }
+                    const container = document.getElementById('output-container');
+                    container.innerHTML = '';
+                    const fragment = document.createDocumentFragment();
+                    for (let index = 0; index < count; index++) {
+                        const prefix = email_prefixes[index % email_prefixes.length];
+                        const div = document.createElement('div');
+                        div.className = 'email-item';
+                        const fullText = `${prefix}${dateSuffix}${domain} ${generatePassword()}`;
+                        div.innerHTML = `
+                            <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
+                            <div class="email-info" title="${fullText}">${String(index + 1).padStart(3, '0')}. ${fullText}</div>
+                            <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
+                        `;
+                        div.dataset.fullText = fullText;
+                        div.dataset.index = String(index + 1).padStart(3, '0');
+                        fragment.appendChild(div);
+                    }
+                    container.appendChild(fragment);
+                } catch (error) {
+                    console.error("生成失败:", error);
+                    alert(`生成失败: ${error.message}`);
+                } finally {
+                    hideLoading(loader);
                 }
-            }
+            }, 50);
         }
-    });
-});
 
-// --- Selection Functions --- (Unchanged)
-function toggleSelection(checkbox) {
-    checkbox.closest('.email-item').classList.toggle('selected', checkbox.checked);
-}
-function selectAll() {
-    let changed = false;
-    document.querySelectorAll('#output-container .email-item').forEach(item => {
-        const checkbox = item.querySelector('.checkbox');
-        if (!checkbox.checked) {
-            checkbox.checked = true;
-            item.classList.add('selected');
-            changed = true;
+        function resetDateSuffix() { document.getElementById('dateSuffix').value = getCurrentDate(); }
+        function resetEmailDomain() { document.getElementById('emailDomain').value = '@e.edu.kg'; }
+        function resetEmailCount() { document.getElementById('emailCount').value = 100; }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            resetDateSuffix();
+            document.body.addEventListener('focusout', (event) => {
+                if ((event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                    setTimeout(() => window.scrollTo(0, 0), 100);
+                }
+            });
+        });
+
+        function toggleSelection(checkbox) {
+            checkbox.closest('.email-item').classList.toggle('selected', checkbox.checked);
         }
-    });
-    if (!changed) showToast('所有项目已经为选中状态');
-}
-function invertSelection() {
-    const items = document.querySelectorAll('#output-container .email-item');
-    if (items.length === 0) {
-        showToast('没有项目可供反选', true);
-        return;
-    }
-    items.forEach(item => {
-        const checkbox = item.querySelector('.checkbox');
-        checkbox.checked = !checkbox.checked;
-        item.classList.toggle('selected', checkbox.checked);
-    });
-}
-function getItemsText(selector) {
-    return Array.from(document.querySelectorAll(selector))
-        .map(div => div.dataset.fullText)
-        .filter(text => text);
-}
 
-// --- Toast Function --- (Unchanged)
-function showToast(message, isError = false) {
-    const existingToast = document.querySelector('.toast-message');
-    if (existingToast) {
-        existingToast.remove();
-    }
-    const toast = document.createElement('div');
-    toast.className = 'toast-message';
-    toast.style.backgroundColor = isError ? 'rgba(244, 67, 54, 0.9)' : 'rgba(76, 175, 80, 0.9)';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    getComputedStyle(toast).opacity; // Trigger reflow
-    toast.style.opacity = '1';
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => {
-            if (toast.parentNode) {
-                 document.body.removeChild(toast);
-            }
-        }, 300);
-    }, 2500);
-}
-
-// --- Core Clipboard Function (REFINED FALLBACK) ---
-async function copyToClipboard(text, successMsg) {
-    if (!text) {
-        showToast('没有内容可复制', true);
-        return;
-    }
-    try {
-        // Use modern API if available (requires HTTPS/secure context)
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-            showToast(successMsg || '已复制到剪贴板');
+        function selectAll() {
+            const items = document.querySelectorAll('#output-container .email-item');
+            items.forEach(item => {
+                const checkbox = item.querySelector('.checkbox');
+                if (!checkbox.checked) {
+                    checkbox.checked = true;
+                    item.classList.add('selected');
+                }
+            });
         }
-        // Fallback for HTTP or older/problematic browsers
-        else {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            // Prevent keyboard from showing on mobile
-            textarea.setAttribute('readonly', '');
-            // Style to be invisible and off-screen
-            textarea.style.position = 'fixed';
-            textarea.style.left = '-9999px';
-            textarea.style.top = '-9999px';
-            textarea.style.opacity = '0';
-            textarea.style.pointerEvents = 'none'; // Prevent interaction
 
-            document.body.appendChild(textarea);
+        function invertSelection() {
+            document.querySelectorAll('#output-container .email-item').forEach(item => {
+                const checkbox = item.querySelector('.checkbox');
+                checkbox.checked = !checkbox.checked;
+                item.classList.toggle('selected', checkbox.checked);
+            });
+        }
 
-            // Select the text
-            textarea.select();
-            // Use setSelectionRange as a potential backup/enhancement for select()
-            textarea.setSelectionRange(0, textarea.value.length); // Select all content
-
-            let successful = false;
+        async function copyToClipboard(text, successMsg) {
+            if (!text) return showToast('没有内容可复制', true);
+            
             try {
-                // Attempt the copy command
-                successful = document.execCommand('copy');
-            } catch (err) {
-                 console.error('document.execCommand error:', err);
-                 successful = false; // Ensure successful is false on error
-            } finally {
-                 // Clean up the textarea
-                 document.body.removeChild(textarea);
-            }
+                if (navigator.clipboard?.writeText) {
+                    await navigator.clipboard.writeText(text);
+                    return showToast(successMsg || '已复制到剪贴板');
+                }
 
-            // Report success or failure based on the result of execCommand
-            if (successful) {
-                showToast(successMsg || '已复制到剪贴板 (fallback)');
-            } else {
-                // This is where the user's reported error likely originates
-                console.error('Fallback copy command failed.');
-                showToast('复制失败，请检查浏览器权限或手动复制', true);
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.readOnly = true;
+                document.body.appendChild(textarea);
+                
+                const copyBox = document.createElement('div');
+                copyBox.className = 'manual-copy-box';
+                copyBox.innerHTML = `
+                    <p style="margin:0 0 10px">请手动复制内容：</p>
+                    <textarea class="manual-copy-textarea" readonly>${text}</textarea>
+                    <div class="manual-copy-buttons">
+                        <button class="btn btn-main" onclick="this.parentElement.parentElement.remove()">关闭</button>
+                    </div>
+                `;
+                document.body.appendChild(copyBox);
+                
+                const copyTextarea = copyBox.querySelector('textarea');
+                copyTextarea.select();
+                showToast('已自动选中内容，请手动复制', false);
+
+            } catch (err) {
+                console.error('复制失败:', err);
+                showToast('复制失败，请手动复制内容', true);
             }
         }
-    } catch (err) {
-        // Catch errors from navigator.clipboard or unexpected issues
-        console.error('Overall copy error:', err);
-        showToast('复制失败，请检查浏览器权限或手动复制', true);
-    }
-}
 
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:${isError ? '#f44336' : '#4CAF50'};color:white;padding:12px 25px;border-radius:8px;z-index:1001;opacity:0;transition:opacity 0.3s;`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.style.opacity = '1', 10);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
 
-// --- Specific Copy Actions --- (Unchanged logic, uses refined copyToClipboard)
-function copySelected() {
-    const selectedItems = document.querySelectorAll('.email-item.selected');
-    if (selectedItems.length === 0) {
-        showToast('请先选择要复制的条目', true);
-        return;
-    }
-    const selectedItemsText = Array.from(selectedItems)
-                                   .map(item => item.dataset.fullText)
-                                   .join('\n');
-    copyToClipboard(selectedItemsText, `已复制 ${selectedItems.length} 条选中内容`);
-}
-function copyRange() {
-    const rangeInput = document.getElementById('copyRange').value.trim();
-    const rangeRegex = /^(\d+)\s*-\s*(\d+)$/;
-    if (!rangeRegex.test(rangeInput)) {
-        showToast('请输入正确范围格式（例: 1-5 或 001-005）', true);
-        document.getElementById('copyRange').focus();
-        return;
-    }
-    const match = rangeInput.match(rangeRegex);
-    const start = parseInt(match[1], 10);
-    const end = parseInt(match[2], 10);
-    const allItems = document.querySelectorAll('#output-container .email-item');
-    const totalItems = allItems.length;
-    if (totalItems === 0) {
-        showToast("请先生成数据，再复制范围", true);
-        return;
-    }
-     if (start < 1 || end > totalItems || start > end) {
-         showToast(`无效范围（请输入 1 到 ${totalItems} 之间，且开始不大于结束）`, true);
-         document.getElementById('copyRange').focus();
-         return;
-     }
-    const itemsToCopy = Array.from(allItems)
-        .slice(start - 1, end)
-        .map(item => item.dataset.fullText)
-        .join('\n');
-    if (itemsToCopy) {
-        copyToClipboard(itemsToCopy, `已复制 ${start}-${end} 范围内容 (${end - start + 1}条)`);
-    } else {
-         showToast('范围内没有找到项目', true);
-    }
-}
-function copySingle(button) {
-    const item = button.closest('.email-item');
-    const textToCopy = item.dataset.fullText;
-    copyToClipboard(textToCopy, '已复制单条内容');
-}
-function copyAll() {
-    const allItems = document.querySelectorAll('#output-container .email-item');
-    if (allItems.length === 0) {
-        showToast("没有内容可以复制。请先生成数据。", true);
-        return;
-    }
-    const itemsText = Array.from(allItems)
-                         .map(item => item.dataset.fullText)
-                         .join('\n');
-    copyToClipboard(itemsText, `已复制全部 ${allItems.length} 条内容`);
-}
+        function copySelected() {
+            const selected = Array.from(document.querySelectorAll('.email-item.selected'))
+                                .map(item => item.dataset.fullText)
+                                .join('\n');
+            copyToClipboard(selected || '', selected ? `已复制 ${selected.split('\n').length} 条选中内容` : '');
+        }
 
-// --- Export TXT --- (Unchanged)
-function exportTXT() {
-    const allItems = document.querySelectorAll('#output-container .email-item');
-     if (allItems.length === 0) {
-        showToast("没有内容可以导出。请先生成数据。", true);
-        return;
-    }
-    const itemsText = Array.from(allItems)
-                         .map(item => item.dataset.fullText)
-                         .join('\r\n'); // Use Windows line endings
-    const blob = new Blob([itemsText], {type: 'text/plain;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const domainPart = document.getElementById('emailDomain').value.replace('@','').split('.')[0] || 'domain';
-    a.download = `邮箱列表_${domainPart}_${dateStr}_${allItems.length}条.txt`;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-        URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        showToast('TXT文件已开始导出');
-    }, 100);
-}
-
-// --- Sort Function --- (Unchanged)
-function sortData(type) {
-    const container = document.getElementById('output-container');
-    const items = Array.from(container.children);
-    if (items.length === 0) {
-        showToast('没有内容可以排序', true);
-        return;
-    }
-    switch (type) {
-        case 'asc':
-            items.sort((a, b) => parseInt(a.dataset.index, 10) - parseInt(b.dataset.index, 10));
-            break;
-        case 'desc':
-             items.sort((a, b) => parseInt(b.dataset.index, 10) - parseInt(a.dataset.index, 10));
-            break;
-        case 'random':
-            for (let i = items.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [items[i], items[j]] = [items[j], items[i]];
+        function copyRange() {
+            const rangeInput = document.getElementById('copyRange').value.trim();
+            const match = rangeInput.match(/^(\d+)\s*-\s*(\d+)$/);
+            if (!match) return showToast('请输入正确范围格式（例: 1-5）', true);
+            
+            const start = parseInt(match[1], 10);
+            const end = parseInt(match[2], 10);
+            const items = document.querySelectorAll('#output-container .email-item');
+            
+            if (start < 1 || end > items.length || start > end) {
+                return showToast(`无效范围（1-${items.length}）`, true);
             }
-            break;
-        default:
-             return;
-    }
-    container.innerHTML = '';
-    const fragment = document.createDocumentFragment();
-    items.forEach(item => fragment.appendChild(item));
-    container.appendChild(fragment);
-    showToast(`列表已按 ${type === 'asc' ? '顺序' : type === 'desc' ? '倒序' : '随机'} 排序`);
-}
+            
+            const text = Array.from(items)
+                            .slice(start - 1, end)
+                            .map(item => item.dataset.fullText)
+                            .join('\n');
+            copyToClipboard(text, `已复制 ${start}-${end} 范围内容`);
+        }
 
-</script>
+        function copySingle(button) {
+            copyToClipboard(button.closest('.email-item').dataset.fullText, '已复制单条内容');
+        }
+
+        function copyAll() {
+            const items = Array.from(document.querySelectorAll('#output-container .email-item'))
+                             .map(item => item.dataset.fullText)
+                             .join('\n');
+            copyToClipboard(items, items ? `已复制全部 ${items.split('\n').length} 条内容` : '');
+        }
+
+        function exportTXT() {
+            const text = Array.from(document.querySelectorAll('#output-container .email-item'))
+                            .map(item => item.dataset.fullText)
+                            .join('\r\n');
+            if (!text) return showToast("没有内容可以导出", true);
+            
+            const blob = new Blob([text], {type: 'text/plain'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `邮箱列表_${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+        }
+
+        function sortData(type) {
+            const container = document.getElementById('output-container');
+            const items = Array.from(container.children);
+            if (items.length === 0) return showToast('没有内容可以排序', true);
+            
+            if (type === 'random') {
+                for (let i = items.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [items[i], items[j]] = [items[j], items[i]];
+                }
+            } else {
+                items.sort((a, b) => type === 'asc' ? 
+                    parseInt(a.dataset.index) - parseInt(b.dataset.index) : 
+                    parseInt(b.dataset.index) - parseInt(a.dataset.index));
+            }
+            container.innerHTML = '';
+            container.append(...items);
+            showToast(`已${type === 'random' ? '随机' : type === 'asc' ? '顺序' : '倒序'}排序`);
+        }
+    </script>
 </body>
 </html>
