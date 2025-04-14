@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -313,8 +314,319 @@
         </div>
     </div>
 
-    <!-- Link to the obfuscated JavaScript file -->
-    <script src="script.obfuscated.js" defer></script>
+<script>
+const email_prefixes = [
+'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj',
+'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv',
+'ww','xx','yy','zz','ab','ac','ad','ae','af','ag',
+'ah','ai','aj','ak','am','an','ap','aq','ar','as',
+'at','au','av','aw','ax','ay','az','ba','bc','bd',
+'be','bf','bg','bh','bi','bj','bk','bm','bn','bp',
+'bq','br','bs','bt','bu','bv','bw','bx','by','bz',
+'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck',
+'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw',
+'cx','cy','cz','da','db','dc','de','df','dg','dh',
+'di','dj','dk','dm','dn','dp','dq','dr','ds','dt',
+'du','dv','dw','dx','dy','dz','ea','eb','ec','ed',
+'ef','eg','eh','ei','ej','ek','em','en','ep','eq',
+'er','es','et','eu','ev','ew','ex','ey','ez','fa',
+'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm',
+'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx',
+'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi',
+'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu',
+'gv','gw','gx','gy','gz','ha','hb','hc','hd','he',
+'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr',
+'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib',
+'ic','id','ie','if','ig','ih','ij','ik','im','in',
+'ip','iq','ir','is','it','iu','iv','iw','ix','iy',
+'iz','ja','jb','jc','jd','je','jf','jg','jh','ji',
+'jk','jm','jn','jp','jq','jr','js','jt','ju','jv',
+'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf',
+'kg','kh','ki','kj','km','kn','kp','kq','kr','ks',
+'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc',
+'md','me','mf','mg','mh','mi','mj','mk','mn','mp',
+'mq','mr','ms','mt','mu','mv','mw','mx','my','mz',
+'na','nb','nc','nd','ne','nf','ng','nh','ni','nj',
+'nk','nm','np','nq','nr','ns','nt','nu','nv','nw',
+'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg',
+'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt',
+'pu','pv','pw','px','py','pz','qa','qb','qc','qd',
+'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp',
+'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra',
+'rb','rc','rd','re','rf','rg','rh','ri','rj','rk',
+'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx',
+'ry','rz','sa','sb','sc','sd','se','sf','sg','sh',
+'si','sj','sk','sm','sn','sp','sq','sr','st','su',
+'sv','sw','sx','sy','sz','ta','tb','tc','td','te',
+'tf','tg','th','ti','tj','tk','tm','tn','tp','tq',
+'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub',
+'uc','ud','ue','uf','ug','uh','ui','uj','uk','um',
+'un','up','uq','ur','us','ut','uv','uw','ux','uy',
+'uz','va','vb','vc','vd','ve','vf','vg','vh','vi',
+'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu',
+'vw','vx','vy','vz','wa','wb','wc','wd','we','wf',
+'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr',
+'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc',
+'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn',
+'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz',
+'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj',
+'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv',
+'yw','yx','yz','za','zb','zc','zd','ze','zf','zg',
+'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs',
+'zt','zu','zv','zw','zx','zy',
+];
 
+function getCurrentDate() {
+    const d = new Date();
+    return String(d.getMonth() + 1).padStart(2, '0') +
+            String(d.getDate()).padStart(2, '0');
+}
+
+function generatePassword() {
+    const allowedDigits = ['1','2','5','6','8','9'];
+    return 'g' + Array.from({length:3},
+         () => allowedDigits[Math.floor(Math.random()*6)]).join('') + '88';
+}
+
+function generateData() {
+    try {
+        const dateSuffix = document.getElementById('dateSuffix').value;
+        const domain = document.getElementById('emailDomain').value;
+        const inputCount = document.getElementById('emailCount').value;
+        const count = parseInt(inputCount);
+
+        if (isNaN(count) || count > 576 || count < 1) {
+            alert("生成数量必须是1-576之间的数字！");
+            return;
+        }
+        if (!domain.includes("@")) {
+            alert("邮箱域名必须包含@符号");
+            return;
+        }
+
+        const container = document.getElementById('output-container');
+        const fragment = document.createDocumentFragment();
+        for (let index = 0; index < count; index++) {
+            const prefix = email_prefixes[index % email_prefixes.length];
+            const emailUser = `${prefix}${dateSuffix}`;
+            const fullEmail = `${emailUser}${domain}`;
+            const password = generatePassword();
+
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'email-item';
+            itemDiv.innerHTML = `
+                <input type="checkbox" class="checkbox" onchange="toggleSelection(this)">
+                <div class="email-info">${String(index+1).padStart(3,'0')}. ${fullEmail} ${password}</div>
+                <button class="btn copy-btn" onclick="copySingle(this)">复制</button>
+            `;
+            fragment.appendChild(itemDiv);
+        }
+        container.innerHTML = '';
+        container.appendChild(fragment);
+
+    } catch (error) {
+        console.error("Generation error:", error);
+        alert(`生成失败: ${error.message}`);
+    }
+}
+
+function resetDateSuffix() { document.getElementById('dateSuffix').value = getCurrentDate(); }
+function resetEmailDomain() { document.getElementById('emailDomain').value = '@e.edu.kg'; }
+function resetEmailCount() { document.getElementById('emailCount').value = 100; }
+
+document.addEventListener('DOMContentLoaded', () => {
+    resetDateSuffix();
+});
+
+
+function toggleSelection(checkbox) {
+    const item = checkbox.closest('.email-item');
+    item.classList.toggle('selected', checkbox.checked);
+}
+
+function selectAll() {
+    document.querySelectorAll('#output-container .checkbox').forEach(checkbox => {
+        if (!checkbox.checked) {
+            checkbox.checked = true;
+            checkbox.dispatchEvent(new Event('change'));
+        }
+    });
+}
+
+function invertSelection() {
+    document.querySelectorAll('#output-container .checkbox').forEach(checkbox => {
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
+    });
+}
+
+function getSelectedItemsText() {
+    return Array.from(document.querySelectorAll('#output-container .checkbox:checked'))
+        .map(checkbox => {
+            const emailInfoDiv = checkbox.nextElementSibling;
+            if (emailInfoDiv && emailInfoDiv.classList.contains('email-info')) {
+                const match = emailInfoDiv.textContent.match(/^\d+\.\s*(.*)/);
+                return match ? match[1] : emailInfoDiv.textContent;
+            }
+            return '';
+        })
+        .filter(text => text);
+}
+
+function copySelected() {
+    const selectedItems = getSelectedItemsText();
+    if (selectedItems.length === 0) {
+        alert('请先选择要复制的条目！');
+        return;
+    }
+    copyToClipboard(selectedItems.join('\n'), `已复制 ${selectedItems.length} 条选中内容`);
+}
+
+function copyRange() {
+    const rangeInput = document.getElementById('copyRange').value.trim();
+    if (!/^\d{1,3}-\d{1,3}$/.test(rangeInput)) {
+        alert('请输入正确格式（例: 1-5 或 001-005）');
+        return;
+    }
+    const [startStr, endStr] = rangeInput.split('-');
+    const start = parseInt(startStr, 10);
+    const end = parseInt(endStr, 10);
+    const totalItems = document.querySelectorAll('#output-container .email-info').length;
+    if (isNaN(start) || isNaN(end) || start < 1 || end > totalItems || start > end) {
+         alert(`无效范围 (应在 1-${totalItems} 之间，且开始不大于结束)`);
+        return;
+    }
+    const items = Array.from(document.querySelectorAll('#output-container .email-info'))
+        .slice(start - 1, end)
+        .map(div => {
+             const match = div.textContent.match(/^\d+\.\s*(.*)/);
+             return match ? match[1] : div.textContent;
+         });
+    if (items.length === 0) {
+         alert(`范围 ${start}-${end} 内没有数据可复制。`);
+         return;
+    }
+    copyToClipboard(items.join('\n'), `已复制 ${start}-${end} (${items.length} 条) 内容`);
+}
+
+function copySingle(button) {
+    const emailInfoDiv = button.previousElementSibling;
+    if (emailInfoDiv && emailInfoDiv.classList.contains('email-info')) {
+        const match = emailInfoDiv.textContent.match(/^\d+\.\s*(.*)/);
+        const text = match ? match[1] : emailInfoDiv.textContent;
+        copyToClipboard(text, '已复制: ' + text);
+    }
+}
+
+function copyAll() {
+    const items = Array.from(document.querySelectorAll('#output-container .email-info'))
+        .map(div => {
+             const match = div.textContent.match(/^\d+\.\s*(.*)/);
+             return match ? match[1] : div.textContent;
+         });
+    if (items.length === 0) {
+         alert('没有内容可复制！');
+         return;
+    }
+    copyToClipboard(items.join('\n'), `已复制全部 ${items.length} 条内容`);
+}
+
+function copyToClipboard(text, successMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                alert(successMsg);
+            })
+            .catch(err => {
+                console.error('Async clipboard copy failed:', err);
+                fallbackCopyTextToClipboard(text, successMsg);
+            });
+    } else {
+        fallbackCopyTextToClipboard(text, successMsg);
+    }
+}
+
+function fallbackCopyTextToClipboard(text, successMsg) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.top = '-9999px';
+    textarea.style.left = '-9999px';
+    textarea.setAttribute('readonly', '');
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            alert(successMsg);
+        } else {
+            console.error('Fallback execCommand copy failed');
+            alert('复制失败，请手动复制。');
+        }
+    } catch (err) {
+        console.error('Fallback copy error:', err);
+        alert('复制失败，请手动复制。');
+    }
+    document.body.removeChild(textarea);
+}
+
+function exportTXT() {
+    const items = Array.from(document.querySelectorAll('#output-container .email-info'))
+        .map(div => {
+             const match = div.textContent.match(/^\d+\.\s*(.*)/);
+             return match ? match[1] : div.textContent;
+         });
+    if (items.length === 0) {
+         alert('没有内容可导出！');
+         return;
+    }
+    const blob = new Blob([items.join('\n')], {type: 'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const now = new Date();
+    const timestamp = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
+    a.download = `emails_${timestamp}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function sortData(type) {
+    const container = document.getElementById('output-container');
+    const emailItems = Array.from(container.children);
+    if (emailItems.length === 0) return;
+    let sortedItems;
+    const getIndex = (item) => {
+        const infoDiv = item.querySelector('.email-info');
+        if (!infoDiv) return 0;
+        const match = infoDiv.textContent.match(/^(\d+)\./);
+        return match ? parseInt(match[1], 10) : 0;
+    };
+    switch (type) {
+        case 'asc':
+            sortedItems = emailItems.sort((a, b) => getIndex(a) - getIndex(b));
+            break;
+        case 'desc':
+            sortedItems = emailItems.sort((a, b) => getIndex(b) - getIndex(a));
+            break;
+        case 'random':
+            for (let i = emailItems.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [emailItems[i], emailItems[j]] = [emailItems[j], emailItems[i]];
+            }
+            sortedItems = emailItems;
+            break;
+        default:
+            return;
+    }
+    const fragment = document.createDocumentFragment();
+    sortedItems.forEach(item => fragment.appendChild(item));
+    container.innerHTML = '';
+    container.appendChild(fragment);
+}
+
+</script>
 </body>
 </html>
