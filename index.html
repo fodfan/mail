@@ -174,7 +174,6 @@
         /* ========================================================== */
         /* === GENERATOR 2 & 3 (邮箱地址生成器 v2 & v3) SHARED Styles === */
         /* ========================================================== */
-        /* Apply styles to both #generator2 and #generator3 */
         #generator2 .container,
         #generator3 .container {
             background-color: var(--light-grey-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto;
@@ -191,30 +190,27 @@
         #generator3 label {
             display: block; margin-bottom: 5px; font-weight: bold;
         }
-        /* Apply to direct children inputs/selects */
         #generator2 > .tool-container > .container > .form-group > input[type="number"],
         #generator2 > .tool-container > .container > .form-group > input[type="text"],
         #generator2 > .tool-container > .container > .form-group > select,
         #generator3 > .tool-container > .container > .form-group > input[type="number"],
         #generator3 > .tool-container > .container > .form-group > input[type="text"],
         #generator3 > .tool-container > .container > .form-group > select,
-        /* Apply to inputs within flex div for length */
         #generator2 > .tool-container > .container > .form-group > div > input[type="number"],
         #generator3 > .tool-container > .container > .form-group > div > input[type="number"]
          {
             width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; margin-bottom: 0;
         }
-        /* Apply base button styles within the container */
         #generator2 .container button,
         #generator3 .container button {
             background-color: var(--primary-color); color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin: 2px;
         }
         #generator2 .container button:hover,
         #generator3 .container button:hover {
-            background-color: #45a049; /* Keep original hover */
+            background-color: #45a049;
         }
         #generator2 #result-gen2,
-        #generator3 #result-gen3 { /* Unique IDs for results */
+        #generator3 #result-gen3 {
             margin-top: 20px; padding: 15px; background-color: var(--white-bg); border: 1px solid var(--border-color); border-radius: 4px; min-height: 100px; max-height: 400px; overflow-y: auto;
         }
         #generator2 .copy-btn, #generator3 .copy-btn { background-color: var(--secondary-color); }
@@ -231,7 +227,7 @@
         #generator3 .prefix-type-option {
             display: flex; align-items: center;
         }
-        #generator2 .prefix-type-option input, /* Radio button */
+        #generator2 .prefix-type-option input,
         #generator3 .prefix-type-option input {
             margin-right: 5px; width: auto; margin-bottom: 0;
         }
@@ -249,25 +245,25 @@
         }
         #generator2 .custom-position-row input[type="number"],
         #generator3 .custom-position-row input[type="number"] {
-            width: 70px; flex-shrink: 0; margin-right: 5px; padding: 5px 8px; /* Smaller padding */
+            width: 70px; flex-shrink: 0; margin-right: 5px; padding: 5px 8px;
         }
         #generator2 .custom-position-row input[type="text"],
         #generator3 .custom-position-row input[type="text"] {
-            width: 100px; flex-shrink: 0; margin-right: 5px; padding: 5px 8px; /* Smaller padding */
+            width: 100px; flex-shrink: 0; margin-right: 5px; padding: 5px 8px;
         }
-        #generator2 .custom-position-row button, /* Add/Remove buttons inside row */
+        #generator2 .custom-position-row button,
         #generator3 .custom-position-row button {
             padding: 4px 8px; font-size: 0.85em; flex-shrink: 0; background-color: var(--grey-color); margin-left: auto;
         }
         #generator2 .custom-position-row button.danger-btn,
         #generator3 .custom-position-row button.danger-btn {
-             background-color: var(--danger-color); /* Style remove button */
+             background-color: var(--danger-color);
         }
-        #generator2 .add-pos-button, /* Add buttons below groups */
+        #generator2 .add-pos-button,
         #generator3 .add-pos-button {
               padding: 5px 10px; font-size: 0.9em; background-color: var(--secondary-color); margin-top: 5px;
         }
-        #generator2 .button-group, /* Button group specific to Gen 2/3 */
+        #generator2 .button-group,
         #generator3 .button-group {
             display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;
         }
@@ -277,23 +273,21 @@
         }
         #generator2 .result-row:last-child,
         #generator3 .result-row:last-child { border-bottom: none; }
-        #generator2 .result-checkbox, /* Checkbox in results */
+        #generator2 .result-checkbox,
         #generator3 .result-checkbox {
             margin-right: 0; width: auto; flex-shrink: 0; margin-bottom: 0;
         }
         #generator2 .result-content,
         #generator3 .result-content {
-            flex-grow: 1; word-break: break-all; /* Wrap long emails */
+            flex-grow: 1; word-break: break-all;
         }
-        #generator2 .row-copy-btn, /* Copy button in results */
+        #generator2 .row-copy-btn,
         #generator3 .row-copy-btn {
             background-color: var(--purple-color); color: white; padding: 3px 8px; font-size: 12px; margin-left: auto; flex-shrink: 0; margin: 0;
         }
         #generator2 .row-copy-btn:hover,
         #generator3 .row-copy-btn:hover { background-color: #7b1fa2; }
-
-        /* --- Generator 2 & 3 Mobile --- */
-         @media (max-width: 480px) {
+        @media (max-width: 480px) { /* Gen 2 & 3 Mobile */
              #generator2 .container,
              #generator3 .container { padding: 15px; }
              #generator2 h1,
@@ -302,7 +296,7 @@
              #generator2 .custom-position-row input[type="text"],
              #generator3 .custom-position-row input[type="number"],
              #generator3 .custom-position-row input[type="text"] {
-                 width: calc(50% - 15px); /* Adjust width for wrapping */ margin-right: 0;
+                 width: calc(50% - 15px); margin-right: 0;
              }
               #generator2 .result-row,
               #generator3 .result-row { flex-wrap: wrap; }
@@ -360,21 +354,14 @@
         #authenticator .div-2fa { margin-bottom: 0.65rem; font-size: 0.88rem; }
         #authenticator .div-2fa>span { margin-left: 0.55rem; font-weight: 600; }
         #authenticator .message-class { font-weight: 300 !important; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); }
-        .modal-content { background-color: #fefefe; padding: 30px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid #888; max-width: 320px; width: 90%; overflow: hidden; text-align: center; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .close { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; line-height: 1; }
-        .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
-        #qrcode-2fa { width: 250px; height: 250px; margin: 15px auto; display: block; }
-        #qrcode-2fa img { display: block; margin: auto; max-width: 100%; height: auto; }
-        .qr-text { text-align: center; font-size: 16px; margin: 20px 0px 10px; color: #555; }
+        /* QR Code Modal and related styles removed */
         #notification-container-2fa { position: fixed; top: 20px; right: 20px; z-index: 9999; }
         .notification { background-color: #030303bf; color: #fff; padding: 15px; border-radius: 4px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); opacity: 0; transform: translateX(100%); transition: opacity 0.5s, transform 0.5s; max-width: 300px; font-size: 0.9em; }
         .notification.show { opacity: 1; transform: translateX(0); }
         #authenticator h1 { text-align: center; color: #3B4B5E; font-size: 2rem; }
         #authenticator hr { border: 0; height: 1px; background: #ddd; margin: 20px 0; }
         #authenticator .code-display { font-size: 1.5rem; font-weight: bold; color: rgb(50 174 77); margin: 10px 0; display: inline-block; }
-        #authenticator .show-qr-btn { display: inline-block !important; width: auto !important; padding: 0.5rem 1rem !important; margin-left: 10px; vertical-align: middle; font-size: 0.9em; background-image: none; background-color: var(--secondary-color); box-shadow: none; line-height: 1; }
-        #authenticator .show-qr-btn:hover { background-color: #0b7dda; color: white; box-shadow: none; }
+        /* QR Code button style removed */
 
     </style>
 </head>
@@ -383,7 +370,7 @@
         <nav class="tab-navigation">
             <button class="tab-button active" onclick="showTool('generator1')">邮箱生成器 v1</button>
             <button class="tab-button" onclick="showTool('generator2')">邮箱生成器 v2 </button>
-            <button class="tab-button" onclick="showTool('generator3')">邮箱生成器 v3 (无限制版)</button> <!-- Added v3 Tab -->
+            <button class="tab-button" onclick="showTool('generator3')">邮箱生成器 v3 (无限制版)</button>
             <button class="tab-button" onclick="showTool('filter')">邮箱过滤器</button>
             <button class="tab-button" onclick="showTool('authenticator')">2FA验证器</button>
         </nav>
@@ -460,10 +447,11 @@
         <!-- ======================== -->
         <!-- === Generator 3 HTML === -->
         <!-- ======================== -->
-        <div id="generator3" class="tab-content"> <!-- Added v3 Content Area -->
+        <div id="generator3" class="tab-content">
+             <!-- Generator 3 Content (No changes) -->
              <div class="tool-container">
-                 <div class="container"> <!-- Reuse .container style -->
-                     <h1>邮箱地址生成器 v3 (无限制版)</h1> <!-- Changed Title -->
+                 <div class="container">
+                     <h1>邮箱地址生成器 v3 (无限制版)</h1>
                      <div class="form-group"><label for="count-gen3">生成数量 (1-10000):</label><input type="number" id="count-gen3" min="1" max="10000" value="10"></div>
                      <div class="form-group"><label for="domain-gen3">邮箱域名:</label><select id="domain-gen3"><option value="gmail.com">gmail.com</option><option value="yahoo.com">yahoo.com</option><option value="outlook.com">outlook.com</option><option value="hotmail.com">hotmail.com</option><option value="icloud.com">icloud.com</option><option value="custom">自定义</option></select></div>
                      <div class="form-group" id="custom-domain-group-gen3" style="display: none;"><label for="custom-domain-gen3">自定义域名:</label><input type="text" id="custom-domain-gen3" placeholder="输入自定义域名"></div>
@@ -486,7 +474,7 @@
                          <button id="download-gen3">下载</button>
                          <button id="clear-gen3" class="danger-btn">清空</button>
                      </div>
-                     <div id="result-gen3"></div> <!-- Unique result ID -->
+                     <div id="result-gen3"></div>
                 </div>
              </div>
         </div>
@@ -497,7 +485,7 @@
         <div id="filter" class="tab-content">
              <!-- Filter Content (No changes) -->
             <div class="tool-container">
-                 <div class="container"> <!-- Original container class -->
+                 <div class="container">
                      <h1>元元DIY邮箱过滤器</h1>
                      <p>输入包含多行数据的文本，点击"过滤数据"按钮删除包含"@"字符的行，或点击"反向操作"按钮删除不包含"@"字符的行</p>
                      <div><label for="inputData-filter">输入数据:</label><textarea id="inputData-filter" placeholder="请在此粘贴您的数据...
@@ -518,9 +506,9 @@ abc@123.com
                             <div class="selection-actions">
                                  <button id="selectAllBtn-filter" class="small">全选</button>
                                  <button id="invertSelectionBtn-filter" class="small">反选</button>
-                                 <button id="copySelectedBtn-filter" class="small secondary">复制选中</button> <!-- Changed color -->
+                                 <button id="copySelectedBtn-filter" class="small secondary">复制选中</button>
                              </div>
-                             <div id="outputData-filter"></div> <!-- Container for results -->
+                             <div id="outputData-filter"></div>
                          </div>
                      </div>
                      <div class="button-group">
@@ -536,7 +524,7 @@ abc@123.com
         <!-- === Authenticator HTML === -->
         <!-- ======================== -->
         <div id="authenticator" class="tab-content">
-             <!-- Authenticator Content (No changes) -->
+             <!-- Authenticator Content (QR Code button and modal removed) -->
             <div class="tool-container">
                 <h1>2FA验证器</h1>
                 <div class="div-2fa">
@@ -547,16 +535,10 @@ abc@123.com
                 <div class="div-2fa">当前验证码: <span id="code-2fa" class="code-display"></span></div>
                 <div class="div-2fa">
                     剩余时间: <span id="timer-2fa">30</span> 秒
-                    <button class="btn-get show-qr-btn" id="btn-show-qr-2fa">生成二维码</button>
+                    <!-- QR Code Button Removed -->
                 </div>
                 <div id="notification-container-2fa"></div>
-                <div id="myModal-2fa" class="modal">
-                    <div class="modal-content">
-                        <span class="close" id="modal-close-2fa">×</span>
-                        <div id="qrcode-2fa"></div>
-                        <p class="qr-text">使用Google Authenticator扫描上方二维码添加密钥</p>
-                    </div>
-                </div>
+                <!-- QR Code Modal Removed -->
             </div>
         </div>
 
@@ -564,6 +546,7 @@ abc@123.com
 
     <!-- External Scripts (Load Before Tool Scripts) -->
     <script src="https://cdn.jsdelivr.net/npm/otpauth@9.1.4/dist/otpauth.umd.min.js"></script>
+    <!-- QRCode Script no longer needed for Authenticator, but might be used by other tools? Keep it for now. -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 
     <script>
@@ -576,7 +559,7 @@ abc@123.com
             const buttonElement = document.querySelector(`.tab-button[onclick="showTool('${toolId}')"]`);
             if (buttonElement) buttonElement.classList.add('active');
 
-            // Initialize tools on first view
+            // Initialize tools on first view (No changes needed here)
             if (toolId === 'generator1' && !window.gen1Initialized) {
                  if (typeof resetDateSuffix_gen1 === 'function') resetDateSuffix_gen1();
                  window.gen1Initialized = true;
@@ -586,7 +569,7 @@ abc@123.com
                  if (prefixContainer && !prefixContainer.hasChildNodes() && typeof addPrefixPosRow_gen2 === 'function') addPrefixPosRow_gen2(true);
                  if (passwordContainer && !passwordContainer.hasChildNodes() && typeof addPasswordPosRow_gen2 === 'function') addPasswordPosRow_gen2(true);
                  window.gen2Initialized = true;
-             } else if (toolId === 'generator3' && !window.gen3Initialized) { // Initialize Gen 3
+             } else if (toolId === 'generator3' && !window.gen3Initialized) {
                  const prefixContainer = document.getElementById('prefix-custom-positions-gen3');
                  const passwordContainer = document.getElementById('password-custom-positions-gen3');
                  if (prefixContainer && !prefixContainer.hasChildNodes() && typeof addPrefixPosRow_gen3 === 'function') addPrefixPosRow_gen3(true);
@@ -601,10 +584,9 @@ abc@123.com
                   }
                   window.filterInitialized = true;
              }
-             // No specific init for 2FA here, handled by its own DOMContentLoaded listener
         }
 
-        // --- Utility Functions ---
+        // --- Utility Functions --- (No changes)
         function copyToClipboard(text, successMsg) {
              if (navigator.clipboard && navigator.clipboard.writeText) {
                  navigator.clipboard.writeText(text)
@@ -639,28 +621,7 @@ abc@123.com
             const email_prefixes = [ 'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj', 'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv', 'ww','xx','yy','zz','ab','ac','ad','ae','af','ag', 'ah','ai','aj','ak','am','an','ap','aq','ar','as', 'at','au','av','aw','ax','ay','az','ba','bc','bd', 'be','bf','bg','bh','bi','bj','bk','bm','bn','bp', 'bq','br','bs','bt','bu','bv','bw','bx','by','bz', 'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck', 'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw', 'cx','cy','cz','da','db','dc','de','df','dg','dh', 'di','dj','dk','dm','dn','dp','dq','dr','ds','dt', 'du','dv','dw','dx','dy','dz','ea','eb','ec','ed', 'ef','eg','eh','ei','ej','ek','em','en','ep','eq', 'er','es','et','eu','ev','ew','ex','ey','ez','fa', 'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm', 'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx', 'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi', 'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu', 'gv','gw','gx','gy','gz','ha','hb','hc','hd','he', 'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr', 'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib', 'ic','id','ie','if','ig','ih','ij','ik','im','in', 'ip','iq','ir','is','it','iu','iv','iw','ix','iy', 'iz','ja','jb','jc','jd','je','jf','jg','jh','ji', 'jk','jm','jn','jp','jq','jr','js','jt','ju','jv', 'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf', 'kg','kh','ki','kj','km','kn','kp','kq','kr','ks', 'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc', 'md','me','mf','mg','mh','mi','mj','mk','mn','mp', 'mq','mr','ms','mt','mu','mv','mw','mx','my','mz', 'na','nb','nc','nd','ne','nf','ng','nh','ni','nj', 'nk','nm','np','nq','nr','ns','nt','nu','nv','nw', 'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg', 'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt', 'pu','pv','pw','px','py','pz','qa','qb','qc','qd', 'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp', 'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra', 'rb','rc','rd','re','rf','rg','rh','ri','rj','rk', 'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx', 'ry','rz','sa','sb','sc','sd','se','sf','sg','sh', 'si','sj','sk','sm','sn','sp','sq','sr','st','su', 'sv','sw','sx','sy','sz','ta','tb','tc','td','te', 'tf','tg','th','ti','tj','tk','tm','tn','tp','tq', 'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub', 'uc','ud','ue','uf','ug','uh','ui','uj','uk','um', 'un','up','uq','ur','us','ut','uv','uw','ux','uy', 'uz','va','vb','vc','vd','ve','vf','vg','vh','vi', 'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu', 'vw','vx','vy','vz','wa','wb','wc','wd','we','wf', 'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr', 'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc', 'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn', 'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz', 'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj', 'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv', 'yw','yx','yz','za','zb','zc','zd','ze','zf','zg', 'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs', 'zt','zu','zv','zw','zx','zy', ];
             function getCurrentDate_gen1() { const d=new Date();return String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'); }
             function generatePassword_gen1() { const d=['1','2','5','6','8','9'];return'g'+Array.from({length:3},()=>d[Math.floor(Math.random()*6)]).join('')+'88'; }
-            window.generateData_gen1 = function() {
-                 try {
-                     const dateSuffix = document.getElementById('dateSuffix-gen1').value;
-                     const domain = document.getElementById('emailDomain-gen1').value;
-                     const inputCount = document.getElementById('emailCount-gen1').value;
-                     const count = parseInt(inputCount);
-                     const outputContainer = document.getElementById('output-container-gen1');
-                     if (isNaN(count) || count < 1 || count > 576) { alert("生成数量必须是1-576之间的数字！"); return; }
-                     if (!domain || !domain.includes("@")) { alert("邮箱域名无效或未包含@符号"); return; }
-                     const fragment = document.createDocumentFragment();
-                     for (let index = 0; index < count; index++) {
-                         const prefix = email_prefixes[index % email_prefixes.length];
-                         const emailUser = `${prefix}${dateSuffix}`;
-                         const fullEmail = `${emailUser}${domain}`;
-                         const password = generatePassword_gen1();
-                         const itemDiv = document.createElement('div'); itemDiv.className = 'email-item';
-                         itemDiv.innerHTML = `<input type="checkbox" class="checkbox" onchange="toggleSelection_gen1(this)"><div class="email-info">${String(index+1).padStart(3,'0')}. ${fullEmail} ${password}</div><button class="copy-btn-item" onclick="copySingle_gen1(this)">复制</button>`;
-                         fragment.appendChild(itemDiv);
-                     }
-                     outputContainer.innerHTML = ''; outputContainer.appendChild(fragment);
-                 } catch (error) { console.error("Generator 1 error:", error); alert(`生成失败 (Gen1): ${error.message}`); }
-            };
+            window.generateData_gen1 = function() { try { const dateSuffix = document.getElementById('dateSuffix-gen1').value; const domain = document.getElementById('emailDomain-gen1').value; const inputCount = document.getElementById('emailCount-gen1').value; const count = parseInt(inputCount); const outputContainer = document.getElementById('output-container-gen1'); if (isNaN(count) || count < 1 || count > 576) { alert("生成数量必须是1-576之间的数字！"); return; } if (!domain || !domain.includes("@")) { alert("邮箱域名无效或未包含@符号"); return; } const fragment = document.createDocumentFragment(); for (let index = 0; index < count; index++) { const prefix = email_prefixes[index % email_prefixes.length]; const emailUser = `${prefix}${dateSuffix}`; const fullEmail = `${emailUser}${domain}`; const password = generatePassword_gen1(); const itemDiv = document.createElement('div'); itemDiv.className = 'email-item'; itemDiv.innerHTML = `<input type="checkbox" class="checkbox" onchange="toggleSelection_gen1(this)"><div class="email-info">${String(index+1).padStart(3,'0')}. ${fullEmail} ${password}</div><button class="copy-btn-item" onclick="copySingle_gen1(this)">复制</button>`; fragment.appendChild(itemDiv); } outputContainer.innerHTML = ''; outputContainer.appendChild(fragment); } catch (error) { console.error("Generator 1 error:", error); alert(`生成失败 (Gen1): ${error.message}`); } };
             window.resetDateSuffix_gen1 = function() { document.getElementById('dateSuffix-gen1').value = getCurrentDate_gen1(); };
             window.resetEmailDomain_gen1 = function() { document.getElementById('emailDomain-gen1').value = '@e.edu.kg'; };
             window.resetEmailCount_gen1 = function() { document.getElementById('emailCount-gen1').value = 100; };
@@ -685,186 +646,37 @@ abc@123.com
              function createCustomPositionRow(type, container) { const newRow = document.createElement('div'); newRow.className = 'custom-position-row'; const maxPos = (type === 'prefix') ? 30 : 6; const posClass = (type === 'prefix') ? 'prefix-pos' : 'password-pos'; const charClass = (type === 'prefix') ? 'prefix-char' : 'password-char'; const uniqueIdSuffix = `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`; newRow.innerHTML = `<input type="number" min="1" max="${maxPos}" placeholder="位置" class="${posClass}" id="pos-${uniqueIdSuffix}"><input type="text" placeholder="字符" class="${charClass}" maxlength="1" id="char-${uniqueIdSuffix}"><button type="button" class="danger-btn remove-pos" style="padding: 4px 8px; font-size: 0.85em;">删除</button>`; newRow.querySelector('.remove-pos').addEventListener('click', function() { container.removeChild(newRow); }); return newRow; }
              window.addPrefixPosRow_gen2 = function(isInitial = false) { const newRow = createCustomPositionRow('prefix', prefixPositionsContainer); if (!isInitial || prefixPositionsContainer.children.length === 0) { prefixPositionsContainer.appendChild(newRow); } };
              window.addPasswordPosRow_gen2 = function(isInitial = false) { const newRow = createCustomPositionRow('password', passwordPositionsContainer); if (!isInitial || passwordPositionsContainer.children.length === 0) { passwordPositionsContainer.appendChild(newRow); } };
-             generateBtn.addEventListener('click', function() {
-                 const count=parseInt(gen2Scope.querySelector('#count-gen2').value); const minLength=parseInt(gen2Scope.querySelector('#min-length-gen2').value); const maxLength=parseInt(gen2Scope.querySelector('#max-length-gen2').value); const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen2Scope.querySelector('#custom-domain-gen2').value.trim():domainValue; const prefixTypeInput=gen2Scope.querySelector('input[name="prefix-type-gen2"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed';
-                 if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen2)');return;} if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen2)'); return; } if(!domain){alert('请选择或输入有效的邮箱域名 (Gen2)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen2)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;}
-                 const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=30&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen2):",row);}} });
-                 const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=6&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen2):",row);}} });
-                 const resultData=generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions); displayResults_gen2(resultData);
-             });
+             generateBtn.addEventListener('click', function() { const count=parseInt(gen2Scope.querySelector('#count-gen2').value); const minLength=parseInt(gen2Scope.querySelector('#min-length-gen2').value); const maxLength=parseInt(gen2Scope.querySelector('#max-length-gen2').value); const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen2Scope.querySelector('#custom-domain-gen2').value.trim():domainValue; const prefixTypeInput=gen2Scope.querySelector('input[name="prefix-type-gen2"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed'; if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen2)');return;} if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen2)'); return; } if(!domain){alert('请选择或输入有效的邮箱域名 (Gen2)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen2)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;} const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=30&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen2):",row);}} }); const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=6&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen2):",row);}} }); const resultData=generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions); displayResults_gen2(resultData); });
              function displayResults_gen2(resultData) { resultContainer.innerHTML=''; if(!resultData||resultData.length===0)return; const fragment=document.createDocumentFragment(); resultData.forEach((item,index)=>{const row=document.createElement('div'); row.className='result-row'; const serial=index+1; const email=item.email; const password=item.password; row.innerHTML=`<input type="checkbox" class="result-checkbox" checked data-serial="${serial}" data-email="${email}" data-password="${password}"><div class="result-content">${serial}. ${email} ${password}</div><button type="button" class="row-copy-btn" data-serial="${serial}" data-email="${email}" data-password="${password}">复制</button>`; row.querySelector('.row-copy-btn').addEventListener('click',function(e){const btn=e.currentTarget; const emailVal=btn.getAttribute('data-email'); const passwordVal=btn.getAttribute('data-password'); const serialVal=btn.getAttribute('data-serial'); const includeSerial=serialCopyToggle.checked; const text=includeSerial?`${serialVal}. ${emailVal} ${passwordVal}`:`${emailVal} ${passwordVal}`; copyToClipboard(text,'已复制行内容 (Gen2)');}); fragment.appendChild(row);}); resultContainer.appendChild(fragment); }
              selectAllBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=true)); invertSelectionBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=!cb.checked)); copySelectedBtn.addEventListener('click',()=>copyResultData_gen2(true)); copyAllBtn.addEventListener('click',()=>copyResultData_gen2(false)); downloadBtn.addEventListener('click',downloadResultData_gen2); clearBtn.addEventListener('click',()=>resultContainer.innerHTML='');
              function copyResultData_gen2(selectedOnly){const includeSerial=serialCopyToggle.checked;let text='';const selector=selectedOnly?'.result-checkbox:checked':'.result-checkbox';resultContainer.querySelectorAll(selector).forEach(checkbox=>{const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}});text=text.trim();if(!text){alert(selectedOnly?'没有选中的内容 (Gen2)':'没有可复制的内容 (Gen2)');return;}copyToClipboard(text,selectedOnly?'已复制选中内容 (Gen2)':'已复制全部内容 (Gen2)');}
              function downloadResultData_gen2(){const includeSerial=serialCopyToggle.checked;let text='';resultContainer.querySelectorAll('.result-checkbox').forEach(checkbox=>{const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}});text=text.trim();if(!text){alert('没有可下载的内容 (Gen2)');return;}const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const now=new Date();const timestamp=`${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;a.download=`emails_gen2_${timestamp}.txt`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
-             const availableLetters='abcdefghijkmnpqrstuvwxyz'; const availableNumbers='125689'; const passwordLastDigits='689'; // Restricted sets for V2
+             const availableLetters='abcdefghijkmnpqrstuvwxyz'; const availableNumbers='125689'; const passwordLastDigits='689';
              function generateRandomString_gen2(length,minLength,maxLength,prefixType,customPositions=[]){const actualLength=length||(Math.floor(Math.random()*(maxLength-minLength+1))+minLength);let characters='';switch(prefixType){case'letters':characters=availableLetters;break;case'numbers':characters=availableNumbers;break;case'mixed':default:characters=availableLetters+availableNumbers;break;}let result=Array(actualLength).fill(null);customPositions.sort((a,b)=>a.pos-b.pos);customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<actualLength){result[posIndex]=posInfo.char;}});for(let i=0;i<actualLength;i++){if(result[i]===null){result[i]=characters.charAt(Math.floor(Math.random()*characters.length));}}return result.join('');}
-             function generatePassword_gen2(customPositions=[]){let password=Array(6).fill(null); // Custom positions override everything else
-                 customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<6){password[posIndex]=posInfo.char;}});
-                 // Fill remaining positions based on original logic
-                 if (password[0] === null) password[0]=availableLetters.charAt(Math.floor(Math.random()*availableLetters.length));
-                 for(let i=1;i<=3;i++){ if (password[i] === null) password[i]=availableNumbers.charAt(Math.floor(Math.random()*availableNumbers.length)); }
-                 for(let i=4;i<=5;i++){ if (password[i] === null) password[i]=passwordLastDigits.charAt(Math.floor(Math.random()*passwordLastDigits.length)); }
-                 return password.join('');
-             }
+             function generatePassword_gen2(customPositions=[]){let password=Array(6).fill(null); customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<6){password[posIndex]=posInfo.char;}}); if (password[0] === null) password[0]=availableLetters.charAt(Math.floor(Math.random()*availableLetters.length)); for(let i=1;i<=3;i++){ if (password[i] === null) password[i]=availableNumbers.charAt(Math.floor(Math.random()*availableNumbers.length)); } for(let i=4;i<=5;i++){ if (password[i] === null) password[i]=passwordLastDigits.charAt(Math.floor(Math.random()*passwordLastDigits.length)); } return password.join(''); }
              function generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions){const emails=new Set();const result=[];let attempts=0;const maxAttempts=count*10+100;while(result.length<count&&attempts<maxAttempts){attempts++;let username=generateRandomString_gen2(null,minLength,maxLength,prefixType,prefixCustomPositions);const finalDomain=domain.startsWith('@')?domain:`@${domain}`;let email=`${username}${finalDomain}`;if(!emails.has(email)){emails.add(email);const password=generatePassword_gen2(passwordCustomPositions);result.push({email,password});}}if(result.length<count){console.warn(`Gen2: Could only generate ${result.length} unique emails out of ${count} requested after ${maxAttempts} attempts.`);alert(`警告 (Gen2)：仅成功生成 ${result.length} / ${count} 个唯一邮箱。`);}return result;}
         })(); // End of Generator 2 IIFE
 
         // ========================== //
         // === Generator 3 Script === //
         // ========================== //
-        (function() { // Gen 3 IIFE (New)
-             const gen3Scope = document.getElementById('generator3'); // Use gen3 ID
-             // Select elements within Gen 3 scope
-             const domainSelect = gen3Scope.querySelector('#domain-gen3');
-             const customGroup = gen3Scope.querySelector('#custom-domain-group-gen3');
-             const prefixPositionsContainer = gen3Scope.querySelector('#prefix-custom-positions-gen3');
-             const passwordPositionsContainer = gen3Scope.querySelector('#password-custom-positions-gen3');
-             const generateBtn = gen3Scope.querySelector('#generate-gen3');
-             const selectAllBtn = gen3Scope.querySelector('#select-all-gen3');
-             const invertSelectionBtn = gen3Scope.querySelector('#invert-selection-gen3');
-             const copySelectedBtn = gen3Scope.querySelector('#copy-selected-gen3');
-             const copyAllBtn = gen3Scope.querySelector('#copy-all-gen3');
-             const downloadBtn = gen3Scope.querySelector('#download-gen3');
-             const clearBtn = gen3Scope.querySelector('#clear-gen3');
-             const resultContainer = gen3Scope.querySelector('#result-gen3');
-             const serialCopyToggle = gen3Scope.querySelector('#serial-copy-toggle-gen3');
-
-             // Ensure all elements are found before adding listeners
-             if (!domainSelect || !customGroup || !prefixPositionsContainer || !passwordPositionsContainer || !generateBtn || !selectAllBtn || !invertSelectionBtn || !copySelectedBtn || !copyAllBtn || !downloadBtn || !clearBtn || !resultContainer || !serialCopyToggle) {
-                 console.error("Generator 3 Error: One or more required elements could not be found. Check IDs.");
-                 return;
-             }
-
+        (function() { // Gen 3 IIFE (No changes)
+             const gen3Scope = document.getElementById('generator3');
+             const domainSelect = gen3Scope.querySelector('#domain-gen3'); const customGroup = gen3Scope.querySelector('#custom-domain-group-gen3'); const prefixPositionsContainer = gen3Scope.querySelector('#prefix-custom-positions-gen3'); const passwordPositionsContainer = gen3Scope.querySelector('#password-custom-positions-gen3'); const generateBtn = gen3Scope.querySelector('#generate-gen3'); const selectAllBtn = gen3Scope.querySelector('#select-all-gen3'); const invertSelectionBtn = gen3Scope.querySelector('#invert-selection-gen3'); const copySelectedBtn = gen3Scope.querySelector('#copy-selected-gen3'); const copyAllBtn = gen3Scope.querySelector('#copy-all-gen3'); const downloadBtn = gen3Scope.querySelector('#download-gen3'); const clearBtn = gen3Scope.querySelector('#clear-gen3'); const resultContainer = gen3Scope.querySelector('#result-gen3'); const serialCopyToggle = gen3Scope.querySelector('#serial-copy-toggle-gen3');
+             if (!domainSelect || !customGroup || !prefixPositionsContainer || !passwordPositionsContainer || !generateBtn || !selectAllBtn || !invertSelectionBtn || !copySelectedBtn || !copyAllBtn || !downloadBtn || !clearBtn || !resultContainer || !serialCopyToggle) { console.error("Generator 3 Error: One or more required elements could not be found. Check IDs."); return; }
              domainSelect.addEventListener('change', function() { customGroup.style.display = (this.value === 'custom') ? 'block' : 'none'; });
-
-             function createCustomPositionRow_gen3(type, container) { // Renamed function
-                 const newRow = document.createElement('div'); newRow.className = 'custom-position-row'; const maxPos = (type === 'prefix') ? 30 : 6; const posClass = (type === 'prefix') ? 'prefix-pos' : 'password-pos'; const charClass = (type === 'prefix') ? 'prefix-char' : 'password-char'; const uniqueIdSuffix = `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-                 // Use v3 IDs for inputs
-                 newRow.innerHTML = `<input type="number" min="1" max="${maxPos}" placeholder="位置" class="${posClass}" id="pos-${uniqueIdSuffix}-gen3"><input type="text" placeholder="字符" class="${charClass}" maxlength="1" id="char-${uniqueIdSuffix}-gen3"><button type="button" class="danger-btn remove-pos" style="padding: 4px 8px; font-size: 0.85em;">删除</button>`;
-                 newRow.querySelector('.remove-pos').addEventListener('click', function() { container.removeChild(newRow); });
-                 return newRow;
-             }
-             // Make add functions global for onclick, specific to gen3
+             function createCustomPositionRow_gen3(type, container) { const newRow = document.createElement('div'); newRow.className = 'custom-position-row'; const maxPos = (type === 'prefix') ? 30 : 6; const posClass = (type === 'prefix') ? 'prefix-pos' : 'password-pos'; const charClass = (type === 'prefix') ? 'prefix-char' : 'password-char'; const uniqueIdSuffix = `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`; newRow.innerHTML = `<input type="number" min="1" max="${maxPos}" placeholder="位置" class="${posClass}" id="pos-${uniqueIdSuffix}-gen3"><input type="text" placeholder="字符" class="${charClass}" maxlength="1" id="char-${uniqueIdSuffix}-gen3"><button type="button" class="danger-btn remove-pos" style="padding: 4px 8px; font-size: 0.85em;">删除</button>`; newRow.querySelector('.remove-pos').addEventListener('click', function() { container.removeChild(newRow); }); return newRow; }
              window.addPrefixPosRow_gen3 = function(isInitial = false) { const newRow = createCustomPositionRow_gen3('prefix', prefixPositionsContainer); if (!isInitial || prefixPositionsContainer.children.length === 0) { prefixPositionsContainer.appendChild(newRow); } };
              window.addPasswordPosRow_gen3 = function(isInitial = false) { const newRow = createCustomPositionRow_gen3('password', passwordPositionsContainer); if (!isInitial || passwordPositionsContainer.children.length === 0) { passwordPositionsContainer.appendChild(newRow); } };
-
-             generateBtn.addEventListener('click', function() {
-                 const count=parseInt(gen3Scope.querySelector('#count-gen3').value); const minLength=parseInt(gen3Scope.querySelector('#min-length-gen3').value); const maxLength=parseInt(gen3Scope.querySelector('#max-length-gen3').value); const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen3Scope.querySelector('#custom-domain-gen3').value.trim():domainValue; const prefixTypeInput=gen3Scope.querySelector('input[name="prefix-type-gen3"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed';
-                 if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen3)');return;} if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen3)'); return; } if(!domain){alert('请选择或输入有效的邮箱域名 (Gen3)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen3)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;}
-                 const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=30&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen3):",row);}} });
-                 const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=6&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen3):",row);}} });
-                 // Call v3 generation function
-                 const resultData=generateEmails_gen3(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions);
-                 displayResults_gen3(resultData); // Call v3 display function
-             });
-
-             function displayResults_gen3(resultData) { // Renamed function
-                 resultContainer.innerHTML=''; if(!resultData||resultData.length===0)return; const fragment=document.createDocumentFragment();
-                 resultData.forEach((item,index)=>{
-                     const row=document.createElement('div'); row.className='result-row'; const serial=index+1; const email=item.email; const password=item.password;
-                     // Use v3 IDs/attributes if needed, though data attributes are fine
-                     row.innerHTML=`<input type="checkbox" class="result-checkbox" checked data-serial="${serial}" data-email="${email}" data-password="${password}"><div class="result-content">${serial}. ${email} ${password}</div><button type="button" class="row-copy-btn" data-serial="${serial}" data-email="${email}" data-password="${password}">复制</button>`;
-                     row.querySelector('.row-copy-btn').addEventListener('click',function(e){
-                         const btn=e.currentTarget; const emailVal=btn.getAttribute('data-email'); const passwordVal=btn.getAttribute('data-password'); const serialVal=btn.getAttribute('data-serial');
-                         const includeSerial=serialCopyToggle.checked; // Use v3 toggle
-                         const text=includeSerial?`${serialVal}. ${emailVal} ${passwordVal}`:`${emailVal} ${passwordVal}`;
-                         copyToClipboard(text,'已复制行内容 (Gen3)'); // Update message
-                     });
-                     fragment.appendChild(row);
-                 });
-                 resultContainer.appendChild(fragment);
-             }
-
-             // --- Action Button Listeners (Targeting v3 elements) ---
-             selectAllBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=true));
-             invertSelectionBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=!cb.checked));
-             copySelectedBtn.addEventListener('click',()=>copyResultData_gen3(true)); // Call v3 function
-             copyAllBtn.addEventListener('click',()=>copyResultData_gen3(false)); // Call v3 function
-             downloadBtn.addEventListener('click',downloadResultData_gen3); // Call v3 function
-             clearBtn.addEventListener('click',()=>resultContainer.innerHTML='');
-
-             function copyResultData_gen3(selectedOnly){ // Renamed function
-                 const includeSerial=serialCopyToggle.checked; let text=''; const selector=selectedOnly?'.result-checkbox:checked':'.result-checkbox';
-                 resultContainer.querySelectorAll(selector).forEach(checkbox=>{
-                     const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');
-                     if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}
-                 });
-                 text=text.trim(); if(!text){alert(selectedOnly?'没有选中的内容 (Gen3)':'没有可复制的内容 (Gen3)');return;}
-                 copyToClipboard(text,selectedOnly?'已复制选中内容 (Gen3)':'已复制全部内容 (Gen3)'); // Update message
-             }
-
-             function downloadResultData_gen3(){ // Renamed function
-                 const includeSerial=serialCopyToggle.checked; let text='';
-                 resultContainer.querySelectorAll('.result-checkbox').forEach(checkbox=>{
-                     const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');
-                     if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}
-                 });
-                 text=text.trim(); if(!text){alert('没有可下载的内容 (Gen3)');return;}
-                 const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const now=new Date();const timestamp=`${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
-                 a.download=`emails_gen3_unrestricted_${timestamp}.txt`; // Changed filename
-                 document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
-             }
-
-             // --- V3 Specific Generation Logic ---
-             const availableLetters_gen3='abcdefghijklmnopqrstuvwxyz'; // Unrestricted letters
-             const availableNumbers_gen3='0123456789'; // Unrestricted numbers
-
-             function generateRandomString_gen3(length,minLength,maxLength,prefixType,customPositions=[]){ // Renamed function
-                 const actualLength=length||(Math.floor(Math.random()*(maxLength-minLength+1))+minLength);
-                 let characters='';
-                 switch(prefixType){
-                     case'letters':characters=availableLetters_gen3;break;
-                     case'numbers':characters=availableNumbers_gen3;break;
-                     case'mixed':default:characters=availableLetters_gen3+availableNumbers_gen3;break; // Use unrestricted sets
-                 }
-                 let result=Array(actualLength).fill(null);
-                 customPositions.sort((a,b)=>a.pos-b.pos);
-                 customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<actualLength){result[posIndex]=posInfo.char;}});
-                 for(let i=0;i<actualLength;i++){
-                     if(result[i]===null){result[i]=characters.charAt(Math.floor(Math.random()*characters.length));}
-                 }
-                 return result.join('');
-             }
-
-             function generatePassword_gen3(customPositions=[]){ // Renamed function
-                 let password=Array(6).fill(null);
-                 const fullCharSet = availableLetters_gen3 + availableNumbers_gen3; // Unrestricted set for password
-
-                 // Apply custom positions first
-                 customPositions.sort((a,b)=>a.pos-b.pos);
-                 customPositions.forEach(posInfo=>{
-                     const posIndex=posInfo.pos-1;
-                     if(posIndex>=0&&posIndex<6){password[posIndex]=posInfo.char;}
-                 });
-
-                 // Fill remaining positions with any unrestricted char
-                 for(let i=0; i < 6; i++){
-                     if (password[i] === null) {
-                         password[i] = fullCharSet.charAt(Math.floor(Math.random() * fullCharSet.length));
-                     }
-                 }
-                 return password.join('');
-             }
-
-             function generateEmails_gen3(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions){ // Renamed function
-                 const emails=new Set();const result=[];let attempts=0;const maxAttempts=count*10+100; // Keep safety limit
-                 while(result.length<count&&attempts<maxAttempts){
-                     attempts++;
-                     let username=generateRandomString_gen3(null,minLength,maxLength,prefixType,prefixCustomPositions); // Use v3 string gen
-                     const finalDomain=domain.startsWith('@')?domain:`@${domain}`;
-                     let email=`${username}${finalDomain}`;
-                     if(!emails.has(email)){
-                         emails.add(email);
-                         const password=generatePassword_gen3(passwordCustomPositions); // Use v3 password gen
-                         result.push({email,password});
-                     }
-                 }
-                 if(result.length<count){
-                     console.warn(`Gen3: Could only generate ${result.length} unique emails out of ${count} requested after ${maxAttempts} attempts.`);
-                     alert(`警告 (Gen3)：仅成功生成 ${result.length} / ${count} 个唯一邮箱。`); // Update message
-                 }
-                 return result;
-             }
+             generateBtn.addEventListener('click', function() { const count=parseInt(gen3Scope.querySelector('#count-gen3').value); const minLength=parseInt(gen3Scope.querySelector('#min-length-gen3').value); const maxLength=parseInt(gen3Scope.querySelector('#max-length-gen3').value); const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen3Scope.querySelector('#custom-domain-gen3').value.trim():domainValue; const prefixTypeInput=gen3Scope.querySelector('input[name="prefix-type-gen3"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed'; if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen3)');return;} if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen3)'); return; } if(!domain){alert('请选择或输入有效的邮箱域名 (Gen3)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen3)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;} const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=30&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen3):",row);}} }); const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=6&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen3):",row);}} }); const resultData=generateEmails_gen3(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions); displayResults_gen3(resultData); });
+             function displayResults_gen3(resultData) { resultContainer.innerHTML=''; if(!resultData||resultData.length===0)return; const fragment=document.createDocumentFragment(); resultData.forEach((item,index)=>{ const row=document.createElement('div'); row.className='result-row'; const serial=index+1; const email=item.email; const password=item.password; row.innerHTML=`<input type="checkbox" class="result-checkbox" checked data-serial="${serial}" data-email="${email}" data-password="${password}"><div class="result-content">${serial}. ${email} ${password}</div><button type="button" class="row-copy-btn" data-serial="${serial}" data-email="${email}" data-password="${password}">复制</button>`; row.querySelector('.row-copy-btn').addEventListener('click',function(e){ const btn=e.currentTarget; const emailVal=btn.getAttribute('data-email'); const passwordVal=btn.getAttribute('data-password'); const serialVal=btn.getAttribute('data-serial'); const includeSerial=serialCopyToggle.checked; const text=includeSerial?`${serialVal}. ${emailVal} ${passwordVal}`:`${emailVal} ${passwordVal}`; copyToClipboard(text,'已复制行内容 (Gen3)'); }); fragment.appendChild(row); }); resultContainer.appendChild(fragment); }
+             selectAllBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=true)); invertSelectionBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=!cb.checked)); copySelectedBtn.addEventListener('click',()=>copyResultData_gen3(true)); copyAllBtn.addEventListener('click',()=>copyResultData_gen3(false)); downloadBtn.addEventListener('click',downloadResultData_gen3); clearBtn.addEventListener('click',()=>resultContainer.innerHTML='');
+             function copyResultData_gen3(selectedOnly){ const includeSerial=serialCopyToggle.checked; let text=''; const selector=selectedOnly?'.result-checkbox:checked':'.result-checkbox'; resultContainer.querySelectorAll(selector).forEach(checkbox=>{ const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial'); if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}} }); text=text.trim(); if(!text){alert(selectedOnly?'没有选中的内容 (Gen3)':'没有可复制的内容 (Gen3)');return;} copyToClipboard(text,selectedOnly?'已复制选中内容 (Gen3)':'已复制全部内容 (Gen3)'); }
+             function downloadResultData_gen3(){ const includeSerial=serialCopyToggle.checked; let text=''; resultContainer.querySelectorAll('.result-checkbox').forEach(checkbox=>{ const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial'); if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}} }); text=text.trim(); if(!text){alert('没有可下载的内容 (Gen3)');return;} const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const now=new Date();const timestamp=`${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`; a.download=`emails_gen3_unrestricted_${timestamp}.txt`; document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url); }
+             const availableLetters_gen3='abcdefghijklmnopqrstuvwxyz'; const availableNumbers_gen3='0123456789';
+             function generateRandomString_gen3(length,minLength,maxLength,prefixType,customPositions=[]){ const actualLength=length||(Math.floor(Math.random()*(maxLength-minLength+1))+minLength); let characters=''; switch(prefixType){ case'letters':characters=availableLetters_gen3;break; case'numbers':characters=availableNumbers_gen3;break; case'mixed':default:characters=availableLetters_gen3+availableNumbers_gen3;break; } let result=Array(actualLength).fill(null); customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<actualLength){result[posIndex]=posInfo.char;}}); for(let i=0;i<actualLength;i++){ if(result[i]===null){result[i]=characters.charAt(Math.floor(Math.random()*characters.length));} } return result.join(''); }
+             function generatePassword_gen3(customPositions=[]){ let password=Array(6).fill(null); const fullCharSet = availableLetters_gen3 + availableNumbers_gen3; customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{ const posIndex=posInfo.pos-1; if(posIndex>=0&&posIndex<6){password[posIndex]=posInfo.char;} }); for(let i=0; i < 6; i++){ if (password[i] === null) { password[i] = fullCharSet.charAt(Math.floor(Math.random() * fullCharSet.length)); } } return password.join(''); }
+             function generateEmails_gen3(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions){ const emails=new Set();const result=[];let attempts=0;const maxAttempts=count*10+100; while(result.length<count&&attempts<maxAttempts){ attempts++; let username=generateRandomString_gen3(null,minLength,maxLength,prefixType,prefixCustomPositions); const finalDomain=domain.startsWith('@')?domain:`@${domain}`; let email=`${username}${finalDomain}`; if(!emails.has(email)){ emails.add(email); const password=generatePassword_gen3(passwordCustomPositions); result.push({email,password}); } } if(result.length<count){ console.warn(`Gen3: Could only generate ${result.length} unique emails out of ${count} requested after ${maxAttempts} attempts.`); alert(`警告 (Gen3)：仅成功生成 ${result.length} / ${count} 个唯一邮箱。`); } return result; }
              console.log("Generator 3 (Unrestricted) Initialized.");
         })(); // End of Generator 3 IIFE
 
@@ -888,13 +700,28 @@ abc@123.com
         // ============================= //
         // === Authenticator Script  === //
         // ============================= //
-        (function() { // Authenticator IIFE (No changes)
+        (function() { // Authenticator IIFE (QR Code functionality removed)
             'use strict';
             if (typeof OTPAuth === 'undefined') { console.error("Authenticator Error: OTPAuth library is not loaded."); alert("错误：2FA 库未能加载，验证器功能将无法使用。"); return; }
-             if (typeof QRCode === 'undefined') { console.error("Authenticator Error: QRCode library is not loaded."); alert("错误：QRCode 库未能加载，二维码功能将无法使用。"); }
+            // QRCode library check removed
+
             const authScope = document.getElementById('authenticator'); if (!authScope) { console.error("Authenticator container (#authenticator) not found."); return; }
-            const secretInput = authScope.querySelector('#secret-input-2fa'); const getCodeBtn = authScope.querySelector('#btn-get-2fa'); const keyDisplay = authScope.querySelector('#key-2fa'); const codeDisplay = authScope.querySelector('#code-2fa'); const timerDisplay = authScope.querySelector('#timer-2fa'); const showQrBtn = authScope.querySelector('#btn-show-qr-2fa'); const notificationContainer = authScope.querySelector('#notification-container-2fa'); const modal = authScope.querySelector('#myModal-2fa'); const modalCloseBtn = authScope.querySelector('#modal-close-2fa'); const qrCodeContainer = authScope.querySelector('#qrcode-2fa');
-            if (!secretInput || !getCodeBtn || !keyDisplay || !codeDisplay || !timerDisplay || !showQrBtn || !notificationContainer || !modal || !modalCloseBtn || !qrCodeContainer) { console.error("Authenticator Error: One or more required elements could not be found within #authenticator. Check IDs."); return; }
+
+            // Select elements (QR code related elements removed)
+            const secretInput = authScope.querySelector('#secret-input-2fa');
+            const getCodeBtn = authScope.querySelector('#btn-get-2fa');
+            const keyDisplay = authScope.querySelector('#key-2fa');
+            const codeDisplay = authScope.querySelector('#code-2fa');
+            const timerDisplay = authScope.querySelector('#timer-2fa');
+            const notificationContainer = authScope.querySelector('#notification-container-2fa');
+            // Removed: showQrBtn, modal, modalCloseBtn, qrCodeContainer
+
+            // Check required elements (QR code related elements removed)
+            if (!secretInput || !getCodeBtn || !keyDisplay || !codeDisplay || !timerDisplay || !notificationContainer) {
+                 console.error("Authenticator Error: One or more required elements could not be found within #authenticator. Check IDs.");
+                 return;
+            }
+
             let refreshCount = 0; const MAX_REFRESH_COUNT = 3; let timerInterval = null;
             function showNotification(message) { if (!notificationContainer) return; const notification = document.createElement('div'); notification.className = 'notification'; notification.textContent = message; notificationContainer.appendChild(notification); void notification.offsetWidth; notification.classList.add('show'); setTimeout(() => { notification.classList.remove('show'); notification.addEventListener('transitionend', () => notification.remove()); }, 3000); }
             function copyCodeToClipboard() { const text = codeDisplay.textContent; if (text && /^\d{6}$/.test(text)) { navigator.clipboard.writeText(text).then(() => { showNotification("已复制验证码"); }).catch(() => { showNotification("无法自动复制，请手动操作！"); console.warn("Clipboard write failed (Authenticator)"); }); } else { showNotification("当前无有效验证码可复制"); } }
@@ -902,14 +729,16 @@ abc@123.com
             function getCode() { let secret = secretInput.value; secret = filterAndValidateSecret(secret); if (!secret) { keyDisplay.textContent = ""; codeDisplay.textContent = ""; codeDisplay.style.color = "red"; return; } try { const totp = new OTPAuth.TOTP({ algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromBase32(secret) }); const code = totp.generate(); keyDisplay.textContent = secret; codeDisplay.textContent = code; codeDisplay.style.color = "rgb(50 174 77)"; } catch (error) { console.error("Error generating TOTP:", error); showNotification("生成验证码时出错: " + error.message); keyDisplay.textContent = secret; codeDisplay.textContent = "错误"; codeDisplay.style.color = "red"; } }
             function updateTimerDisplay(secondsLeft) { timerDisplay.textContent = secondsLeft; }
             function startTimer() { if (timerInterval) { clearInterval(timerInterval); } function timerTick() { let currentSecond = new Date().getSeconds(); let secondsLeft = 30 - (currentSecond % 30); updateTimerDisplay(secondsLeft); if (secondsLeft === 30) { let currentSecret = secretInput.value; let validatedSecret = filterAndValidateSecret(currentSecret); if (validatedSecret) { if (refreshCount < MAX_REFRESH_COUNT) { getCode(); refreshCount++; console.log("Authenticator: Auto-refreshed code. Count:", refreshCount); } else { codeDisplay.textContent = "已超时"; codeDisplay.style.color = "red"; keyDisplay.textContent = validatedSecret; console.log("Authenticator: Max refresh count reached."); } } else { codeDisplay.textContent = "---"; codeDisplay.style.color = "#333"; keyDisplay.textContent = ""; console.log("Authenticator: Secret invalid, auto-refresh paused."); } } } timerTick(); timerInterval = setInterval(timerTick, 1000); }
-             function generateQRCode(secretInput) { if (typeof QRCode === 'undefined') { showNotification("QRCode 功能未加载，无法生成二维码。"); return; } let label = '2FA Key'; let issuer = '元元DIY工具箱'; try { label = `SecretEndingIn...${secretInput.slice(-6)}`; } catch (e) { /* Ignore */ } try { const totp = new OTPAuth.TOTP({ issuer: issuer, label: label, algorithm: 'SHA1', digits: 6, period: 30, secret: OTPAuth.Secret.fromBase32(secretInput) }); const uri = totp.toString(); qrCodeContainer.innerHTML = ''; new QRCode(qrCodeContainer, { text: uri, width: 250, height: 250, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M }); console.log("Generated QR Code for URI:", uri); } catch(error) { console.error("Error creating OTPAuth URI or QRCode:", error); showNotification("生成二维码失败: " + error.message); qrCodeContainer.innerHTML = '<p style="color: red;">生成二维码失败</p>'; } }
-            function showModal() { let secret = secretInput.value; secret = filterAndValidateSecret(secret); if (!secret) { return; } generateQRCode(secret); modal.style.display = "block"; }
-            function hideModal() { modal.style.display = "none"; qrCodeContainer.innerHTML = ''; }
+            // QR Code related functions (generateQRCode, showModal, hideModal) removed
+
+            // --- Event Listeners --- (QR Code listeners removed)
             getCodeBtn.addEventListener('click', function() { let secret = secretInput.value; secret = filterAndValidateSecret(secret); if (!secret) return; refreshCount = 0; getCode(); copyCodeToClipboard(); startTimer(); showNotification("已成功获取验证码"); });
             secretInput.addEventListener('click', function() { this.select(); if (this.value !== "") { showNotification("已全选密钥"); } });
-            showQrBtn.addEventListener('click', showModal); modalCloseBtn.addEventListener('click', hideModal); modal.addEventListener('click', function(event) { if (event.target === modal) { hideModal(); } });
+            // Removed: showQrBtn listener, modal listeners
+
             document.addEventListener('DOMContentLoaded', function() { console.log("Authenticator: DOM Loaded, starting timer."); startTimer(); });
-             console.log("Authenticator Tool Initialized.");
+             console.log("Authenticator Tool Initialized (QR Code functionality removed).");
+
         })(); // End of Authenticator IIFE
 
 
