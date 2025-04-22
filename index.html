@@ -1,3 +1,6 @@
+--- START OF FILE 元元DIY.html ---
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -196,10 +199,19 @@
         #generator3 > .tool-container > .container > .form-group > input[type="number"],
         #generator3 > .tool-container > .container > .form-group > input[type="text"],
         #generator3 > .tool-container > .container > .form-group > select,
-        #generator2 > .tool-container > .container > .form-group > div > input[type="number"],
-        #generator3 > .tool-container > .container > .form-group > div > input[type="number"]
+        #generator2 > .tool-container > .container > .form-group > div > input[type="number"], /* Target inputs within the div */
+        #generator3 > .tool-container > .container > .form-group > div > input[type="number"]  /* Target inputs within the div */
          {
-            width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; margin-bottom: 0;
+            /* width: 100%; -- Removed, let flexbox handle width inside the div */
+            padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; margin-bottom: 0;
+            flex-grow: 1; /* Allow inputs to grow */
+        }
+        /* Ensure direct inputs still take full width if needed */
+        #generator2 > .tool-container > .container > .form-group > input:not([type="checkbox"]):not([type="radio"]),
+        #generator3 > .tool-container > .container > .form-group > input:not([type="checkbox"]):not([type="radio"]),
+        #generator2 > .tool-container > .container > .form-group > select,
+        #generator3 > .tool-container > .container > .form-group > select {
+             width: 100%; /* Apply full width only to direct children or specific types */
         }
         #generator2 .container button,
         #generator3 .container button {
@@ -292,6 +304,11 @@
              #generator3 .container { padding: 15px; }
              #generator2 h1,
              #generator3 h1 { font-size: 1.4em; }
+             /* Adjust input width within flex for mobile */
+             #generator2 .form-group > div > input[type="number"],
+             #generator3 .form-group > div > input[type="number"] {
+                 min-width: 60px; /* Ensure they don't get too small */
+             }
              #generator2 .custom-position-row input[type="number"],
              #generator2 .custom-position-row input[type="text"],
              #generator3 .custom-position-row input[type="number"],
@@ -413,7 +430,7 @@
         <!-- === Generator 2 HTML === -->
         <!-- ======================== -->
         <div id="generator2" class="tab-content">
-            <!-- Generator 2 Content (No changes) -->
+            <!-- Generator 2 Content (PASSWORD LENGTH ADDED) -->
             <div class="tool-container">
                 <div class="container">
                     <h1>邮箱地址生成器 v2</h1>
@@ -421,12 +438,23 @@
                     <div class="form-group"><label for="domain-gen2">邮箱域名:</label><select id="domain-gen2"><option value="gmail.com">gmail.com</option><option value="yahoo.com">yahoo.com</option><option value="outlook.com">outlook.com</option><option value="hotmail.com">hotmail.com</option><option value="icloud.com">icloud.com</option><option value="custom">自定义</option></select></div>
                     <div class="form-group" id="custom-domain-group-gen2" style="display: none;"><label for="custom-domain-gen2">自定义域名:</label><input type="text" id="custom-domain-gen2" placeholder="输入自定义域名"></div>
                     <div class="form-group">
-                        <label>邮箱用户名长度范围:</label>
+                        <label for="min-length-gen2">邮箱用户名长度范围:</label> <!-- Added for attribute -->
                         <div style="display: flex; gap: 10px;">
                             <input type="number" id="min-length-gen2" min="1" max="30" value="8" placeholder="最小长度">
                             <input type="number" id="max-length-gen2" min="1" max="30" value="12" placeholder="最大长度">
                         </div>
                     </div>
+
+                    <!-- START: 新增密码长度范围 -->
+                    <div class="form-group">
+                        <label for="password-min-length-gen2">密码长度范围:</label> <!-- Added for attribute -->
+                        <div style="display: flex; gap: 10px;">
+                            <input type="number" id="password-min-length-gen2" value="6" min="1" max="30" placeholder="最小长度"> <!-- Added max attribute -->
+                            <input type="number" id="password-max-length-gen2" value="8" min="1" max="30" placeholder="最大长度"> <!-- Added max attribute -->
+                        </div>
+                    </div>
+                    <!-- END: 新增密码长度范围 -->
+
                     <div class="form-group"><label>邮箱前缀类型:</label><div class="prefix-type-group"><label class="prefix-type-option"><input type="radio" name="prefix-type-gen2" value="letters" checked> 纯字母</label><label class="prefix-type-option"><input type="radio" name="prefix-type-gen2" value="numbers"> 纯数字</label><label class="prefix-type-option"><input type="radio" name="prefix-type-gen2" value="mixed"> 字母和数字</label></div></div>
                     <div class="form-group custom-positions"><h3>自定义字符位置</h3><div class="custom-position-group"><h4>邮箱前缀自定义字符</h4><div id="prefix-custom-positions-gen2"></div><button class="add-pos-button" onclick="addPrefixPosRow_gen2()">添加前缀位置</button></div><div class="custom-position-group"><h4>密码自定义字符</h4><div id="password-custom-positions-gen2"></div><button class="add-pos-button" onclick="addPasswordPosRow_gen2()">添加密码位置</button></div></div>
                     <div class="form-group"><label style="display: inline-flex; align-items: center; font-weight: normal;"><input type="checkbox" id="serial-copy-toggle-gen2" checked> 复制时包含序号</label></div>
@@ -448,7 +476,7 @@
         <!-- === Generator 3 HTML === -->
         <!-- ======================== -->
         <div id="generator3" class="tab-content">
-             <!-- Generator 3 Content (No changes) -->
+             <!-- Generator 3 Content (PASSWORD LENGTH ADDED) -->
              <div class="tool-container">
                  <div class="container">
                      <h1>邮箱地址生成器 v3 (无限制版)</h1>
@@ -456,12 +484,23 @@
                      <div class="form-group"><label for="domain-gen3">邮箱域名:</label><select id="domain-gen3"><option value="gmail.com">gmail.com</option><option value="yahoo.com">yahoo.com</option><option value="outlook.com">outlook.com</option><option value="hotmail.com">hotmail.com</option><option value="icloud.com">icloud.com</option><option value="custom">自定义</option></select></div>
                      <div class="form-group" id="custom-domain-group-gen3" style="display: none;"><label for="custom-domain-gen3">自定义域名:</label><input type="text" id="custom-domain-gen3" placeholder="输入自定义域名"></div>
                      <div class="form-group">
-                         <label>邮箱用户名长度范围:</label>
+                         <label for="min-length-gen3">邮箱用户名长度范围:</label> <!-- Added for attribute -->
                          <div style="display: flex; gap: 10px;">
                              <input type="number" id="min-length-gen3" min="1" max="30" value="8" placeholder="最小长度">
                              <input type="number" id="max-length-gen3" min="1" max="30" value="12" placeholder="最大长度">
                          </div>
                      </div>
+
+                     <!-- START: 新增密码长度范围 -->
+                     <div class="form-group">
+                         <label for="password-min-length-gen3">密码长度范围:</label> <!-- Added for attribute -->
+                         <div style="display: flex; gap: 10px;">
+                             <input type="number" id="password-min-length-gen3" value="6" min="1" max="30" placeholder="最小长度"> <!-- Added max attribute -->
+                             <input type="number" id="password-max-length-gen3" value="8" min="1" max="30" placeholder="最大长度"> <!-- Added max attribute -->
+                         </div>
+                     </div>
+                     <!-- END: 新增密码长度范围 -->
+
                      <div class="form-group"><label>邮箱前缀类型:</label><div class="prefix-type-group"><label class="prefix-type-option"><input type="radio" name="prefix-type-gen3" value="letters" checked> 纯字母</label><label class="prefix-type-option"><input type="radio" name="prefix-type-gen3" value="numbers"> 纯数字</label><label class="prefix-type-option"><input type="radio" name="prefix-type-gen3" value="mixed"> 字母和数字</label></div></div>
                      <div class="form-group custom-positions"><h3>自定义字符位置</h3><div class="custom-position-group"><h4>邮箱前缀自定义字符</h4><div id="prefix-custom-positions-gen3"></div><button class="add-pos-button" onclick="addPrefixPosRow_gen3()">添加前缀位置</button></div><div class="custom-position-group"><h4>密码自定义字符</h4><div id="password-custom-positions-gen3"></div><button class="add-pos-button" onclick="addPasswordPosRow_gen3()">添加密码位置</button></div></div>
                      <div class="form-group"><label style="display: inline-flex; align-items: center; font-weight: normal;"><input type="checkbox" id="serial-copy-toggle-gen3" checked> 复制时包含序号</label></div>
@@ -640,43 +679,249 @@ abc@123.com
         // ========================== //
         // === Generator 2 Script === //
         // ========================== //
-        (function() { // Gen 2 IIFE (No changes)
+        (function() { // Gen 2 IIFE (MODIFIED FOR PASSWORD LENGTH)
              const gen2Scope = document.getElementById('generator2'); const domainSelect = gen2Scope.querySelector('#domain-gen2'); const customGroup = gen2Scope.querySelector('#custom-domain-group-gen2'); const prefixPositionsContainer = gen2Scope.querySelector('#prefix-custom-positions-gen2'); const passwordPositionsContainer = gen2Scope.querySelector('#password-custom-positions-gen2'); const generateBtn = gen2Scope.querySelector('#generate-gen2'); const selectAllBtn = gen2Scope.querySelector('#select-all-gen2'); const invertSelectionBtn = gen2Scope.querySelector('#invert-selection-gen2'); const copySelectedBtn = gen2Scope.querySelector('#copy-selected-gen2'); const copyAllBtn = gen2Scope.querySelector('#copy-all-gen2'); const downloadBtn = gen2Scope.querySelector('#download-gen2'); const clearBtn = gen2Scope.querySelector('#clear-gen2'); const resultContainer = gen2Scope.querySelector('#result-gen2'); const serialCopyToggle = gen2Scope.querySelector('#serial-copy-toggle-gen2');
+
              domainSelect.addEventListener('change', function() { customGroup.style.display = (this.value === 'custom') ? 'block' : 'none'; });
-             function createCustomPositionRow(type, container) { const newRow = document.createElement('div'); newRow.className = 'custom-position-row'; const maxPos = (type === 'prefix') ? 30 : 6; const posClass = (type === 'prefix') ? 'prefix-pos' : 'password-pos'; const charClass = (type === 'prefix') ? 'prefix-char' : 'password-char'; const uniqueIdSuffix = `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`; newRow.innerHTML = `<input type="number" min="1" max="${maxPos}" placeholder="位置" class="${posClass}" id="pos-${uniqueIdSuffix}"><input type="text" placeholder="字符" class="${charClass}" maxlength="1" id="char-${uniqueIdSuffix}"><button type="button" class="danger-btn remove-pos" style="padding: 4px 8px; font-size: 0.85em;">删除</button>`; newRow.querySelector('.remove-pos').addEventListener('click', function() { container.removeChild(newRow); }); return newRow; }
+
+             function createCustomPositionRow(type, container) {
+                 const newRow = document.createElement('div');
+                 newRow.className = 'custom-position-row';
+                 // START: Password Length Modification - Adjust max position for password based on input max length potentially
+                 // Note: This dynamic adjustment is complex. Keeping max fixed for simplicity, but validation in generatePassword will use actualLength.
+                 const maxPosInput = (type === 'prefix') ? gen2Scope.querySelector('#max-length-gen2') : gen2Scope.querySelector('#password-max-length-gen2');
+                 const maxPos = maxPosInput ? parseInt(maxPosInput.max || '30') : 30; // Use max attribute from input or default
+                 // END: Password Length Modification
+                 const posClass = (type === 'prefix') ? 'prefix-pos' : 'password-pos';
+                 const charClass = (type === 'prefix') ? 'prefix-char' : 'password-char';
+                 const uniqueIdSuffix = `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+                 newRow.innerHTML = `<input type="number" min="1" max="${maxPos}" placeholder="位置" class="${posClass}" id="pos-${uniqueIdSuffix}"><input type="text" placeholder="字符" class="${charClass}" maxlength="1" id="char-${uniqueIdSuffix}"><button type="button" class="danger-btn remove-pos" style="padding: 4px 8px; font-size: 0.85em;">删除</button>`;
+                 newRow.querySelector('.remove-pos').addEventListener('click', function() { container.removeChild(newRow); });
+                 return newRow;
+             }
              window.addPrefixPosRow_gen2 = function(isInitial = false) { const newRow = createCustomPositionRow('prefix', prefixPositionsContainer); if (!isInitial || prefixPositionsContainer.children.length === 0) { prefixPositionsContainer.appendChild(newRow); } };
              window.addPasswordPosRow_gen2 = function(isInitial = false) { const newRow = createCustomPositionRow('password', passwordPositionsContainer); if (!isInitial || passwordPositionsContainer.children.length === 0) { passwordPositionsContainer.appendChild(newRow); } };
-             generateBtn.addEventListener('click', function() { const count=parseInt(gen2Scope.querySelector('#count-gen2').value); const minLength=parseInt(gen2Scope.querySelector('#min-length-gen2').value); const maxLength=parseInt(gen2Scope.querySelector('#max-length-gen2').value); const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen2Scope.querySelector('#custom-domain-gen2').value.trim():domainValue; const prefixTypeInput=gen2Scope.querySelector('input[name="prefix-type-gen2"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed'; if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen2)');return;} if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen2)'); return; } if(!domain){alert('请选择或输入有效的邮箱域名 (Gen2)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen2)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;} const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=30&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen2):",row);}} }); const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=6&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen2):",row);}} }); const resultData=generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions); displayResults_gen2(resultData); });
+
+             generateBtn.addEventListener('click', function() {
+                const count=parseInt(gen2Scope.querySelector('#count-gen2').value);
+                const minLength=parseInt(gen2Scope.querySelector('#min-length-gen2').value);
+                const maxLength=parseInt(gen2Scope.querySelector('#max-length-gen2').value);
+                // START: Password Length Modification - Read new inputs
+                const passwordMinLength = parseInt(gen2Scope.querySelector('#password-min-length-gen2').value);
+                const passwordMaxLength = parseInt(gen2Scope.querySelector('#password-max-length-gen2').value);
+                // END: Password Length Modification
+                const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen2Scope.querySelector('#custom-domain-gen2').value.trim():domainValue; const prefixTypeInput=gen2Scope.querySelector('input[name="prefix-type-gen2"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed';
+
+                // Validation
+                if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen2)');return;}
+                if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen2)'); return; }
+                // START: Password Length Modification - Add validation
+                if (isNaN(passwordMinLength) || isNaN(passwordMaxLength) || passwordMinLength < 1 || passwordMaxLength < passwordMinLength || passwordMaxLength > 30) { // Added max 30 check
+                    alert('密码长度范围无效 (最小1, 最大30, 最小<=最大) (Gen2)');
+                    return;
+                }
+                // END: Password Length Modification
+                if(!domain){alert('请选择或输入有效的邮箱域名 (Gen2)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen2)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;}
+
+                const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=maxLength&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen2):",row);}} });
+                const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=passwordMaxLength&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen2):",row);}} });
+
+                // START: Password Length Modification - Pass lengths to generator
+                const resultData=generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions, passwordMinLength, passwordMaxLength);
+                // END: Password Length Modification
+
+                displayResults_gen2(resultData);
+            });
+
              function displayResults_gen2(resultData) { resultContainer.innerHTML=''; if(!resultData||resultData.length===0)return; const fragment=document.createDocumentFragment(); resultData.forEach((item,index)=>{const row=document.createElement('div'); row.className='result-row'; const serial=index+1; const email=item.email; const password=item.password; row.innerHTML=`<input type="checkbox" class="result-checkbox" checked data-serial="${serial}" data-email="${email}" data-password="${password}"><div class="result-content">${serial}. ${email} ${password}</div><button type="button" class="row-copy-btn" data-serial="${serial}" data-email="${email}" data-password="${password}">复制</button>`; row.querySelector('.row-copy-btn').addEventListener('click',function(e){const btn=e.currentTarget; const emailVal=btn.getAttribute('data-email'); const passwordVal=btn.getAttribute('data-password'); const serialVal=btn.getAttribute('data-serial'); const includeSerial=serialCopyToggle.checked; const text=includeSerial?`${serialVal}. ${emailVal} ${passwordVal}`:`${emailVal} ${passwordVal}`; copyToClipboard(text,'已复制行内容 (Gen2)');}); fragment.appendChild(row);}); resultContainer.appendChild(fragment); }
              selectAllBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=true)); invertSelectionBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=!cb.checked)); copySelectedBtn.addEventListener('click',()=>copyResultData_gen2(true)); copyAllBtn.addEventListener('click',()=>copyResultData_gen2(false)); downloadBtn.addEventListener('click',downloadResultData_gen2); clearBtn.addEventListener('click',()=>resultContainer.innerHTML='');
              function copyResultData_gen2(selectedOnly){const includeSerial=serialCopyToggle.checked;let text='';const selector=selectedOnly?'.result-checkbox:checked':'.result-checkbox';resultContainer.querySelectorAll(selector).forEach(checkbox=>{const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}});text=text.trim();if(!text){alert(selectedOnly?'没有选中的内容 (Gen2)':'没有可复制的内容 (Gen2)');return;}copyToClipboard(text,selectedOnly?'已复制选中内容 (Gen2)':'已复制全部内容 (Gen2)');}
              function downloadResultData_gen2(){const includeSerial=serialCopyToggle.checked;let text='';resultContainer.querySelectorAll('.result-checkbox').forEach(checkbox=>{const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}});text=text.trim();if(!text){alert('没有可下载的内容 (Gen2)');return;}const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const now=new Date();const timestamp=`${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;a.download=`emails_gen2_${timestamp}.txt`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
+
              const availableLetters='abcdefghijkmnpqrstuvwxyz'; const availableNumbers='125689'; const passwordLastDigits='689';
+             const passwordCharsGen2 = availableLetters + availableNumbers + passwordLastDigits; // Combined pool for v2 password
+
              function generateRandomString_gen2(length,minLength,maxLength,prefixType,customPositions=[]){const actualLength=length||(Math.floor(Math.random()*(maxLength-minLength+1))+minLength);let characters='';switch(prefixType){case'letters':characters=availableLetters;break;case'numbers':characters=availableNumbers;break;case'mixed':default:characters=availableLetters+availableNumbers;break;}let result=Array(actualLength).fill(null);customPositions.sort((a,b)=>a.pos-b.pos);customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<actualLength){result[posIndex]=posInfo.char;}});for(let i=0;i<actualLength;i++){if(result[i]===null){result[i]=characters.charAt(Math.floor(Math.random()*characters.length));}}return result.join('');}
-             function generatePassword_gen2(customPositions=[]){let password=Array(6).fill(null); customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<6){password[posIndex]=posInfo.char;}}); if (password[0] === null) password[0]=availableLetters.charAt(Math.floor(Math.random()*availableLetters.length)); for(let i=1;i<=3;i++){ if (password[i] === null) password[i]=availableNumbers.charAt(Math.floor(Math.random()*availableNumbers.length)); } for(let i=4;i<=5;i++){ if (password[i] === null) password[i]=passwordLastDigits.charAt(Math.floor(Math.random()*passwordLastDigits.length)); } return password.join(''); }
-             function generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions){const emails=new Set();const result=[];let attempts=0;const maxAttempts=count*10+100;while(result.length<count&&attempts<maxAttempts){attempts++;let username=generateRandomString_gen2(null,minLength,maxLength,prefixType,prefixCustomPositions);const finalDomain=domain.startsWith('@')?domain:`@${domain}`;let email=`${username}${finalDomain}`;if(!emails.has(email)){emails.add(email);const password=generatePassword_gen2(passwordCustomPositions);result.push({email,password});}}if(result.length<count){console.warn(`Gen2: Could only generate ${result.length} unique emails out of ${count} requested after ${maxAttempts} attempts.`);alert(`警告 (Gen2)：仅成功生成 ${result.length} / ${count} 个唯一邮箱。`);}return result;}
+
+             // START: Password Length Modification - Update generatePassword_gen2 function
+             function generatePassword_gen2(customPositions = [], minLength = 6, maxLength = 8) {
+                // Determine actual length for this password
+                const actualLength = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+                let password = Array(actualLength).fill(null);
+
+                // Apply custom positions first
+                customPositions.sort((a, b) => a.pos - b.pos);
+                customPositions.forEach(posInfo => {
+                    const posIndex = posInfo.pos - 1;
+                    // Ensure custom position is within the actual password length
+                    if (posIndex >= 0 && posIndex < actualLength) {
+                        password[posIndex] = posInfo.char;
+                    } else {
+                         console.warn(`Gen2: Password custom position ${posInfo.pos} is outside the generated length ${actualLength}. Ignoring.`);
+                    }
+                });
+
+                // Fill remaining null positions with random characters from the combined pool
+                for (let i = 0; i < actualLength; i++) {
+                    if (password[i] === null) {
+                        password[i] = passwordCharsGen2.charAt(Math.floor(Math.random() * passwordCharsGen2.length));
+                    }
+                }
+                return password.join('');
+            }
+            // END: Password Length Modification
+
+            // START: Password Length Modification - Update generateEmails_gen2 function signature and call
+            function generateEmails_gen2(count, minLength, maxLength, domain, prefixType, prefixCustomPositions, passwordCustomPositions, passwordMinLength, passwordMaxLength) {
+            // END: Password Length Modification
+                const emails = new Set();
+                const result = [];
+                let attempts = 0;
+                const maxAttempts = count * 10 + 100;
+                while (result.length < count && attempts < maxAttempts) {
+                    attempts++;
+                    let username = generateRandomString_gen2(null, minLength, maxLength, prefixType, prefixCustomPositions);
+                    const finalDomain = domain.startsWith('@') ? domain : `@${domain}`;
+                    let email = `${username}${finalDomain}`;
+                    if (!emails.has(email)) {
+                        emails.add(email);
+                        // START: Password Length Modification - Pass lengths to generatePassword_gen2
+                        const password = generatePassword_gen2(passwordCustomPositions, passwordMinLength, passwordMaxLength);
+                        // END: Password Length Modification
+                        result.push({ email, password });
+                    }
+                }
+                if (result.length < count) {
+                    console.warn(`Gen2: Could only generate ${result.length} unique emails out of ${count} requested after ${maxAttempts} attempts.`);
+                    alert(`警告 (Gen2)：仅成功生成 ${result.length} / ${count} 个唯一邮箱。`);
+                }
+                return result;
+            }
         })(); // End of Generator 2 IIFE
 
         // ========================== //
         // === Generator 3 Script === //
         // ========================== //
-        (function() { // Gen 3 IIFE (No changes)
+        (function() { // Gen 3 IIFE (MODIFIED FOR PASSWORD LENGTH)
              const gen3Scope = document.getElementById('generator3');
              const domainSelect = gen3Scope.querySelector('#domain-gen3'); const customGroup = gen3Scope.querySelector('#custom-domain-group-gen3'); const prefixPositionsContainer = gen3Scope.querySelector('#prefix-custom-positions-gen3'); const passwordPositionsContainer = gen3Scope.querySelector('#password-custom-positions-gen3'); const generateBtn = gen3Scope.querySelector('#generate-gen3'); const selectAllBtn = gen3Scope.querySelector('#select-all-gen3'); const invertSelectionBtn = gen3Scope.querySelector('#invert-selection-gen3'); const copySelectedBtn = gen3Scope.querySelector('#copy-selected-gen3'); const copyAllBtn = gen3Scope.querySelector('#copy-all-gen3'); const downloadBtn = gen3Scope.querySelector('#download-gen3'); const clearBtn = gen3Scope.querySelector('#clear-gen3'); const resultContainer = gen3Scope.querySelector('#result-gen3'); const serialCopyToggle = gen3Scope.querySelector('#serial-copy-toggle-gen3');
+
              if (!domainSelect || !customGroup || !prefixPositionsContainer || !passwordPositionsContainer || !generateBtn || !selectAllBtn || !invertSelectionBtn || !copySelectedBtn || !copyAllBtn || !downloadBtn || !clearBtn || !resultContainer || !serialCopyToggle) { console.error("Generator 3 Error: One or more required elements could not be found. Check IDs."); return; }
+
              domainSelect.addEventListener('change', function() { customGroup.style.display = (this.value === 'custom') ? 'block' : 'none'; });
-             function createCustomPositionRow_gen3(type, container) { const newRow = document.createElement('div'); newRow.className = 'custom-position-row'; const maxPos = (type === 'prefix') ? 30 : 6; const posClass = (type === 'prefix') ? 'prefix-pos' : 'password-pos'; const charClass = (type === 'prefix') ? 'prefix-char' : 'password-char'; const uniqueIdSuffix = `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`; newRow.innerHTML = `<input type="number" min="1" max="${maxPos}" placeholder="位置" class="${posClass}" id="pos-${uniqueIdSuffix}-gen3"><input type="text" placeholder="字符" class="${charClass}" maxlength="1" id="char-${uniqueIdSuffix}-gen3"><button type="button" class="danger-btn remove-pos" style="padding: 4px 8px; font-size: 0.85em;">删除</button>`; newRow.querySelector('.remove-pos').addEventListener('click', function() { container.removeChild(newRow); }); return newRow; }
+
+             function createCustomPositionRow_gen3(type, container) {
+                 const newRow = document.createElement('div');
+                 newRow.className = 'custom-position-row';
+                  // START: Password Length Modification - Adjust max position for password based on input max length potentially
+                 const maxPosInput = (type === 'prefix') ? gen3Scope.querySelector('#max-length-gen3') : gen3Scope.querySelector('#password-max-length-gen3');
+                 const maxPos = maxPosInput ? parseInt(maxPosInput.max || '30') : 30; // Use max attribute from input or default
+                 // END: Password Length Modification
+                 const posClass = (type === 'prefix') ? 'prefix-pos' : 'password-pos';
+                 const charClass = (type === 'prefix') ? 'prefix-char' : 'password-char';
+                 const uniqueIdSuffix = `${type}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+                 newRow.innerHTML = `<input type="number" min="1" max="${maxPos}" placeholder="位置" class="${posClass}" id="pos-${uniqueIdSuffix}-gen3"><input type="text" placeholder="字符" class="${charClass}" maxlength="1" id="char-${uniqueIdSuffix}-gen3"><button type="button" class="danger-btn remove-pos" style="padding: 4px 8px; font-size: 0.85em;">删除</button>`;
+                 newRow.querySelector('.remove-pos').addEventListener('click', function() { container.removeChild(newRow); });
+                 return newRow;
+             }
              window.addPrefixPosRow_gen3 = function(isInitial = false) { const newRow = createCustomPositionRow_gen3('prefix', prefixPositionsContainer); if (!isInitial || prefixPositionsContainer.children.length === 0) { prefixPositionsContainer.appendChild(newRow); } };
              window.addPasswordPosRow_gen3 = function(isInitial = false) { const newRow = createCustomPositionRow_gen3('password', passwordPositionsContainer); if (!isInitial || passwordPositionsContainer.children.length === 0) { passwordPositionsContainer.appendChild(newRow); } };
-             generateBtn.addEventListener('click', function() { const count=parseInt(gen3Scope.querySelector('#count-gen3').value); const minLength=parseInt(gen3Scope.querySelector('#min-length-gen3').value); const maxLength=parseInt(gen3Scope.querySelector('#max-length-gen3').value); const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen3Scope.querySelector('#custom-domain-gen3').value.trim():domainValue; const prefixTypeInput=gen3Scope.querySelector('input[name="prefix-type-gen3"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed'; if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen3)');return;} if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen3)'); return; } if(!domain){alert('请选择或输入有效的邮箱域名 (Gen3)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen3)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;} const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=30&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen3):",row);}} }); const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=6&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen3):",row);}} }); const resultData=generateEmails_gen3(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions); displayResults_gen3(resultData); });
+
+             generateBtn.addEventListener('click', function() {
+                const count=parseInt(gen3Scope.querySelector('#count-gen3').value);
+                const minLength=parseInt(gen3Scope.querySelector('#min-length-gen3').value);
+                const maxLength=parseInt(gen3Scope.querySelector('#max-length-gen3').value);
+                // START: Password Length Modification - Read new inputs
+                const passwordMinLength = parseInt(gen3Scope.querySelector('#password-min-length-gen3').value);
+                const passwordMaxLength = parseInt(gen3Scope.querySelector('#password-max-length-gen3').value);
+                // END: Password Length Modification
+                const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen3Scope.querySelector('#custom-domain-gen3').value.trim():domainValue; const prefixTypeInput=gen3Scope.querySelector('input[name="prefix-type-gen3"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed';
+
+                // Validation
+                if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen3)');return;}
+                if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen3)'); return; }
+                // START: Password Length Modification - Add validation
+                if (isNaN(passwordMinLength) || isNaN(passwordMaxLength) || passwordMinLength < 1 || passwordMaxLength < passwordMinLength || passwordMaxLength > 30) { // Added max 30 check
+                    alert('密码长度范围无效 (最小1, 最大30, 最小<=最大) (Gen3)');
+                    return;
+                }
+                // END: Password Length Modification
+                if(!domain){alert('请选择或输入有效的邮箱域名 (Gen3)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen3)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;}
+
+                const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=maxLength&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen3):",row);}} });
+                const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=passwordMaxLength&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen3):",row);}} });
+
+                // START: Password Length Modification - Pass lengths to generator
+                const resultData=generateEmails_gen3(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions, passwordMinLength, passwordMaxLength);
+                // END: Password Length Modification
+
+                displayResults_gen3(resultData);
+            });
+
              function displayResults_gen3(resultData) { resultContainer.innerHTML=''; if(!resultData||resultData.length===0)return; const fragment=document.createDocumentFragment(); resultData.forEach((item,index)=>{ const row=document.createElement('div'); row.className='result-row'; const serial=index+1; const email=item.email; const password=item.password; row.innerHTML=`<input type="checkbox" class="result-checkbox" checked data-serial="${serial}" data-email="${email}" data-password="${password}"><div class="result-content">${serial}. ${email} ${password}</div><button type="button" class="row-copy-btn" data-serial="${serial}" data-email="${email}" data-password="${password}">复制</button>`; row.querySelector('.row-copy-btn').addEventListener('click',function(e){ const btn=e.currentTarget; const emailVal=btn.getAttribute('data-email'); const passwordVal=btn.getAttribute('data-password'); const serialVal=btn.getAttribute('data-serial'); const includeSerial=serialCopyToggle.checked; const text=includeSerial?`${serialVal}. ${emailVal} ${passwordVal}`:`${emailVal} ${passwordVal}`; copyToClipboard(text,'已复制行内容 (Gen3)'); }); fragment.appendChild(row); }); resultContainer.appendChild(fragment); }
              selectAllBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=true)); invertSelectionBtn.addEventListener('click',()=>resultContainer.querySelectorAll('.result-checkbox').forEach(cb=>cb.checked=!cb.checked)); copySelectedBtn.addEventListener('click',()=>copyResultData_gen3(true)); copyAllBtn.addEventListener('click',()=>copyResultData_gen3(false)); downloadBtn.addEventListener('click',downloadResultData_gen3); clearBtn.addEventListener('click',()=>resultContainer.innerHTML='');
              function copyResultData_gen3(selectedOnly){ const includeSerial=serialCopyToggle.checked; let text=''; const selector=selectedOnly?'.result-checkbox:checked':'.result-checkbox'; resultContainer.querySelectorAll(selector).forEach(checkbox=>{ const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial'); if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}} }); text=text.trim(); if(!text){alert(selectedOnly?'没有选中的内容 (Gen3)':'没有可复制的内容 (Gen3)');return;} copyToClipboard(text,selectedOnly?'已复制选中内容 (Gen3)':'已复制全部内容 (Gen3)'); }
              function downloadResultData_gen3(){ const includeSerial=serialCopyToggle.checked; let text=''; resultContainer.querySelectorAll('.result-checkbox').forEach(checkbox=>{ const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial'); if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}} }); text=text.trim(); if(!text){alert('没有可下载的内容 (Gen3)');return;} const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const now=new Date();const timestamp=`${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`; a.download=`emails_gen3_unrestricted_${timestamp}.txt`; document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url); }
+
              const availableLetters_gen3='abcdefghijklmnopqrstuvwxyz'; const availableNumbers_gen3='0123456789';
-             function generateRandomString_gen3(length,minLength,maxLength,prefixType,customPositions=[]){ const actualLength=length||(Math.floor(Math.random()*(maxLength-minLength+1))+minLength); let characters=''; switch(prefixType){ case'letters':characters=availableLetters_gen3;break; case'numbers':characters=availableNumbers_gen3;break; case'mixed':default:characters=availableLetters_gen3+availableNumbers_gen3;break; } let result=Array(actualLength).fill(null); customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<actualLength){result[posIndex]=posInfo.char;}}); for(let i=0;i<actualLength;i++){ if(result[i]===null){result[i]=characters.charAt(Math.floor(Math.random()*characters.length));} } return result.join(''); }
-             function generatePassword_gen3(customPositions=[]){ let password=Array(6).fill(null); const fullCharSet = availableLetters_gen3 + availableNumbers_gen3; customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{ const posIndex=posInfo.pos-1; if(posIndex>=0&&posIndex<6){password[posIndex]=posInfo.char;} }); for(let i=0; i < 6; i++){ if (password[i] === null) { password[i] = fullCharSet.charAt(Math.floor(Math.random() * fullCharSet.length)); } } return password.join(''); }
-             function generateEmails_gen3(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions){ const emails=new Set();const result=[];let attempts=0;const maxAttempts=count*10+100; while(result.length<count&&attempts<maxAttempts){ attempts++; let username=generateRandomString_gen3(null,minLength,maxLength,prefixType,prefixCustomPositions); const finalDomain=domain.startsWith('@')?domain:`@${domain}`; let email=`${username}${finalDomain}`; if(!emails.has(email)){ emails.add(email); const password=generatePassword_gen3(passwordCustomPositions); result.push({email,password}); } } if(result.length<count){ console.warn(`Gen3: Could only generate ${result.length} unique emails out of ${count} requested after ${maxAttempts} attempts.`); alert(`警告 (Gen3)：仅成功生成 ${result.length} / ${count} 个唯一邮箱。`); } return result; }
+             const fullCharSet_gen3 = availableLetters_gen3 + availableNumbers_gen3; // Combined pool for v3 password
+
+             function generateRandomString_gen3(length,minLength,maxLength,prefixType,customPositions=[]){ const actualLength=length||(Math.floor(Math.random()*(maxLength-minLength+1))+minLength); let characters=''; switch(prefixType){ case'letters':characters=availableLetters_gen3;break; case'numbers':characters=availableNumbers_gen3;break; case'mixed':default:characters=fullCharSet_gen3;break; } let result=Array(actualLength).fill(null); customPositions.sort((a,b)=>a.pos-b.pos); customPositions.forEach(posInfo=>{const posIndex=posInfo.pos-1;if(posIndex>=0&&posIndex<actualLength){result[posIndex]=posInfo.char;}}); for(let i=0;i<actualLength;i++){ if(result[i]===null){result[i]=characters.charAt(Math.floor(Math.random()*characters.length));} } return result.join(''); }
+
+             // START: Password Length Modification - Update generatePassword_gen3 function
+             function generatePassword_gen3(customPositions = [], minLength = 6, maxLength = 8) {
+                // Determine actual length for this password
+                const actualLength = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+                let password = Array(actualLength).fill(null);
+
+                // Apply custom positions first
+                customPositions.sort((a, b) => a.pos - b.pos);
+                customPositions.forEach(posInfo => {
+                    const posIndex = posInfo.pos - 1;
+                    // Ensure custom position is within the actual password length
+                    if (posIndex >= 0 && posIndex < actualLength) {
+                        password[posIndex] = posInfo.char;
+                    } else {
+                         console.warn(`Gen3: Password custom position ${posInfo.pos} is outside the generated length ${actualLength}. Ignoring.`);
+                    }
+                });
+
+                // Fill remaining null positions with random characters from the full char set
+                for (let i = 0; i < actualLength; i++) {
+                    if (password[i] === null) {
+                        password[i] = fullCharSet_gen3.charAt(Math.floor(Math.random() * fullCharSet_gen3.length));
+                    }
+                }
+                return password.join('');
+            }
+            // END: Password Length Modification
+
+            // START: Password Length Modification - Update generateEmails_gen3 function signature and call
+            function generateEmails_gen3(count, minLength, maxLength, domain, prefixType, prefixCustomPositions, passwordCustomPositions, passwordMinLength, passwordMaxLength) {
+            // END: Password Length Modification
+                const emails = new Set();
+                const result = [];
+                let attempts = 0;
+                const maxAttempts = count * 10 + 100;
+                while (result.length < count && attempts < maxAttempts) {
+                    attempts++;
+                    let username = generateRandomString_gen3(null, minLength, maxLength, prefixType, prefixCustomPositions);
+                    const finalDomain = domain.startsWith('@') ? domain : `@${domain}`;
+                    let email = `${username}${finalDomain}`;
+                    if (!emails.has(email)) {
+                        emails.add(email);
+                        // START: Password Length Modification - Pass lengths to generatePassword_gen3
+                        const password = generatePassword_gen3(passwordCustomPositions, passwordMinLength, passwordMaxLength);
+                        // END: Password Length Modification
+                        result.push({ email, password });
+                    }
+                }
+                if (result.length < count) {
+                    console.warn(`Gen3: Could only generate ${result.length} unique emails out of ${count} requested after ${maxAttempts} attempts.`);
+                    alert(`警告 (Gen3)：仅成功生成 ${result.length} / ${count} 个唯一邮箱。`);
+                }
+                return result;
+            }
              console.log("Generator 3 (Unrestricted) Initialized.");
         })(); // End of Generator 3 IIFE
 
