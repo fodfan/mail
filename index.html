@@ -370,18 +370,7 @@
                      <h1>闲管家数据筛选器</h1>
                      <!-- END: Renamed H1 -->
                      <p>请在下方粘贴您的数据，点击“筛选数据”提取账号和密码：</p>
-                     <div><label for="inputData-filter">输入数据:</label><textarea id="inputData-filter" placeholder="请在此粘贴您的数据...">uu0421@e.edu.kg	
-g96888
-1.00
-2025-04-21 17:32
-18888888888 m12345
-vv0421@e.edu.kg g19888
-1.00
-2025-04-21 17:32
-ww0421@e.edu.kg	
-g18688
-19999999999
-m56789</textarea></div>
+                     <div><label for="inputData-filter">输入数据:</label><textarea id="inputData-filter" placeholder="请在此粘贴您的数据...">请在此处粘贴您的数据</textarea></div>
                      <div class="button-group">
                          <!-- START: Renamed Button, Removed Reverse Button -->
                          <button id="filterBtn-filter">筛选数据</button>
@@ -467,18 +456,7 @@ m56789</textarea></div>
                   const filterInput = document.getElementById('inputData-filter');
                   if (filterInput && typeof filterData_filter === 'function') {
                         const outputContainer = document.getElementById('outputData-filter');
-                        const defaultInput = `uu0421@e.edu.kg	
-g96888
-1.00
-2025-04-21 17:32
-18888888888 m12345
-vv0421@e.edu.kg g19888
-1.00
-2025-04-21 17:32
-ww0421@e.edu.kg	
-g18688
-19999999999
-m56789`;
+                        const defaultInput = `数据`;
                         if (filterInput.value === defaultInput && outputContainer && outputContainer.innerHTML.trim() === '') {
                              filterData_filter();
                         }
