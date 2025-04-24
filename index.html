@@ -1,4 +1,4 @@
---- 元元DIY工具箱.html ---
+元元DIY工具箱
 
 
 <!DOCTYPE html>
@@ -137,8 +137,9 @@
         #generator1 .gen1-extra-controls .input-subgroup { display: flex; align-items: center; gap: 5px; }
         #generator1 .gen1-extra-controls label { white-space: nowrap; font-size: 0.95em; margin-bottom: 0; }
         #generator1 .gen1-extra-controls input[type="text"] { padding: 6px 8px; font-size: 0.95em; border: 1px solid var(--border-color); border-radius: 3px; margin-bottom: 0; flex-grow: 0; flex-shrink: 0; width: auto; }
-        #generator1 #password-prefix-gen1 { width: 35px; }
-        #generator1 #password-suffix-gen1 { width: 45px; }
+        /* Keep width small for aesthetics, but allow longer input */
+        #generator1 #password-prefix-gen1 { width: 45px; }
+        #generator1 #password-suffix-gen1 { width: 55px; }
         #generator1 #restrict-chars-toggle-gen1 { padding: 8px 12px; font-size: 0.95em; background-color: var(--warning-color); border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; white-space: nowrap; margin: 0; color: white; }
         #generator1 #restrict-chars-toggle-gen1[data-enabled="false"] { background-color: var(--grey-color); opacity: 0.8; }
         #generator1 .action-buttons, #generator1 .selection-tools, #generator1 .sort-buttons { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
@@ -161,8 +162,8 @@
              #generator1 #restrict-chars-toggle-gen1 { padding: 7px 10px; font-size: 0.9em; }
              #generator1 .gen1-extra-controls label { font-size: 0.9em; }
              #generator1 .gen1-extra-controls input[type="text"] { padding: 5px 6px; font-size: 0.9em; }
-             #generator1 #password-prefix-gen1 { width: 30px; }
-             #generator1 #password-suffix-gen1 { width: 40px; }
+             #generator1 #password-prefix-gen1 { width: 35px; } /* Adjusted width for mobile */
+             #generator1 #password-suffix-gen1 { width: 45px; } /* Adjusted width for mobile */
             #generator1 .range-input { gap: 5px; margin-top: 8px; } #generator1 .range-input input { padding: 6px 10px; min-width: 0; } #generator1 .action-buttons .btn, #generator1 .selection-tools .btn, #generator1 .sort-buttons .btn { flex-basis: auto; } #generator1 .email-item { padding: 8px 6px; gap: 5px; } #generator1 .email-info { font-size: 0.9em; } #generator1 .copy-btn-item { padding: 4px 8px; font-size: 0.85em; }
         }
         /* ========================================================== */
@@ -199,7 +200,7 @@
         #generator2 .sort-button-group { display: flex; gap: 10px; margin-top: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         #generator2 .sort-button-group button { background-color: var(--purple-color); }
         #generator2 .sort-button-group button:hover { background-color: #7b1fa2; }
-        #generator2 .gen2-extra-controls { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; align-items: center; }
+         #generator2 .gen2-extra-controls { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; align-items: center; }
         #generator2 #restrict-chars-toggle-gen2 { padding: 8px 12px; font-size: 0.95em; background-color: var(--warning-color); border: none; border-radius: 4px; cursor: pointer; transition: 0.3s; white-space: nowrap; margin: 0; color: white; }
         #generator2 #restrict-chars-toggle-gen2[data-enabled="false"] { background-color: var(--grey-color); opacity: 0.8; }
         #generator2 .result-row { display: flex; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--light-border-color); gap: 10px; }
@@ -246,7 +247,6 @@
         <nav class="tab-navigation">
             <button class="tab-button active" onclick="showTool('generator1')">邮箱生成器 v1</button>
             <button class="tab-button" onclick="showTool('generator2')">邮箱生成器 v2 </button>
-            <!-- Generator V3 Tab Button Removed -->
             <button class="tab-button" onclick="showTool('filter')">闲管家数据筛选器</button>
             <button class="tab-button" onclick="showTool('authenticator')">2FA验证器</button>
         </nav>
@@ -267,11 +267,15 @@
                          <button id="restrict-chars-toggle-gen1" type="button" data-enabled="true">限制开关</button>
                          <span class="input-subgroup">
                              <label for="password-prefix-gen1">密首修改:</label>
-                             <input type="text" id="password-prefix-gen1" value="g" maxlength="1">
+                             <!-- START: Removed maxlength -->
+                             <input type="text" id="password-prefix-gen1" value="g">
+                             <!-- END: Removed maxlength -->
                          </span>
                          <span class="input-subgroup">
                              <label for="password-suffix-gen1">密尾修改:</label>
-                             <input type="text" id="password-suffix-gen1" value="88" maxlength="2">
+                              <!-- START: Removed maxlength -->
+                             <input type="text" id="password-suffix-gen1" value="88">
+                              <!-- END: Removed maxlength -->
                          </span>
                      </div>
                      <div class="action-buttons">
@@ -430,24 +434,20 @@ m56789</textarea></div>
             // Initialize tools on first view (Removed Gen3 logic)
             if (toolId === 'generator1' && !window.gen1Initialized) {
                  if (typeof resetDateSuffix_gen1 === 'function') resetDateSuffix_gen1();
-                 // START: Initialize Gen1 Toggle Button Listener
                  const toggleBtnGen1 = document.getElementById('restrict-chars-toggle-gen1');
                  if(toggleBtnGen1 && typeof toggleRestrictCharsGen1 === 'function') {
                      toggleBtnGen1.addEventListener('click', toggleRestrictCharsGen1);
                  }
-                 // END: Initialize Gen1 Toggle Button Listener
                  window.gen1Initialized = true;
              } else if (toolId === 'generator2' && !window.gen2Initialized) {
                  const prefixContainer = document.getElementById('prefix-custom-positions-gen2');
                  const passwordContainer = document.getElementById('password-custom-positions-gen2');
                  if (prefixContainer && !prefixContainer.hasChildNodes() && typeof addPrefixPosRow_gen2 === 'function') addPrefixPosRow_gen2(true);
                  if (passwordContainer && !passwordContainer.hasChildNodes() && typeof addPasswordPosRow_gen2 === 'function') addPasswordPosRow_gen2(true);
-                  // START: Initialize Gen2 Toggle Button Listener
                  const toggleBtnGen2 = document.getElementById('restrict-chars-toggle-gen2');
                  if(toggleBtnGen2 && typeof toggleRestrictCharsGen2 === 'function') {
                      toggleBtnGen2.addEventListener('click', toggleRestrictCharsGen2);
                  }
-                 // END: Initialize Gen2 Toggle Button Listener
                  window.gen2Initialized = true;
              } /* Generator V3 Initialization Block Removed */
                else if (toolId === 'filter' && !window.filterInitialized) {
@@ -508,63 +508,50 @@ m56789`;
         (function() { // Gen 1 IIFE (FUNCTIONALITY ADDED for new controls)
             const email_prefixes = [ 'aa','bb','cc','dd','ee','ff','gg','hh','ii','jj', 'kk','mm','nn','pp','qq','rr','ss','tt','uu','vv', 'ww','xx','yy','zz','ab','ac','ad','ae','af','ag', 'ah','ai','aj','ak','am','an','ap','aq','ar','as', 'at','au','av','aw','ax','ay','az','ba','bc','bd', 'be','bf','bg','bh','bi','bj','bk','bm','bn','bp', 'bq','br','bs','bt','bu','bv','bw','bx','by','bz', 'ca','cb','cd','ce','cf','cg','ch','ci','cj','ck', 'cm','cn','cp','cq','cr','cs','ct','cu','cv','cw', 'cx','cy','cz','da','db','dc','de','df','dg','dh', 'di','dj','dk','dm','dn','dp','dq','dr','ds','dt', 'du','dv','dw','dx','dy','dz','ea','eb','ec','ed', 'ef','eg','eh','ei','ej','ek','em','en','ep','eq', 'er','es','et','eu','ev','ew','ex','ey','ez','fa', 'fb','fc','fd','fe','fg','fh','fi','fj','fk','fm', 'fn','fp','fq','fr','fs','ft','fu','fv','fw','fx', 'fy','fz','ga','gb','gc','gd','ge','gf','gh','gi', 'gj','gk','gm','gn','gp','gq','gr','gs','gt','gu', 'gv','gw','gx','gy','gz','ha','hb','hc','hd','he', 'hf','hg','hi','hj','hk','hm','hn','hp','hq','hr', 'hs','ht','hu','hv','hw','hx','hy','hz','ia','ib', 'ic','id','ie','if','ig','ih','ij','ik','im','in', 'ip','iq','ir','is','it','iu','iv','iw','ix','iy', 'iz','ja','jb','jc','jd','je','jf','jg','jh','ji', 'jk','jm','jn','jp','jq','jr','js','jt','ju','jv', 'jw','jx','jy','jz','ka','kb','kc','kd','ke','kf', 'kg','kh','ki','kj','km','kn','kp','kq','kr','ks', 'kt','ku','kv','kw','kx','ky','kz','ma','mb','mc', 'md','me','mf','mg','mh','mi','mj','mk','mn','mp', 'mq','mr','ms','mt','mu','mv','mw','mx','my','mz', 'na','nb','nc','nd','ne','nf','ng','nh','ni','nj', 'nk','nm','np','nq','nr','ns','nt','nu','nv','nw', 'nx','ny','nz','pa','pb','pc','pd','pe','pf','pg', 'ph','pi','pj','pk','pm','pn','pq','pr','ps','pt', 'pu','pv','pw','px','py','pz','qa','qb','qc','qd', 'qe','qf','qg','qh','qi','qj','qk','qm','qn','qp', 'qr','qs','qt','qu','qv','qw','qx','qy','qz','ra', 'rb','rc','rd','re','rf','rg','rh','ri','rj','rk', 'rm','rn','rp','rq','rs','rt','ru','rv','rw','rx', 'ry','rz','sa','sb','sc','sd','se','sf','sg','sh', 'si','sj','sk','sm','sn','sp','sq','sr','st','su', 'sv','sw','sx','sy','sz','ta','tb','tc','td','te', 'tf','tg','th','ti','tj','tk','tm','tn','tp','tq', 'tr','ts','tu','tv','tw','tx','ty','tz','ua','ub', 'uc','ud','ue','uf','ug','uh','ui','uj','uk','um', 'un','up','uq','ur','us','ut','uv','uw','ux','uy', 'uz','va','vb','vc','vd','ve','vf','vg','vh','vi', 'vj','vk','vm','vn','vp','vq','vr','vs','vt','vu', 'vw','vx','vy','vz','wa','wb','wc','wd','we','wf', 'wg','wh','wi','wj','wk','wm','wn','wp','wq','wr', 'ws','wt','wu','wv','wx','wy','wz','xa','xb','xc', 'xd','xe','xf','xg','xh','xi','xj','xk','xm','xn', 'xp','xq','xr','xs','xt','xu','xv','xw','xy','xz', 'ya','yb','yc','yd','ye','yf','yg','yh','yi','yj', 'yk','ym','yn','yp','yq','yr','ys','yt','yu','yv', 'yw','yx','yz','za','zb','zc','zd','ze','zf','zg', 'zh','zi','zj','zk','zm','zn','zp','zq','zr','zs', 'zt','zu','zv','zw','zx','zy', ];
             const gen1Scope = document.getElementById('generator1');
-            const restrictedDigits = ['1','2','5','6','8','9']; // Original restricted digits
-            const fullDigits = ['0','1','2','3','4','5','6','7','8','9']; // Full digit set
+            const restrictedDigits = ['1','2','5','6','8','9'];
+            const fullDigits = ['0','1','2','3','4','5','6','7','8','9'];
 
             function getCurrentDate_gen1() { const d=new Date();return String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0'); }
 
-            // START: Modified generatePassword_gen1
+            // Modified generatePassword_gen1 to use controls
             function generatePassword_gen1() {
                 const toggleBtn = gen1Scope.querySelector('#restrict-chars-toggle-gen1');
                 const prefixInput = gen1Scope.querySelector('#password-prefix-gen1');
                 const suffixInput = gen1Scope.querySelector('#password-suffix-gen1');
 
-                const useRestricted = toggleBtn ? toggleBtn.getAttribute('data-enabled') === 'true' : true; // Default to restricted if button not found
-                const prefix = prefixInput ? prefixInput.value.trim() || 'g' : 'g'; // Default prefix
-                const suffix = suffixInput ? suffixInput.value.trim() || '88' : '88'; // Default suffix
+                const useRestricted = toggleBtn ? toggleBtn.getAttribute('data-enabled') === 'true' : true;
+                const prefix = prefixInput ? prefixInput.value.trim() || 'g' : 'g'; // Use entered value or default 'g'
+                const suffix = suffixInput ? suffixInput.value.trim() || '88' : '88'; // Use entered value or default '88'
 
                 const digitSet = useRestricted ? restrictedDigits : fullDigits;
                 const middleDigits = Array.from({length: 3}, () => digitSet[Math.floor(Math.random() * digitSet.length)]).join('');
 
-                return prefix + middleDigits + suffix;
+                return prefix + middleDigits + suffix; // Concatenate potentially longer prefix/suffix
             }
-            // END: Modified generatePassword_gen1
 
-            // START: Added Toggle Button Logic for Gen1
+            // Toggle Button Logic for Gen1
             window.toggleRestrictCharsGen1 = function() {
                 const toggleBtn = gen1Scope.querySelector('#restrict-chars-toggle-gen1');
                 if (!toggleBtn) return;
-
                 const isEnabled = toggleBtn.getAttribute('data-enabled') === 'true';
                 const newState = !isEnabled;
                 toggleBtn.setAttribute('data-enabled', newState.toString());
-
-                // Visual feedback (optional)
                 if (newState) {
                     toggleBtn.style.backgroundColor = 'var(--warning-color)';
                     toggleBtn.style.opacity = '1';
-                     // toggleBtn.textContent = '限制: 开'; // Optional text change
                 } else {
                     toggleBtn.style.backgroundColor = 'var(--grey-color)';
                     toggleBtn.style.opacity = '0.8';
-                     // toggleBtn.textContent = '限制: 关'; // Optional text change
                 }
                  console.log("Gen1 Restrict Chars Toggled:", newState);
             }
-            // END: Added Toggle Button Logic for Gen1
-
 
             window.generateData_gen1 = function() { try { const dateSuffix = document.getElementById('dateSuffix-gen1').value; const domain = document.getElementById('emailDomain-gen1').value; const inputCount = document.getElementById('emailCount-gen1').value; const count = parseInt(inputCount); const outputContainer = document.getElementById('output-container-gen1'); if (isNaN(count) || count < 1 || count > 576) { alert("生成数量必须是1-576之间的数字！"); return; } if (!domain || !domain.includes("@")) { alert("邮箱域名无效或未包含@符号"); return; } const fragment = document.createDocumentFragment(); for (let index = 0; index < count; index++) { const prefix = email_prefixes[index % email_prefixes.length]; const emailUser = `${prefix}${dateSuffix}`; const fullEmail = `${emailUser}${domain}`;
-             // Calls the MODIFIED password function
-             const password = generatePassword_gen1();
+             const password = generatePassword_gen1(); // Calls the MODIFIED password function
              const itemDiv = document.createElement('div'); itemDiv.className = 'email-item'; itemDiv.innerHTML = `<input type="checkbox" class="checkbox" onchange="toggleSelection_gen1(this)"><div class="email-info">${String(index+1).padStart(3,'0')}. ${fullEmail} ${password}</div><button class="copy-btn-item" onclick="copySingle_gen1(this)">复制</button>`; fragment.appendChild(itemDiv); } outputContainer.innerHTML = ''; outputContainer.appendChild(fragment); } catch (error) { console.error("Generator 1 error:", error); alert(`生成失败 (Gen1): ${error.message}`); } };
             window.resetDateSuffix_gen1 = function() { document.getElementById('dateSuffix-gen1').value = getCurrentDate_gen1(); };
             window.resetEmailDomain_gen1 = function() { document.getElementById('emailDomain-gen1').value = '@e.edu.kg'; };
             window.resetEmailCount_gen1 = function() { document.getElementById('emailCount-gen1').value = 100; };
-            // Reset functions for new fields (optional, but good practice)
-            // window.resetPasswordPrefix_gen1 = function() { document.getElementById('password-prefix-gen1').value = 'g'; };
-            // window.resetPasswordSuffix_gen1 = function() { document.getElementById('password-suffix-gen1').value = '88'; };
-            // window.resetRestrictCharsToggle_gen1 = function() { const btn = document.getElementById('restrict-chars-toggle-gen1'); btn.setAttribute('data-enabled', 'true'); btn.style.backgroundColor = 'var(--warning-color)'; btn.style.opacity = '1'; };
             window.toggleSelection_gen1 = function(checkbox) { const item = checkbox.closest('.email-item'); if (item) item.classList.toggle('selected', checkbox.checked); };
             window.selectAll_gen1 = function() { document.querySelectorAll('#generator1 .checkbox').forEach(cb => { cb.checked = true; cb.dispatchEvent(new Event('change')); }); };
             window.invertSelection_gen1 = function() { document.querySelectorAll('#generator1 .checkbox').forEach(cb => { cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); }); };
@@ -582,18 +569,15 @@ m56789`;
         // ========================== //
         (function() { // Gen 2 IIFE (FUNCTIONALITY ADDED for new toggle)
              const gen2Scope = document.getElementById('generator2'); const domainSelect = gen2Scope.querySelector('#domain-gen2'); const customGroup = gen2Scope.querySelector('#custom-domain-group-gen2'); const prefixPositionsContainer = gen2Scope.querySelector('#prefix-custom-positions-gen2'); const passwordPositionsContainer = gen2Scope.querySelector('#password-custom-positions-gen2'); const generateBtn = gen2Scope.querySelector('#generate-gen2'); const selectAllBtn = gen2Scope.querySelector('#select-all-gen2'); const invertSelectionBtn = gen2Scope.querySelector('#invert-selection-gen2'); const copySelectedBtn = gen2Scope.querySelector('#copy-selected-gen2'); const copyAllBtn = gen2Scope.querySelector('#copy-all-gen2'); const downloadBtn = gen2Scope.querySelector('#download-gen2'); const clearBtn = gen2Scope.querySelector('#clear-gen2'); const resultContainer = gen2Scope.querySelector('#result-gen2'); const serialCopyToggle = gen2Scope.querySelector('#serial-copy-toggle-gen2');
-             const restrictCharsToggle = gen2Scope.querySelector('#restrict-chars-toggle-gen2'); // Get the new toggle button
+             const restrictCharsToggle = gen2Scope.querySelector('#restrict-chars-toggle-gen2');
 
-             // START: Define Character Sets for Gen2
-             const restrictedLetters = 'abcdefghijkmnpqrstuvwxyz'; // Excludes l, o
-             const restrictedNumbers = '125689'; // Excludes 0, 3, 4, 7
-             const restrictedPasswordLastDigits = '689'; // Original last digits
-             const restrictedPasswordChars = restrictedLetters + restrictedNumbers + restrictedPasswordLastDigits; // Combined restricted set
-
+             const restrictedLetters = 'abcdefghijkmnpqrstuvwxyz';
+             const restrictedNumbers = '125689';
+             const restrictedPasswordLastDigits = '689';
+             const restrictedPasswordChars = restrictedLetters + restrictedNumbers + restrictedPasswordLastDigits;
              const fullLetters = 'abcdefghijklmnopqrstuvwxyz';
              const fullNumbers = '0123456789';
-             const fullPasswordChars = fullLetters + fullNumbers; // Full alphanumeric set
-             // END: Define Character Sets for Gen2
+             const fullPasswordChars = fullLetters + fullNumbers;
 
              domainSelect.addEventListener('change', function() { customGroup.style.display = (this.value === 'custom') ? 'block' : 'none'; });
              function createCustomPositionRow(type, container) {
@@ -611,26 +595,20 @@ m56789`;
              window.addPrefixPosRow_gen2 = function(isInitial = false) { const newRow = createCustomPositionRow('prefix', prefixPositionsContainer); if (!isInitial || prefixPositionsContainer.children.length === 0) { prefixPositionsContainer.appendChild(newRow); } };
              window.addPasswordPosRow_gen2 = function(isInitial = false) { const newRow = createCustomPositionRow('password', passwordPositionsContainer); if (!isInitial || passwordPositionsContainer.children.length === 0) { passwordPositionsContainer.appendChild(newRow); } };
 
-             // START: Added Toggle Button Logic for Gen2
              window.toggleRestrictCharsGen2 = function() {
                 if (!restrictCharsToggle) return;
                 const isEnabled = restrictCharsToggle.getAttribute('data-enabled') === 'true';
                 const newState = !isEnabled;
                 restrictCharsToggle.setAttribute('data-enabled', newState.toString());
-
-                // Visual feedback
                 if (newState) {
                     restrictCharsToggle.style.backgroundColor = 'var(--warning-color)';
                     restrictCharsToggle.style.opacity = '1';
-                    // toggleBtn.textContent = '限制: 开'; // Optional
                 } else {
                     restrictCharsToggle.style.backgroundColor = 'var(--grey-color)';
                     restrictCharsToggle.style.opacity = '0.8';
-                     // toggleBtn.textContent = '限制: 关'; // Optional
                 }
                 console.log("Gen2 Restrict Chars Toggled:", newState);
              }
-             // END: Added Toggle Button Logic for Gen2
 
              generateBtn.addEventListener('click', function() {
                 const count=parseInt(gen2Scope.querySelector('#count-gen2').value);
@@ -639,17 +617,14 @@ m56789`;
                 const passwordMinLength = parseInt(gen2Scope.querySelector('#password-min-length-gen2').value);
                 const passwordMaxLength = parseInt(gen2Scope.querySelector('#password-max-length-gen2').value);
                 const domainValue=domainSelect.value; let domain=domainValue==='custom'?gen2Scope.querySelector('#custom-domain-gen2').value.trim():domainValue; const prefixTypeInput=gen2Scope.querySelector('input[name="prefix-type-gen2"]:checked'); const prefixType=prefixTypeInput?prefixTypeInput.value:'mixed';
-                // START: Read Gen2 toggle state
-                const useRestrictedChars = restrictCharsToggle ? restrictCharsToggle.getAttribute('data-enabled') === 'true' : true;
-                // END: Read Gen2 toggle state
+                const useRestrictedChars = restrictCharsToggle ? restrictCharsToggle.getAttribute('data-enabled') === 'true' : true; // Read state
                 if(isNaN(count)||count<1||count>10000){alert('生成数量必须在1-10000之间 (Gen2)');return;}
                 if(isNaN(minLength)||isNaN(maxLength)||minLength<1||maxLength>30||minLength>maxLength){ alert('用户名长度范围无效 (最小1, 最大30, 最小<=最大) (Gen2)'); return; }
                 if (isNaN(passwordMinLength) || isNaN(passwordMaxLength) || passwordMinLength < 1 || passwordMaxLength < passwordMinLength || passwordMaxLength > 30) { alert('密码长度范围无效 (最小1, 最大30, 最小<=最大) (Gen2)'); return; }
                 if(!domain){alert('请选择或输入有效的邮箱域名 (Gen2)');return;} if(domainValue==='custom'&&domain===''){alert('请输入自定义域名 (Gen2)');return;} if(domainValue==='custom'&&!domain.includes('@')){domain='@'+domain;}
                 const prefixCustomPositions=[]; prefixPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.prefix-pos'); const charInput=row.querySelector('.prefix-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=maxLength&&char&&char.length===1){ prefixCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的前缀自定义行 (Gen2):",row);}} });
                 const passwordCustomPositions=[]; passwordPositionsContainer.querySelectorAll('.custom-position-row').forEach(row=>{ const posInput=row.querySelector('.password-pos'); const charInput=row.querySelector('.password-char'); if(posInput&&charInput){const pos=parseInt(posInput.value); const char=charInput.value; if(!isNaN(pos)&&pos>=1&&pos<=passwordMaxLength&&char&&char.length===1){ passwordCustomPositions.push({pos,char}); } else if(posInput.value||charInput.value){ console.warn("忽略无效/不完整的密码自定义行 (Gen2):",row);}} });
-                // Pass the toggle state to the main generator function
-                const resultData=generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions, passwordMinLength, passwordMaxLength, useRestrictedChars);
+                const resultData=generateEmails_gen2(count,minLength,maxLength,domain,prefixType,prefixCustomPositions,passwordCustomPositions, passwordMinLength, passwordMaxLength, useRestrictedChars); // Pass state
                 displayResults_gen2(resultData);
             });
              function displayResults_gen2(resultData) { resultContainer.innerHTML=''; if(!resultData||resultData.length===0)return; const fragment=document.createDocumentFragment(); resultData.forEach((item,index)=>{const row=document.createElement('div'); row.className='result-row'; const serial=index+1; const email=item.email; const password=item.password; row.innerHTML=`<input type="checkbox" class="result-checkbox" checked data-serial="${serial}" data-email="${email}" data-password="${password}"><div class="result-content">${serial}. ${email} ${password}</div><button type="button" class="row-copy-btn" data-serial="${serial}" data-email="${email}" data-password="${password}">复制</button>`; row.querySelector('.row-copy-btn').addEventListener('click',function(e){const btn=e.currentTarget; const emailVal=btn.getAttribute('data-email'); const passwordVal=btn.getAttribute('data-password'); const serialVal=btn.getAttribute('data-serial'); const includeSerial=serialCopyToggle.checked; const text=includeSerial?`${serialVal}. ${emailVal} ${passwordVal}`:`${emailVal} ${passwordVal}`; copyToClipboard(text,'已复制行内容 (Gen2)');}); fragment.appendChild(row);}); resultContainer.appendChild(fragment); }
@@ -657,7 +632,7 @@ m56789`;
              function copyResultData_gen2(selectedOnly){const includeSerial=serialCopyToggle.checked;let text='';const selector=selectedOnly?'.result-checkbox:checked':'.result-checkbox';resultContainer.querySelectorAll(selector).forEach(checkbox=>{const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}});text=text.trim();if(!text){alert(selectedOnly?'没有选中的内容 (Gen2)':'没有可复制的内容 (Gen2)');return;}copyToClipboard(text,selectedOnly?'已复制选中内容 (Gen2)':'已复制全部内容 (Gen2)');}
              function downloadResultData_gen2(){const includeSerial=serialCopyToggle.checked;let text='';resultContainer.querySelectorAll('.result-checkbox').forEach(checkbox=>{const email=checkbox.getAttribute('data-email');const password=checkbox.getAttribute('data-password');const serial=checkbox.getAttribute('data-serial');if(email&&password&&serial){if(includeSerial){text+=`${serial}. ${email} ${password}\n`;}else{text+=`${email} ${password}\n`;}}});text=text.trim();if(!text){alert('没有可下载的内容 (Gen2)');return;}const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const now=new Date();const timestamp=`${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;a.download=`emails_gen2_${timestamp}.txt`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
 
-             // START: Modified generateRandomString_gen2 to use toggle state
+             // Modified generateRandomString_gen2 to use toggle state
              function generateRandomString_gen2(length, minLength, maxLength, prefixType, customPositions=[], useRestrictedChars = true) {
                  const actualLength = length || (Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength);
                  let currentLetters = useRestrictedChars ? restrictedLetters : fullLetters;
@@ -674,35 +649,30 @@ m56789`;
                  for (let i = 0; i < actualLength; i++) { if (result[i] === null) { result[i] = characters.charAt(Math.floor(Math.random() * characters.length)); } }
                  return result.join('');
              }
-             // END: Modified generateRandomString_gen2
 
-             // START: Modified generatePassword_gen2 to use toggle state
+             // Modified generatePassword_gen2 to use toggle state
              function generatePassword_gen2(customPositions = [], minLength = 6, maxLength = 8, useRestrictedChars = true) {
                  const actualLength = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
                  let password = Array(actualLength).fill(null);
-                 const charPool = useRestrictedChars ? restrictedPasswordChars : fullPasswordChars; // Select character pool
+                 const charPool = useRestrictedChars ? restrictedPasswordChars : fullPasswordChars;
 
                  customPositions.sort((a, b) => a.pos - b.pos);
                  customPositions.forEach(posInfo => { const posIndex = posInfo.pos - 1; if (posIndex >= 0 && posIndex < actualLength) { password[posIndex] = posInfo.char; } else { console.warn(`Gen2: Password custom position ${posInfo.pos} is outside the generated length ${actualLength}. Ignoring.`); } });
                  for (let i = 0; i < actualLength; i++) { if (password[i] === null) { password[i] = charPool.charAt(Math.floor(Math.random() * charPool.length)); } }
                  return password.join('');
              }
-            // END: Modified generatePassword_gen2
 
-            // START: Modified generateEmails_gen2 to accept and pass toggle state
+            // Modified generateEmails_gen2 to accept and pass toggle state
             function generateEmails_gen2(count, minLength, maxLength, domain, prefixType, prefixCustomPositions, passwordCustomPositions, passwordMinLength, passwordMaxLength, useRestrictedChars) {
-            // END: Modified generateEmails_gen2 signature
                 const emails = new Set(); const result = []; let attempts = 0; const maxAttempts = count * 10 + 100;
                 while (result.length < count && attempts < maxAttempts) {
                     attempts++;
-                    // Pass toggle state to prefix generator
-                    let username = generateRandomString_gen2(null, minLength, maxLength, prefixType, prefixCustomPositions, useRestrictedChars);
+                    let username = generateRandomString_gen2(null, minLength, maxLength, prefixType, prefixCustomPositions, useRestrictedChars); // Pass state
                     const finalDomain = domain.startsWith('@') ? domain : `@${domain}`;
                     let email = `${username}${finalDomain}`;
                     if (!emails.has(email)) {
                         emails.add(email);
-                         // Pass toggle state to password generator
-                        const password = generatePassword_gen2(passwordCustomPositions, passwordMinLength, passwordMaxLength, useRestrictedChars);
+                        const password = generatePassword_gen2(passwordCustomPositions, passwordMinLength, passwordMaxLength, useRestrictedChars); // Pass state
                         result.push({ email, password });
                     }
                 }
@@ -730,7 +700,7 @@ m56789`;
         // ========================== //
         // ===    Filter Script   === //
         // ========================== //
-        (function() { // Filter IIFE (No changes needed here)
+        (function() { // Filter IIFE (No changes from previous version)
             'use strict';
             const filterScope = document.getElementById('filter'); if (!filterScope) { console.error("Filter tool container (#filter) not found."); return; }
             const inputData = filterScope.querySelector('#inputData-filter'); const outputDataContainer = filterScope.querySelector('#outputData-filter'); const filterBtn = filterScope.querySelector('#filterBtn-filter');
