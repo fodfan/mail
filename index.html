@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -1176,6 +1177,11 @@ m56789`;
                     const line = lines[i].trim();
                     originalLineCount++;
                     if (!line) continue;
+                    const pairMatch = line.match(/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})----([^\s]+)/);
+                    if (pairMatch) {
+                        extractedPairs.push(`${pairMatch[1]} ${pairMatch[2]}`);
+                        continue;
+                    }
                     const phoneMatch = line.match(/^(\d{11})(?:\s+(.+))?$/);
                     const emailMatch = line.match(/^([^\s@]+@[^\s@]+\.[^\s@]+)(?:\s+(.+))?$/);
                     let account = null;
